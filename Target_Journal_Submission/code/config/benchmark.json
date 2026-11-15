@@ -1,0 +1,94 @@
+{
+ "description": "Pre-registered benchmark configuration (fixed before any result was inspected).",
+ "datasets": [
+  41021,
+  44956,
+  44957,
+  44958,
+  44959,
+  44960,
+  44962,
+  44963,
+  44964,
+  44965,
+  44969,
+  44970,
+  44973,
+  44974,
+  44975,
+  44976,
+  44977,
+  44978,
+  44979,
+  44980,
+  44981,
+  44983,
+  44984,
+  44987,
+  44989,
+  44990,
+  44992,
+  44993,
+  44994,
+  45012,
+  45402
+ ],
+ "excluded_rule": "targets with < 20 distinct values (ordinal/count): 44966, 44967, 44971, 44972",
+ "seeds": [
+  0,
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9
+ ],
+ "split": [
+  0.5,
+  0.25,
+  0.25
+ ],
+ "alphas": [
+  0.1,
+  0.05,
+  0.2
+ ],
+ "n_fine": 200,
+ "strata_probs_primary": [
+  0.1,
+  0.25,
+  0.75,
+  0.9
+ ],
+ "cal_fracs": [
+  0.25,
+  0.5
+ ],
+ "cal_frac_methods": [
+  "SCP",
+  "NCP",
+  "CQR",
+  "S-Res",
+  "S-NCP",
+  "DLS-M-LS",
+  "SDLC-LS",
+  "SDLC-H",
+  "HPD-split-LS"
+ ],
+ "workers": 4,
+ "n_jobs_per_task": 1,
+ "quick_datasets": [
+  44957,
+  44959,
+  44970
+ ],
+ "n_coarse": 40,
+ "dev_datasets": [
+  44957,
+  44959,
+  44970
+ ]
+}

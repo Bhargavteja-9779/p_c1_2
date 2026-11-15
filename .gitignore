@@ -1,0 +1,6 @@
+Target_Journal_Submission/data/*.parquet
+Target_Journal_Submission/data/*.json
+__pycache__/
+*.pyc
+*.tmp
+Target_Journal_Submission/results/raw_quick/
