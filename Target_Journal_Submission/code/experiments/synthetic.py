@@ -19,6 +19,7 @@ from experiments.run_benchmark import eval_strata_for, fit_context, run_methods 
 from src.evaluation.metrics import evaluate  # noqa: E402
 from src.methods import conformal as C  # noqa: E402
 from src.models import density as D  # noqa: E402
+from src.methods import ls_exact as LX  # noqa: E402
 
 K_SHAPE = 2.0
 OUT = ROOT.parent / "results" / "synthetic.jsonl"
@@ -55,31 +56,43 @@ def run(seed, n_tr=5000, n_cal=5000, n_te=20000, alpha=0.1):
     rng = np.random.default_rng(seed)
     X, y = sample(n_tr + n_cal + n_te, rng)
     idx = (np.arange(n_tr), np.arange(n_tr, n_tr + n_cal), np.arange(n_tr + n_cal, len(y)))
-    ctx, part, _ = fit_context(X, y, seed, [alpha], 200, 4, 40, idx=idx)
+    ctx, part, _ = fit_context(X, y, seed, [alpha], 200, 1, 40, idx=idx)
     Xc, Xt = X[idx[1]], X[idx[2]]
     yc, yt = ctx["yc"], ctx["yt"]
     es = eval_strata_for(part, yt)
     rows = []
-    # estimated pipeline (same code as the benchmark)
-    for m, S in run_methods(ctx, alpha, part, which="all").items():
+    # estimated pipeline (same code as the final evaluation: grid-free location-scale family)
+    c = ctx["cache"]
+    ctx["density_tags"] = ("H",)
+    est = run_methods(ctx, alpha, part, which="all")
+    stc = part.stratum(yc)
+    est.update(LX.ls_methods(LX.LSTable(D.LocationScaleDensity(part, c["z_LS"])), "LS", c["mu_c"], c["sg_c"],
+                             c["sg_c"], yc, c["mu_t"], c["sg_t"], c["sg_t"], yt, alpha, part, stc))
+    est.update(LX.ls_methods(LX.LSTable(D.LocationScaleDensity(part, c["z_LS2"])), "LS2", c["mu_c"], c["sm_c"],
+                             c["sp_c"], yc, c["mu_t"], c["sm_t"], c["sp_t"], yt, alpha, part, stc))
+    for m, S in est.items():
         r, _ = evaluate(S, yt, part, alpha, es)
         rows.append({"seed": seed, "scores": "estimated", "method": m, **r})
     # oracle scores
     mu_c, mu_t, s_c, s_t = mu_f(Xc), mu_f(Xt), sig_f(Xc), sig_f(Xt)
-    mid = 0.5 * (part.fine_edges[:-1] + part.fine_edges[1:])
-    Fo = lambda mu, s: D._normalise(g_pdf((mid[None, :] - mu[:, None]) / s[:, None]) / s[:, None], part)
-    Fc, Ft = Fo(mu_c, s_c), Fo(mu_t, s_t)
     st = part.stratum(yc)
-    f_c = D.at(Fc, yc, part)
     zl, zh = hdr_z(alpha)
+
+    class _TrueG:  # exact table of the true standardised noise density
+        grid = np.linspace(-np.sqrt(K_SHAPE) + 1e-9, 14.0, 8192)
+        g = np.maximum(g_pdf(grid), 1e-12)
+        gfloor = 1e-12
+    T = LX.LSTable(_TrueG(), n_set_grid=4096)
+    ex = LX.ls_methods(T, "O", mu_c, s_c, s_c, yc, mu_t, s_t, s_t, yt, alpha, part, st, full=False)
     oracle = {
         "O-HDR-X (exact X-conditional)": ("int", np.maximum(mu_t + zl * s_t, part.lo)[:, None],
                                           np.minimum(mu_t + zh * s_t, part.hi)[:, None]),
-        "O-DLS-M": C.mask_method(-f_c, Ft, alpha, part),
+        "O-DLS-M": ex["DLS-M-O"],
         "O-S-Res": C.interval_method(np.abs(yc - mu_c), mu_t, alpha, part, kind="res", strata_cal=st),
         "O-S-NCP": C.interval_method(np.abs(yc - mu_c) / s_c, mu_t, alpha, part, kind="nres",
                                      scale_test=s_t, strata_cal=st),
-        "O-SDLC": C.mask_method(-f_c, Ft, alpha, part, strata_cal=st),
+        "O-S-HPD": ex["S-HPD-O"],
+        "O-SDLC": ex["SDLC-O"],
     }
     for m, S in oracle.items():
         r, _ = evaluate(S, yt, part, alpha, es)

@@ -73,8 +73,10 @@
   "CQR",
   "S-Res",
   "S-NCP",
+  "S-CQR",
   "DLS-M-LS",
   "SDLC-LS",
+  "SDLC-LS2",
   "SDLC-H",
   "HPD-split-LS"
  ],
@@ -90,5 +92,6 @@
   44957,
   44959,
   44970
- ]
+ ],
+ "version": "v2 (adds BCCP-hull, decile-scheme for all stratified methods, exploratory LS2 density, tail-alert metrics, cached contexts)"
 }

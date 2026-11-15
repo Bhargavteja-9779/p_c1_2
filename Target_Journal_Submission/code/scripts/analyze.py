@@ -25,26 +25,30 @@ from src.statistics.tests import (bootstrap_ci, friedman, holm, nemenyi_cd,  # n
                                   paired_wilcoxon)
 
 CFG = json.loads((ROOT / "config" / "benchmark.json").read_text())
-RAW = Path(sys.argv[1]) if len(sys.argv) > 1 else TOP / "results" / "raw"
-RES, TAB, FIG = TOP / "results", TOP / "tables", TOP / "figures"
+RAW = Path(sys.argv[1]) if len(sys.argv) > 1 else TOP / "results" / "raw_eval"
+import os  # noqa: E402
+_OUT = Path(os.environ["TSCP_OUT_ROOT"]) if os.environ.get("TSCP_OUT_ROOT") else TOP
+RES, TAB, FIG = _OUT / "results", _OUT / "tables", _OUT / "figures"
 for d in (RES, TAB, FIG):
     d.mkdir(parents=True, exist_ok=True)
 
 NAME = {"SCP": "SCP", "NCP": "NCP", "CQR": "CQR", "MCP-yhat": "Mondrian-ŷ",
         "DCP-LS": "DCP", "HPD-split-LS": "HPD-split", "DLS-M-LS": "DLS",
         "DCP-H": "DCP (hist.)", "HPD-split-H": "HPD-split (hist.)", "DLS-M-H": "DLS (hist.)",
-        "S-Res": "S-SCP", "S-NCP": "S-NCP", "S-CQR": "S-CQR", "S-HPD-LS": "S-HPD",
+        "S-Res": "BCCP", "S-Res-hull": "BCCP-hull", "S-NCP": "S-NCP", "S-CQR": "S-CQR", "S-HPD-LS": "S-HPD",
         "S-HPD-H": "S-HPD (hist.)", "SDLC-LS": "SDLC (proposed)", "SDLC-H": "SDLC (hist.)",
         "SDLC-LS-floor": "SDLC-floor", "SDLC-H-floor": "SDLC-floor (hist.)",
-        "SDLC-LS-hull": "SDLC-hull", "SDLC-H-hull": "SDLC-hull (hist.)"}
+        "SDLC-LS-hull": "SDLC-hull", "SDLC-H-hull": "SDLC-hull (hist.)",
+        "SDLC-LS2": "SDLC-2p", "DLS-M-LS2": "DLS-2p", "S-HPD-LS2": "S-HPD-2p", "HPD-split-LS2": "HPD-split-2p",
+        "DCP-LS2": "DCP-2p", "SDLC-LS2-floor": "SDLC-2p-floor", "SDLC-LS2-hull": "SDLC-2p-hull"}
 MARGINAL = ["SCP", "NCP", "CQR", "MCP-yhat", "DCP-LS", "HPD-split-LS", "DLS-M-LS"]
-STRAT = ["S-Res", "S-NCP", "S-CQR", "S-HPD-LS", "SDLC-LS"]
-VARIANTS = ["SDLC-H", "DLS-M-H", "HPD-split-H", "DCP-H",
-            "S-HPD-H", "SDLC-H-floor", "SDLC-H-hull"]
+STRAT = ["S-Res", "S-Res-hull", "S-NCP", "S-CQR", "S-HPD-LS", "SDLC-LS"]
+VARIANTS = ["SDLC-LS2", "SDLC-LS2-floor", "SDLC-LS2-hull", "DLS-M-LS2", "HPD-split-LS2", "DCP-LS2", "S-HPD-LS2",
+            "SDLC-H", "DLS-M-H", "HPD-split-H", "DCP-H", "S-HPD-H", "SDLC-H-floor", "SDLC-H-hull"]
 MAIN = MARGINAL + STRAT + ["SDLC-LS-floor", "SDLC-LS-hull"]
 PROPOSED = "SDLC-LS"
 PAIRS = [("SCP", "S-Res"), ("NCP", "S-NCP"), ("CQR", "S-CQR"), ("HPD-split-LS", "S-HPD-LS"),
-         ("DLS-M-LS", "SDLC-LS"), ("DLS-M-H", "SDLC-H")]
+         ("DLS-M-LS", "SDLC-LS"), ("DLS-M-LS2", "SDLC-LS2"), ("DLS-M-H", "SDLC-H")]
 BLUE, ORANGE, AQUA, GRAY, DARK = "#2a78d6", "#eb6834", "#1baf7a", "#a3a29c", "#52514e"
 plt.rcParams.update({"font.size": 8, "axes.spines.top": False, "axes.spines.right": False,
                      "axes.edgecolor": "#8a8984", "axes.labelcolor": "#0b0b0b",
@@ -134,8 +138,7 @@ def main():
         x = pdm[pdm.method == m]
         if x.empty:
             continue
-        rows.append({"method": NAME[m], "code": m, "group": "marginal" if m in MARGINAL or m in
-                     ("DLS-M-H", "HPD-split-H", "DCP-H") else "stratified",
+        rows.append({"method": NAME[m], "code": m, "group": "marginal" if m in MARGINAL or m.startswith(("DLS-M", "HPD-split", "DCP")) else "stratified",
                      "coverage": x.coverage.mean(), "lower_tail_cov": x.tail_lo.mean(),
                      "upper_tail_cov": x.tail_hi.mean(), "worst_stratum": x.worst_stratum.mean(),
                      "n_ds_worst_lt_0.85": int((x.worst_stratum < 0.85).sum()),
@@ -160,7 +163,7 @@ def main():
                           "alternative": alt, **{k: v for k, v in r.items() if k != "ci"},
                           "ci_low": r["ci"][0], "ci_high": r["ci"][1], "p_holm": pa})
     # H3: size among stratified methods (two-sided)
-    comp = ["S-Res", "S-NCP", "S-CQR", "S-HPD-LS", "SDLC-H"]
+    comp = ["S-Res", "S-NCP", "S-CQR", "S-HPD-LS", "SDLC-LS2", "SDLC-H"]
     res = [paired_wilcoxon(np.log(S[PROPOSED]), np.log(S[m])) for m in comp]
     adj = holm([r["p"] for r in res])
     for m, r, pa in zip(comp, res, adj):
@@ -376,6 +379,40 @@ def main():
     ax.set_ylabel("Coverage under shifted target distribution")
     ax.legend(frameon=False, fontsize=7, ncol=2)
     save(fig, "F6_label_shift")
+
+    # hull (interval) comparison: SDLC-hull vs BCCP-hull (both single intervals)
+    r = paired_wilcoxon(np.log(S["SDLC-LS-hull"]), np.log(S["S-Res-hull"]))
+    STATS["hull_vs_bccp_hull"] = {**{k: v for k, v in r.items() if k != "ci"}, "ci": r["ci"],
+                                  "geo_ratio": float(np.exp(np.log(S["SDLC-LS-hull"] / S["S-Res-hull"]).mean()))}
+    # geometric-mean size ratios of SDLC versus each stratified competitor (with bootstrap CI)
+    STATS["sdlc_size_ratios"] = {}
+    for m in ["S-Res", "S-NCP", "S-CQR", "S-HPD-LS", "SDLC-LS2", "SDLC-H"]:
+        lr = np.log(S[PROPOSED] / S[m]).dropna()
+        lo_, hi_ = bootstrap_ci(lr.values, fn=np.mean)
+        STATS["sdlc_size_ratios"][m] = {"geo": float(np.exp(lr.mean())), "ci": [float(np.exp(lo_)), float(np.exp(hi_))],
+                                        "n_smaller": int((lr < 0).sum()), "n": int(len(lr))}
+    # ---------------------------------------------------------------- tail alerts (decision view)
+    acols = ["alert_hi_recall", "alert_hi_rate", "alert_hi_precision", "alert_lo_recall", "alert_lo_rate",
+             "alert_lo_precision"]
+    if all(c in a10.columns for c in acols):
+        al = a10.groupby(["did", "method"])[acols].mean().reset_index()
+        rows = []
+        for m in MAIN + ["SDLC-LS2", "SDLC-H"]:
+            x = al[al.method == m]
+            rows.append({"method": NAME[m], "code": m, **{c: x[c].mean() for c in acols}})
+        T13 = pd.DataFrame(rows)
+        table(T13.drop(columns="code"), "T13_tail_alerts")
+        METRICS["alerts"] = T13.set_index("code").to_dict(orient="index")
+        fig, ax = plt.subplots(figsize=(4.6, 3.2))
+        for _, r_ in T13.iterrows():
+            c = BLUE if r_.code == PROPOSED else (AQUA if r_.code in STRAT else GRAY)
+            ax.scatter(r_.alert_hi_recall, r_.alert_hi_precision, color=c, s=26, edgecolor="white", lw=0.8, zorder=3)
+            ax.annotate(r_.method, (r_.alert_hi_recall, r_.alert_hi_precision), fontsize=6, xytext=(3, 2),
+                        textcoords="offset points", color="#52514e")
+        ax.axvline(0.9, color="#0b0b0b", lw=0.8)
+        ax.set_xlabel("Upper-tail alert recall  P(C(X) ∩ B_K ≠ ∅ | Y ∈ B_K)")
+        ax.set_ylabel("Upper-tail alert precision")
+        save(fig, "F10_tail_alerts")
 
     # ---------------------------------------------------------------- efficiency
     fit_cols = [c for c in a10.columns if c.startswith("t_fit_")]

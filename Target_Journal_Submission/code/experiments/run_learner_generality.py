@@ -27,6 +27,7 @@ from src.data.openml_ctr23 import load  # noqa: E402
 from src.evaluation.metrics import evaluate  # noqa: E402
 from src.methods.strata import make_partition  # noqa: E402
 from src.models import density as D  # noqa: E402
+from src.methods import ls_exact as LX  # noqa: E402
 
 warnings.filterwarnings("ignore", category=ConvergenceWarning)
 OUT = ROOT.parent / "results" / "raw_mlp"
@@ -64,12 +65,14 @@ def run_one(did, seed):
     lsd = D.LocationScaleDensity(part, (ytr - oof) / sgf(Xtr))
     mu_c, mu_t, sg_c, sg_t = mu(Xc), mu(Xt), sgf(Xc), sgf(Xt)
     ctx = dict(yc=yc, yt=yt, Xt=Xt, mu_c=mu_c, mu_t=mu_t, sg_c=sg_c, sg_t=sg_t, q_c={}, q_t={},
-               F_c_LS=lsd.cells(mu_c, sg_c), F_t_LS=lsd.cells(mu_t, sg_t),
-               yhat_edges=np.quantile(mu(Xtr), [0.2, 0.4, 0.6, 0.8]))
+               density_tags=(), yhat_edges=np.quantile(mu(Xtr), [0.2, 0.4, 0.6, 0.8]))
     t_fit = time.perf_counter() - t0
     es, W = eval_strata_for(part, yt), shift_weights(part, yt)
     rows = []
-    for m, S in run_methods(ctx, 0.1, part, which="all").items():
+    sets = run_methods(ctx, 0.1, part, which="all")
+    sets.update(LX.ls_methods(LX.LSTable(lsd), "LS", mu_c, sg_c, sg_c, yc, mu_t, sg_t, sg_t, yt, 0.1, part,
+                              part.stratum(yc)))
+    for m, S in sets.items():
         r, _ = evaluate(S, yt, part, 0.1, es, W)
         rows.append(dict(did=did, dataset=meta["name"], seed=seed, learner="MLP", alpha=0.1, method=m,
                          K=part.K, n_cal=len(yc), y_train_sd=float(ytr.std()),

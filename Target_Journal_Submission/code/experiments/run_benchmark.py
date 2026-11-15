@@ -77,14 +77,33 @@ def fit_context(X, y, seed, alphas, n_fine, n_jobs, n_coarse=40, idx=None):
     sg_c, sg_t = np.maximum(sg.predict(Xc), floor), np.maximum(sg.predict(Xt), floor)
     F_c_LS, F_t_LS = lsd.cells(mu_c, sg_c), lsd.cells(mu_t, sg_t)
     timing["density_LS"] = time.perf_counter() - t0
+    # EXPLORATORY two-piece location-scale density (LS2): asymmetric scales below/above mu
+    t0 = time.perf_counter()
+    r_oof = ytr - oof
+    m_minus, m_plus = Lr.fit_twopiece_scale(Xtr, r_oof, seed, n_jobs)
+    fl2 = lambda v: np.maximum(v, floor)
+    sm_tr, sp_tr = fl2(m_minus.predict(Xtr)), fl2(m_plus.predict(Xtr))
+    lsd2 = D.TwoPieceLocationScaleDensity(part, np.where(r_oof < 0, r_oof / sm_tr, r_oof / sp_tr))
+    sm_c, sp_c, sm_t, sp_t = fl2(m_minus.predict(Xc)), fl2(m_plus.predict(Xc)), fl2(m_minus.predict(Xt)), fl2(m_plus.predict(Xt))
+    F_c_LS2, F_t_LS2 = lsd2.cells(mu_c, sm_c, sp_c), lsd2.cells(mu_t, sm_t, sp_t)
+    timing["density_LS2"] = time.perf_counter() - t0
     nll = {t: float(-np.mean(np.log(np.maximum(D.at(F, yt, part), 1e-300))))
-           for t, F in (("H", F_t_H), ("LS", F_t_LS))}
+           for t, F in (("H", F_t_H), ("LS", F_t_LS), ("LS2", F_t_LS2))}
+    P_c_H = Lr.predict_proba_full(clf, Xc, hd.n_classes)
+    P_t_H = Lr.predict_proba_full(clf, Xt, hd.n_classes)
     ctx = dict(yc=yc, yt=yt, Xt=Xt, mu_c=mu_c, mu_t=mu_t, sg_c=sg_c, sg_t=sg_t,
                q_c=q_c, q_t=q_t, F_c_H=F_c_H, F_t_H=F_t_H, F_c_LS=F_c_LS, F_t_LS=F_t_LS,
+               F_c_LS2=F_c_LS2, F_t_LS2=F_t_LS2, density_tags=("H", "LS", "LS2"),
                yhat_edges=np.quantile(mu.predict(Xtr), [0.2, 0.4, 0.6, 0.8]),
-               test_nll_H=nll["H"], test_nll_LS=nll["LS"],
+               test_nll_H=nll["H"], test_nll_LS=nll["LS"], test_nll_LS2=nll["LS2"],
                n_iter_density=int(clf.best_iteration_ or 0),
-               test_rmse=float(np.sqrt(np.mean((yt - mu_t) ** 2))))
+               test_rmse=float(np.sqrt(np.mean((yt - mu_t) ** 2))),
+               cache=dict(y_train=ytr, yc=yc, yt=yt, mu_c=mu_c, mu_t=mu_t, sg_c=sg_c, sg_t=sg_t,
+                          sm_c=sm_c, sp_c=sp_c, sm_t=sm_t, sp_t=sp_t, P_c_H=P_c_H, P_t_H=P_t_H,
+                          z_LS=(ytr - oof) / sg_tr, z_LS2=np.where(r_oof < 0, r_oof / sm_tr, r_oof / sp_tr),
+                          yhat_edges=np.quantile(mu.predict(Xtr), [0.2, 0.4, 0.6, 0.8]),
+                          **{f"qlo_c_{a}": q_c[a][0] for a in alphas}, **{f"qhi_c_{a}": q_c[a][1] for a in alphas},
+                          **{f"qlo_t_{a}": q_t[a][0] for a in alphas}, **{f"qhi_t_{a}": q_t[a][1] for a in alphas}))
     return ctx, part, timing
 
 
@@ -129,24 +148,30 @@ def run_methods(ctx, alpha, part, cal_idx=None, which="all", timings=None):
                 lo[b_t == k], hi[b_t == k] = mu_t[b_t == k] - t, mu_t[b_t == k] + t
             return ("int", np.maximum(lo, part.lo)[:, None], np.minimum(hi, part.hi)[:, None])
         put("MCP-yhat", mcp)
-        put("S-NCP", lambda: C.interval_method(nres_c, mu_t, alpha, part, kind="nres",
-                                               scale_test=sg_t, strata_cal=st_c))
-        if has_q:
-            put("S-CQR", lambda: C.interval_method(cqr_c, (qlo_t, qhi_t), alpha, part, kind="cqr",
-                                                   strata_cal=st_c))
+    # stratified calibration (computed for every strata scheme)
+    put("S-NCP", lambda: C.interval_method(nres_c, mu_t, alpha, part, kind="nres",
+                                           scale_test=sg_t, strata_cal=st_c))
+    if has_q:
+        put("S-CQR", lambda: C.interval_method(cqr_c, (qlo_t, qhi_t), alpha, part, kind="cqr",
+                                               strata_cal=st_c))
+    # S-Res is bin-conditional conformal prediction (BCCP; Randahl et al.) with the union of bins
     put("S-Res", lambda: C.interval_method(res_c, mu_t, alpha, part, kind="res", strata_cal=st_c))
-    for tag in (("H", "LS") if has_h else ("LS",)):
+    if full:
+        put("S-Res-hull", lambda: C.to_hull(out["S-Res"], part))   # "contiguized" BCCP
+    tags = ctx.get("density_tags", ("H", "LS") if has_h else ("LS",))
+    for tag in tags:
         Fc, Ft = ctx[f"F_c_{tag}"][sl], ctx[f"F_t_{tag}"]
         f_c = D.at(Fc, yc, part)
         put(f"DLS-M-{tag}", lambda: C.mask_method(-f_c, Ft, alpha, part))
         put(f"SDLC-{tag}", lambda: C.mask_method(-f_c, Ft, alpha, part, strata_cal=st_c))
+
+        def hpd(strat):
+            Hc = D.at(D.hpd_value(Fc, part), yc, part)
+            return C.mask_method(-Hc, D.hpd_value(Ft, part), alpha, part,
+                                 strata_cal=st_c if strat else None)
+        put(f"S-HPD-{tag}", lambda: hpd(True))
         if full:
-            def hpd(strat):
-                Hc = D.at(D.hpd_value(Fc, part), yc, part)
-                return C.mask_method(-Hc, D.hpd_value(Ft, part), alpha, part,
-                                     strata_cal=st_c if strat else None)
             put(f"HPD-split-{tag}", lambda: hpd(False))
-            put(f"S-HPD-{tag}", lambda: hpd(True))
             put(f"DCP-{tag}", lambda: C.dcp_method(Fc, yc, Ft, alpha, part))
             put(f"SDLC-{tag}-floor", lambda: C.mask_method(-f_c, Ft, alpha, part, strata_cal=st_c,
                                                            floor_beta=min(2 * alpha, 0.5)))
@@ -183,7 +208,7 @@ def run_one(did, seed, out_dir, mode):
                                     CFG["n_coarse"])
     base = dict(did=did, dataset=meta["name"], seed=seed, n=meta["n"], p=meta["p"],
                 n_cal=len(ctx["yc"]), n_test=len(ctx["yt"]), M=part.M, K=part.K,
-                test_nll_H=ctx["test_nll_H"], test_nll_LS=ctx["test_nll_LS"],
+                test_nll_H=ctx["test_nll_H"], test_nll_LS=ctx["test_nll_LS"], test_nll_LS2=ctx["test_nll_LS2"],
                 test_rmse=ctx["test_rmse"], y_train_sd=float(part.y_train.std()),
                 n_iter_density=ctx["n_iter_density"],
                 frac_test_out_domain=float((~part.in_domain(ctx["yt"])).mean()),
@@ -219,6 +244,11 @@ def run_one(did, seed, out_dir, mode):
     total = time.perf_counter() - t_start
     for r in rows:
         r["t_total_task"] = total
+    cdir = Path(out_dir).parent / (Path(out_dir).name + "_contexts")
+    cdir.mkdir(parents=True, exist_ok=True)
+    np.savez_compressed(cdir / f"{did}_{seed}.npz",
+                        **{k: (np.asarray(v, np.float64) if k.startswith("y") else np.asarray(v, np.float32))
+                           for k, v in ctx["cache"].items()})
     tmp = out.with_suffix(".tmp")
     with open(tmp, "w") as fh:
         for r in rows:

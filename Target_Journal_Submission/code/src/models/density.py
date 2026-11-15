@@ -60,6 +60,19 @@ class LocationScaleDensity:
         return _normalise(G / sigma[:, None], self.part)
 
 
+class TwoPieceLocationScaleDensity(LocationScaleDensity):
+    """Exploratory: f(y|x) proportional to g(z)/sigma_side(x), z = (y-mu)/sigma_minus(x) below mu and
+    (y-mu)/sigma_plus(x) above mu; g = KDE of the correspondingly standardised OOF residuals.
+    Normalised numerically on the grid for every x (so it is a proper density on D)."""
+
+    def cells(self, mu, s_minus, s_plus):
+        mid = 0.5 * (self.part.fine_edges[:-1] + self.part.fine_edges[1:])
+        D_ = mid[None, :] - mu[:, None]
+        S_ = np.where(D_ < 0, s_minus[:, None], s_plus[:, None])
+        G = np.interp(D_ / S_, self.grid, self.g, left=self.gfloor, right=self.gfloor)
+        return _normalise(G / S_, self.part)
+
+
 def at(F, y, part):
     """Value of the cell-wise density at the cell of each y (0 outside D)."""
     out = F[np.arange(len(y)), part.fine_bin(y)]

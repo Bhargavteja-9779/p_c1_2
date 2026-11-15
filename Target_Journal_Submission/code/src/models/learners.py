@@ -70,3 +70,13 @@ def predict_proba_full(est, X, n_classes, eps=1e-4):
     P[:, est.classes_] = est.predict_proba(X)
     P = (P + eps) / (1.0 + n_classes * eps)
     return P
+
+
+def fit_twopiece_scale(X, r_oof, seed=0, n_jobs=4):
+    """Two-piece (asymmetric) scale models for the exploratory LS2 density:
+    sigma_minus(x) ~ E[-r | r < 0, x] and sigma_plus(x) ~ E[r | r > 0, x], fitted on the
+    out-of-fold residuals r of the proper training set."""
+    neg, pos = r_oof < 0, r_oof > 0
+    m_minus = _fit(lgb.LGBMRegressor(n_estimators=MAX_ROUNDS, **LGB_PARAMS), X[neg], -r_oof[neg], seed + 11, n_jobs)
+    m_plus = _fit(lgb.LGBMRegressor(n_estimators=MAX_ROUNDS, **LGB_PARAMS), X[pos], r_oof[pos], seed + 13, n_jobs)
+    return m_minus, m_plus
