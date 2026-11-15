@@ -54,8 +54,10 @@ def fit_scale(X, y, seed=0, n_jobs=4, folds=3, return_oof=False):
 def fit_classifier(X, labels, n_classes, seed=0, n_jobs=4):
     est = lgb.LGBMClassifier(objective="multiclass", n_estimators=MAX_ROUNDS, **LGB_PARAMS)
     est.set_params(random_state=seed, n_jobs=n_jobs)
+    n_val = int(np.ceil(0.1 * len(labels)))
+    can_strat = np.bincount(labels).min() >= 2 and n_val >= len(np.unique(labels))
     Xtr, Xva, ytr, yva = train_test_split(X, labels, test_size=0.1, random_state=seed,
-                                          stratify=labels if np.bincount(labels).min() >= 2 else None)
+                                          stratify=labels if can_strat else None)
     est.fit(Xtr, ytr, eval_set=[(Xva, yva)],
             callbacks=[lgb.early_stopping(PATIENCE, verbose=False)])
     return est

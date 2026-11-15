@@ -30,8 +30,16 @@ def _prepare(did: int) -> tuple[pd.DataFrame, dict]:
     X = X.copy()
     cats = [n for n, c in zip(names, cat_mask) if c]
     for c in X.columns:
-        if c in cats or X[c].dtype == object or str(X[c].dtype) == "category":
+        if c in cats or str(X[c].dtype) == "category":
             X[c] = X[c].astype("category")
+        elif not pd.api.types.is_numeric_dtype(X[c]):
+            # pandas >= 3 stores strings as StringDtype (not object): parse as numbers if
+            # every non-missing value is numeric, otherwise one-hot encode.
+            num = pd.to_numeric(X[c], errors="coerce")
+            if num[X[c].notna()].notna().all():
+                X[c] = num
+            else:
+                X[c] = X[c].astype("category")
     X = pd.get_dummies(X, columns=[c for c in X.columns if str(X[c].dtype) == "category"],
                        dummy_na=True, dtype=float)
     X = X.apply(pd.to_numeric, errors="coerce").astype(float)
@@ -51,7 +59,8 @@ def load(did: int) -> tuple[np.ndarray, np.ndarray, dict]:
     pq, mj = CACHE / f"{did}.parquet", CACHE / f"{did}.json"
     if not pq.exists():
         df, meta = _prepare(did)
-        df.to_parquet(pq)
+        df.to_parquet(pq.with_suffix(".parquet.tmp"))
+        os.replace(pq.with_suffix(".parquet.tmp"), pq)
         mj.write_text(json.dumps(meta, indent=1))
     df = pd.read_parquet(pq)
     meta = json.loads(mj.read_text())
@@ -60,6 +69,6 @@ def load(did: int) -> tuple[np.ndarray, np.ndarray, dict]:
 
 
 if __name__ == "__main__":
-    for d in suite_ids():
+    for d in suite_ids():  # all 35; exclusion rule applied in config
         X, y, m = load(d)
         print(m)

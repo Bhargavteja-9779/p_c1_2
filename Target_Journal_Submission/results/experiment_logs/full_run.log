@@ -1,0 +1,162 @@
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44979_0.jsonl ok 78.4s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44963_0.jsonl ok 184.0s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44984_0.jsonl ok 25.6s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44976_0.jsonl ok 295.6s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44993_0.jsonl ok 12.5s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44989_0.jsonl ok 53.4s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44975_0.jsonl ok 395.9s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44974_0.jsonl ok 419.0s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44977_0.jsonl ok 37.2s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/45012_0.jsonl ok 26.2s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44983_0.jsonl ok 39.6s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44990_0.jsonl ok 27.3s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44992_0.jsonl ok 224.7s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44978_0.jsonl ok 18.0s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44969_0.jsonl ok 98.0s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44973_0.jsonl ok 48.7s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44956_0.jsonl ok 2.3s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44980_0.jsonl ok 21.4s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/45402_0.jsonl ok 4.4s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44957_0.jsonl ok 3.4s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44958_0.jsonl ok 7.0s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/41021_0.jsonl ok 2.3s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44987_0.jsonl ok 1.9s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44959_0.jsonl ok 2.9s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44970_0.jsonl ok 1.0s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44981_0.jsonl ok 23.6s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44994_0.jsonl ok 1.6s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44962_0.jsonl ok 0.5s
+44960_0 FAILED ValueError('The test_size = 39 should be greater or equal to the number of classes = 40')/user/p_c1_2/Target_Journal_Submission/code/experiments/run_benchmark.py", line 68, in fit_context
+    clf = Lr.fit_classifier(Xtr, hd.labels(ytr), hd.n_classes, seed, n_jobs)
+  File "/home/user/p_c1_2/Target_Journal_Submission/code/src/models/learners.py", line 57, in fit_classifier
+    Xtr, Xva, ytr, yva = train_test_split(X, labels, test_size=0.1, random_state=seed,
+                         ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                                          stratify=labels if np.bincount(labels).min() >= 2 else None)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/sklearn/utils/_param_validation.py", line 218, in wrapper
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.13/site-packages/sklearn/model_selection/_split.py", line 2968, in train_test_split
+    train, test = next(cv.split(X=arrays[0], y=stratify))
+                  ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/sklearn/model_selection/_split.py", line 1935, in split
+    for train, test in self._iter_indices(X, y, groups):
+                       ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/sklearn/model_selection/_split.py", line 2367, in _iter_indices
+    raise ValueError(
+    ...<2 lines>...
+    )
+ValueError: The test_size = 39 should be greater or equal to the number of classes = 40
+
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44964_0.jsonl ok 212.3s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44965_0.jsonl ok 18.8s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44979_1.jsonl ok 148.4s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44963_1.jsonl ok 153.7s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44984_1.jsonl ok 14.6s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44976_1.jsonl ok 312.0s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44993_1.jsonl ok 6.6s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44989_1.jsonl ok 27.0s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44975_1.jsonl ok 385.8s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44974_1.jsonl ok 401.9s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44977_1.jsonl ok 25.8s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/45012_1.jsonl ok 14.1s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44983_1.jsonl ok 22.7s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44990_1.jsonl ok 15.2s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44992_1.jsonl ok 128.1s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44978_1.jsonl ok 11.4s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44969_1.jsonl ok 55.6s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44973_1.jsonl ok 24.7s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44956_1.jsonl ok 1.6s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44980_1.jsonl ok 13.7s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/45402_1.jsonl ok 2.9s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44964_1.jsonl ok 121.7s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/41021_1.jsonl ok 1.2s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44957_1.jsonl ok 2.3s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44987_1.jsonl ok 1.0s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44958_1.jsonl ok 6.6s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44959_1.jsonl ok 1.3s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44970_1.jsonl ok 0.6s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44994_1.jsonl ok 1.1s
+44960_1 FAILED ValueError('The test_size = 39 should be greater or equal to the number of classes = 40')^^^^^^
+                                    CFG["n_coarse"])
+                                    ^^^^^^^^^^^^^^^^
+  File "/home/user/p_c1_2/Target_Journal_Submission/code/experiments/run_benchmark.py", line 68, in fit_context
+    clf = Lr.fit_classifier(Xtr, hd.labels(ytr), hd.n_classes, seed, n_jobs)
+  File "/home/user/p_c1_2/Target_Journal_Submission/code/src/models/learners.py", line 57, in fit_classifier
+    n_val = int(np.ceil(0.1 * len(labels)))
+                         ^^^^^^^^^^^^^^^^^^
+    can_strat = np.bincount(labels).min() >= 2 and n_val >= len(np.unique(labels))
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/sklearn/utils/_param_validation.py", line 218, in wrapper
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.13/site-packages/sklearn/model_selection/_split.py", line 2968, in train_test_split
+    train, test = next(cv.split(X=arrays[0], y=stratify))
+                  ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/sklearn/model_selection/_split.py", line 1935, in split
+    for train, test in self._iter_indices(X, y, groups):
+                       ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/sklearn/model_selection/_split.py", line 2367, in _iter_indices
+    raise ValueError(
+    ...<2 lines>...
+    )
+ValueError: The test_size = 39 should be greater or equal to the number of classes = 40
+
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44962_1.jsonl ok 0.2s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44965_1.jsonl ok 4.8s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44981_1.jsonl ok 13.4s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44979_2.jsonl ok 87.1s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44963_2.jsonl ok 95.8s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44976_2.jsonl ok 194.4s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44984_2.jsonl ok 13.4s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44993_2.jsonl ok 6.3s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44989_2.jsonl ok 27.9s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44975_2.jsonl ok 237.5s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44977_2.jsonl ok 23.9s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44974_2.jsonl ok 264.1s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/45012_2.jsonl ok 13.3s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44983_2.jsonl ok 20.5s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44990_2.jsonl ok 7.2s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44992_2.jsonl ok 121.2s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44973_2.jsonl ok 30.9s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44969_2.jsonl ok 51.6s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44978_2.jsonl ok 12.7s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44964_2.jsonl ok 100.0s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44956_2.jsonl ok 1.6s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/45402_2.jsonl ok 2.7s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44957_2.jsonl ok 1.4s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44958_2.jsonl ok 4.2s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44980_2.jsonl ok 14.2s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/41021_2.jsonl ok 1.0s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44987_2.jsonl ok 0.9s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44970_2.jsonl ok 0.6s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44959_2.jsonl ok 1.1s
+44960_2 FAILED ValueError('The test_size = 39 should be greater or equal to the number of classes = 40'), line 177, in run_one
+    if out.exists():
+    
+        return str(out), "skip"
+        ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/p_c1_2/Target_Journal_Submission/code/experiments/run_benchmark.py", line 68, in fit_context
+    clf = Lr.fit_classifier(Xtr, hd.labels(ytr), hd.n_classes, seed, n_jobs)
+  File "/home/user/p_c1_2/Target_Journal_Submission/code/src/models/learners.py", line 57, in fit_classifier
+    n_val = int(np.ceil(0.1 * len(labels)))
+                         ^^^^^^^^^^^^^^^^^^
+    can_strat = np.bincount(labels).min() >= 2 and n_val >= len(np.unique(labels))
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/sklearn/utils/_param_validation.py", line 218, in wrapper
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.13/site-packages/sklearn/model_selection/_split.py", line 2968, in train_test_split
+    train, test = next(cv.split(X=arrays[0], y=stratify))
+                  ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/sklearn/model_selection/_split.py", line 1935, in split
+    for train, test in self._iter_indices(X, y, groups):
+                       ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/sklearn/model_selection/_split.py", line 2367, in _iter_indices
+    raise ValueError(
+    ...<2 lines>...
+    )
+ValueError: The test_size = 39 should be greater or equal to the number of classes = 40
+
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44962_2.jsonl ok 0.3s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44994_2.jsonl ok 1.1s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44981_2.jsonl ok 13.9s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44965_2.jsonl ok 4.8s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw/44979_3.jsonl ok 80.6s

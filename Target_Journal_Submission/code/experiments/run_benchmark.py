@@ -96,12 +96,15 @@ def run_methods(ctx, alpha, part, cal_idx=None, which="all", timings=None):
     yc = ctx["yc"][sl]
     mu_c, mu_t = ctx["mu_c"][sl], ctx["mu_t"]
     sg_c, sg_t = ctx["sg_c"][sl], ctx["sg_t"]
-    qlo_c, qhi_c = ctx["q_c"][alpha][0][sl], ctx["q_c"][alpha][1][sl]
-    qlo_t, qhi_t = ctx["q_t"][alpha]
+    has_q = bool(ctx.get("q_c"))
+    has_h = "F_c_H" in ctx
+    if has_q:
+        qlo_c, qhi_c = ctx["q_c"][alpha][0][sl], ctx["q_c"][alpha][1][sl]
+        qlo_t, qhi_t = ctx["q_t"][alpha]
     st_c = part.stratum(yc)
     res_c = np.abs(yc - mu_c)
     nres_c = res_c / sg_c
-    cqr_c = np.maximum(qlo_c - yc, yc - qhi_c)
+    cqr_c = np.maximum(qlo_c - yc, yc - qhi_c) if has_q else None
     full = which == "all"
     out = {}
     tm = timings if timings is not None else {}
@@ -114,7 +117,8 @@ def run_methods(ctx, alpha, part, cal_idx=None, which="all", timings=None):
     if full:
         put("SCP", lambda: C.interval_method(res_c, mu_t, alpha, part, kind="res"))
         put("NCP", lambda: C.interval_method(nres_c, mu_t, alpha, part, kind="nres", scale_test=sg_t))
-        put("CQR", lambda: C.interval_method(cqr_c, (qlo_t, qhi_t), alpha, part, kind="cqr"))
+        if has_q:
+            put("CQR", lambda: C.interval_method(cqr_c, (qlo_t, qhi_t), alpha, part, kind="cqr"))
 
         def mcp():  # Mondrian conformal regressor on bins of the point prediction
             yb = ctx["yhat_edges"]
@@ -127,10 +131,11 @@ def run_methods(ctx, alpha, part, cal_idx=None, which="all", timings=None):
         put("MCP-yhat", mcp)
         put("S-NCP", lambda: C.interval_method(nres_c, mu_t, alpha, part, kind="nres",
                                                scale_test=sg_t, strata_cal=st_c))
-        put("S-CQR", lambda: C.interval_method(cqr_c, (qlo_t, qhi_t), alpha, part, kind="cqr",
-                                               strata_cal=st_c))
+        if has_q:
+            put("S-CQR", lambda: C.interval_method(cqr_c, (qlo_t, qhi_t), alpha, part, kind="cqr",
+                                                   strata_cal=st_c))
     put("S-Res", lambda: C.interval_method(res_c, mu_t, alpha, part, kind="res", strata_cal=st_c))
-    for tag in ("H", "LS"):
+    for tag in (("H", "LS") if has_h else ("LS",)):
         Fc, Ft = ctx[f"F_c_{tag}"][sl], ctx[f"F_t_{tag}"]
         f_c = D.at(Fc, yc, part)
         put(f"DLS-M-{tag}", lambda: C.mask_method(-f_c, Ft, alpha, part))
