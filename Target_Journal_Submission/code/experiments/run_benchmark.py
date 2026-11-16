@@ -202,7 +202,7 @@ def run_one(did, seed, out_dir, mode):
     if out.exists():
         return str(out), "skip"
     X, y, meta = load(did)
-    alphas = CFG["alphas"] if mode == "full" else [0.1]
+    alphas = CFG["alphas"] if mode in ("full", "fitonly") else [0.1]
     t_start = time.perf_counter()
     ctx, part, timing = fit_context(X, y, seed, alphas, CFG["n_fine"], CFG["n_jobs_per_task"],
                                     CFG["n_coarse"])
@@ -218,6 +218,9 @@ def run_one(did, seed, out_dir, mode):
     W = shift_weights(part, yt)
     rng = np.random.default_rng(10_000 + seed)
     rows = []
+    if mode == "fitonly":   # cache model outputs only; evaluation done by evaluate_from_cache.py
+        alphas = []
+        rows.append({**base, "method": "__fit_only__"})
     for a in alphas:
         tm = {}
         sets = run_methods(ctx, a, part, which="all", timings=tm)
@@ -266,15 +269,15 @@ def _star(a):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--mode", default="full", choices=["quick", "full"])
+    ap.add_argument("--mode", default="full", choices=["quick", "full", "fitonly"])
     ap.add_argument("--datasets", nargs="*", type=int)
     ap.add_argument("--seeds", nargs="*", type=int)
     ap.add_argument("--workers", type=int, default=CFG["workers"])
     ap.add_argument("--out", default=str(ROOT.parent / "results" / "raw"))
     a = ap.parse_args()
     dids = a.datasets or (CFG["quick_datasets"] if a.mode == "quick" else CFG["datasets"])
-    seeds = a.seeds if a.seeds else (CFG["seeds"] if a.mode == "full" else [0])
-    out = Path(a.out if a.mode == "full" else a.out + "_quick")
+    seeds = a.seeds if a.seeds else (CFG["seeds"] if a.mode in ("full", "fitonly") else [0])
+    out = Path(a.out if a.mode in ("full", "fitonly") else a.out + "_quick")
     out.mkdir(parents=True, exist_ok=True)
     # largest datasets first for better load balancing
     sizes = {d: load(d)[2]["n"] for d in dids}

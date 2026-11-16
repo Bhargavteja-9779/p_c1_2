@@ -14,15 +14,19 @@ H3 (theory-driven) density-level score yields smaller stratified sets than resid
 H4 stratified methods remain valid under target (label) shift; marginal ones degrade.
 H5 floor variant interpolates (marginal ≥1-α and stratum ≥1-2α) at intermediate size.
 
-## Status
-- [x] Journal selection
-- [x] Topic selection + prior-art checks (ongoing deeper literature agent)
-- [x] Implementation (code/src, experiments/run_benchmark.py)
-- [~] Full benchmark running (results/raw/, log results/experiment_logs/full_run.log)
-- [x] Prop.1 verification (results/prop1_gaussian.json)
-- [~] Synthetic oracle study (results/synthetic.jsonl)
-- [ ] Analysis/statistics/figures/tables
-- [ ] Manuscript, reviews, DOCX, cover letter
+## Status (checkpoint 2026-11-16 07:10 UTC)
+- [x] Journal selection (ESWA; ≤100-day acceptance not verifiable — disclosed)
+- [x] Literature matrix (65 verified refs) + ESWA benchmark (32 papers) — supplementary/
+- [x] PRIOR ART: BCCP (Randahl et al. 2026) and BFQR (Wang et al. 2023) already calibrate within Y-bins → novelty repositioned
+- [x] v1 pre-registered benchmark complete (310/310), archived: results/raw_v1_preregistered; analysis: supplementary/v1_preregistered_analysis
+- [x] v1 finding: H1 supported; H3 not supported (grid artifact diagnosed) → exact grid-free LS implementation (src/methods/ls_exact.py)
+- [~] v2 fit-only run caching model outputs: results/raw_contexts (124/310 at checkpoint; restarted: results/experiment_logs/fitonly_v2_part2.log)
+- [ ] evaluate_from_cache.py over all 310 contexts → results/raw_eval
+- [ ] MLP learner study (experiments/run_learner_generality.py) and synthetic oracle study (experiments/synthetic.py)
+- [ ] analyze.py (default RAW = results/raw_eval), analyze_extra.py, figures_extra.py, render_manuscript.py
+- [x] Drafts: 01_intro, 015_related (agent), 02_theory, 03_setup, drafts/positioning.md (agent)
+- [ ] Failed agents to re-run (usage limit): declarations, proof-check A/B, citation audit
+- [ ] Results/discussion/conclusion/abstract; 10-agent review cycles; DOCX; cover letter; final audits
 
 ## Next step
-After the full run: rerun failed tasks (bug fix in fit_classifier for tiny datasets), then scripts/analyze.py.
+Resume workflow wf_fb169d56-2b7 (failed agents) while fits run; then evaluation stage.

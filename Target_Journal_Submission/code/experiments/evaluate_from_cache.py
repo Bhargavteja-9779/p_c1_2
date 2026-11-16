@@ -81,6 +81,12 @@ def eval_one(did, seed):
                 n_test=len(yt), K=part.K, y_train_sd=float(part.y_train.std()),
                 test_rmse=float(np.sqrt(np.mean((yt - ctx["mu_t"]) ** 2))),
                 frac_test_out_domain=float((~part.in_domain(yt)).mean()))
+    # calibration counts per stratum and how often a stratum threshold is +inf (n_k < 1/alpha - 1)
+    nk = np.bincount(part.stratum(ctx["yc"]), minlength=part.K)
+    base["ncal_min_stratum"] = int(nk.min())
+    for a in alphas:
+        base[f"n_strata_inf_a{a}"] = int(sum(int(np.ceil((n + 1) * (1 - a))) > n for n in nk))
+    base["train_stratum_mass"] = (np.bincount(part.stratum(part.y_train), minlength=part.K) / len(part.y_train)).round(4).tolist()
     for tag in ("LS", "LS2"):
         smt, spt = scales[tag][2], scales[tag][3]
         z, s = LX._z(yt, ctx["mu_t"], smt, spt)

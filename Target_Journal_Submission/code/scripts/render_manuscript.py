@@ -57,7 +57,8 @@ def context():
     c["ds_n_min"], c["ds_n_max"] = f"{T1.n.min():,}", f"{T1.n.max():,}"
     c["ds_p_min"], c["ds_p_max"] = str(T1.p.min()), str(T1.p.max())
     c["n_skewed"] = str(int((T1.skew_y.abs() > 1).sum()))
-    c["n_methods_main"] = "14"
+    from scripts.analyze import MAIN
+    c["n_methods_main"] = str(len(MAIN))
     c["out_dom_max"] = pct(M["frac_test_out_domain_max"], 2)
     c["n_ls_better"] = str(M["datasets_LS_better_nll"])
     main = M["main"]
