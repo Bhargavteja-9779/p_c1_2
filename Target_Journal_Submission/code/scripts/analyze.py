@@ -165,6 +165,17 @@ def main():
     table(dsum[["did", "dataset", "n", "p", "skew_y", "n_cal", "K", "rmse_over_sd", "nll_LS", "nll_H",
                 "out_dom", "dev"]].sort_values("n"), "T1_datasets")
     METRICS["frac_test_out_domain_max"] = float(dsum.out_dom.max())
+    METRICS["frac_test_out_domain_mean"] = float(dsum.out_dom.mean())
+    METRICS["max_n_test"] = int(first.n_test.max())
+    METRICS["forest_zero_frac"] = float((dload(44962)[1] == 0).mean()) if 44962 in set(dsum.did) else float("nan")
+    inf = {}
+    for a in CFG["alphas"]:
+        col = f"n_strata_inf_a{a}"
+        if col in first:
+            inf[str(a)] = {"runs_with_inf": int((first[col] > 0).sum()), "runs": int(len(first)),
+                           "datasets_with_inf": int(first[first[col] > 0].did.nunique()),
+                           "strata_inf_total": int(first[col].sum())}
+    METRICS["inf_threshold"] = inf
     METRICS["datasets_LS_better_nll"] = int((dsum.nll_LS_minus_H < 0).sum())
 
     # ---------------------------------------------------------------- main table
@@ -333,10 +344,8 @@ def main():
         d = df[(df.alpha == a) & (df.scheme == "S5") & (df.cal_frac == 1.0)]
         pd_ = per_dataset(d, ["coverage", "nsize", "tail_hi", "tail_lo"]).merge(stratum_profile(d).assign(
             worst_stratum=lambda z: z.worst_stratum), on=["did", "dataset", "method"])
-        # worst-stratum deficit relative to the right level
-        cc = [c for c in d.columns if c.startswith("cal_cov_")]
-        g = d.groupby(["did", "method"])[cc].mean()
-        ws = g.min(axis=1).reset_index().rename(columns={0: "ws"})
+        # worst-stratum coverage with the same seed-averaging and modal-K rule as the main table
+        ws = stratum_profile(d)[["did", "method", "worst_stratum"]].rename(columns={"worst_stratum": "ws"})
         for m in MARGINAL + STRAT + ["SDLC-LS-floor"]:
             x = pd_[pd_.method == m]
             if x.empty:
@@ -487,7 +496,7 @@ def main():
                   "DCP-LS": ["point", "scale", "density_LS"], "HPD-split-LS": ["point", "scale", "density_LS"],
                   "DLS-M-LS": ["point", "scale", "density_LS"], "S-Res": ["point"], "S-Res-hull": ["point"],
                   "S-NCP": ["point", "scale"], "S-CQR": ["quantile"], "S-HPD-LS": ["point", "scale", "density_LS"],
-                  "SDLC-LS": ["point", "scale", "density_LS"], "SDLC-LS-floor": ["point", "scale", "density_LS"],
+                  "SDLC-LS": ["point", "scale", "density_LS"],
                   "SDLC-LS2": ["point", "scale", "density_LS2"], "SDLC-H": ["density_H"]}
     for m, parts in model_cost.items():
         fitt = sum(ft[f"t_fit_{p}"] for p in parts)

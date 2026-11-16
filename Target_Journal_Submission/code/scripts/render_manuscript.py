@@ -100,6 +100,11 @@ def context():
     conf = S["confirmatory_excl_dev"]
     c["conf.max_p"] = pfmt(max(t["p_holm"] for t in conf))
     c["conf.n"] = str(conf[0]["n"])
+    V1 = json.loads((RES / "statistics_v1_preregistered.json").read_text())
+    for t in V1["tests"]:
+        key = f"v1.{t['hypothesis']}.{t['metric']}.{t['comparison'].replace('SDLC vs ', '')}"
+        c[key + ".p"] = pfmt(t["p_holm"])
+        c[key + ".wins"] = f"{t['wins']}/{t['n']}"
     for p in S["price"]:
         key = f"price.{p['stratified']}"
         c[key + ".gm"] = f(p["geo_mean_size_ratio"], 2)
@@ -121,6 +126,8 @@ def context():
     for sc, dd in ls.items():
         for m, v in dd.items():
             c[f"shift.{sc}.{m}.p"] = pfmt(v["p_holm"])
+    for sc, dd in ls.items():
+        c[f"shift.{sc.replace('shift_', '').replace('_cov', '')}.max_p"] = pfmt(max(v["p_holm"] for v in dd.values()))
     T8 = pd.read_csv(TAB / "T8_label_shift.csv").set_index("method")
     for m in T8.index:
         for col in ("up1", "up2", "tails1", "down1"):
@@ -199,42 +206,109 @@ def md_table(name, cols, rename=None, fmt=None, query=None, sort=None):
             df[col] = df[col].map(lambda v: "" if pd.isna(v) else f"{v:.3f}")
     if rename:
         df = df.rename(columns=rename)
-    return df.to_markdown(index=False)
+    return df.to_markdown(index=False, disable_numparse=True)
+
+
+def _balanced_tokens(text, head):
+    """Yield (start, end, inner) for tokens '{{<head>...}}' with balanced braces inside."""
+    i = 0
+    while True:
+        st = text.find("{{" + head, i)
+        if st < 0:
+            return
+        depth, j = 0, st
+        while j < len(text):
+            if text.startswith("{{", j):
+                depth += 1
+                j += 2
+                continue
+            if text.startswith("}}", j):
+                depth -= 1
+                j += 2
+                if depth == 0:
+                    break
+                continue
+            if text[j] == "{":
+                depth += 0.5
+            elif text[j] == "}":
+                depth -= 0.5
+            j += 1
+        yield st, j, text[st + 2 + len(head):j - 2]
+        i = j
 
 
 def render():
     ctx = context()
     text = "\n\n".join((SRC / s).read_text() for s in ORDER if (SRC / s).exists())
 
-    # tables: {{TABLE:id|caption}} blocks are defined in tables_spec.py
+    # 1) value placeholders (innermost first): ctx keys, {{T:...}}, {{J:...}}
+    def fmtv(v, fm):
+        if fm == "pct":
+            return f"{100 * float(v):.1f}%"
+        if fm == "pp":
+            return f"{100 * float(v):.1f}"
+        if fm in ("f1", "f2", "f3", "f4"):
+            return f"{float(v):.{int(fm[1])}f}"
+        if fm == "int":
+            return f"{int(round(float(v))):,}"
+        if fm == "p":
+            return "< 0.001" if float(v) < 0.001 else f"{float(v):.3f}"
+        return str(v)
+
+    def value(key):
+        if key.startswith("T:"):
+            tab, cond, col, fm = key[2:].split("|")
+            df = pd.read_csv(TAB / f"{tab}.csv")
+            for c_ in cond.split("&"):
+                k_, v_ = c_.split("=", 1)
+                df = df[df[k_].astype(str) == v_]
+            if len(df) != 1:
+                raise SystemExit(f"Lookup {key} matched {len(df)} rows")
+            return fmtv(df.iloc[0][col], fm)
+        if key.startswith("J:"):
+            fn, path, fm = key[2:].split("|")
+            v = json.loads((RES / fn).read_text())
+            for part_ in path.split("/"):
+                v = v[int(part_)] if isinstance(v, list) else v[part_]
+            return fmtv(v, fm)
+        if key not in ctx:
+            raise SystemExit(f"Unresolved placeholder: {key}")
+        return ctx[key]
+    pat = re.compile(r"\{\{(?!TABLE:|FIG:)([^{}]+)\}\}")
+    while pat.search(text):
+        text = pat.sub(lambda mo: value(mo.group(1)), text)
+
+    # 2) tables and figures (captions may contain LaTeX braces)
     from scripts.tables_spec import SPEC
     tab_no, fig_no = {}, {}
-
-    def tab_sub(mo):
-        tid, cap = mo.group(1), mo.group(2)
+    out, last = [], 0
+    for st, en, inner in list(_balanced_tokens(text, "TABLE:")):
+        tid, cap = inner.split("|", 1)
         tab_no[tid] = len(tab_no) + 1
-        body = md_table(**SPEC[tid])
-        return f"**Table {tab_no[tid]}.** {cap}\n\n{body}\n"
-    text = re.sub(r"\{\{TABLE:([\w-]+)\|([^}]*)\}\}", tab_sub, text)
-
-    def fig_sub(mo):
-        fid, path, cap = mo.group(1), mo.group(2), mo.group(3)
+        out.append(text[last:st])
+        out.append(f"**Table {tab_no[tid]}.** {cap}\n\n{md_table(**SPEC[tid])}\n")
+        last = en
+    out.append(text[last:])
+    text = "".join(out)
+    out, last = [], 0
+    for st, en, inner in list(_balanced_tokens(text, "FIG:")):
+        fid, path, cap = inner.split("|", 2)
         fig_no[fid] = len(fig_no) + 1
-        return f"![**Fig. {fig_no[fid]}.** {cap}]({(FIG / path).as_posix()}){{width=100%}}\n"
-    text = re.sub(r"\{\{FIG:([\w-]+)\|([^|]+)\|([^}]*)\}\}", fig_sub, text)
+        out.append(text[last:st])
+        out.append(f"![**Fig. {fig_no[fid]}.** {cap}]({(FIG / path).as_posix()}){{width=100%}}\n")
+        last = en
+    out.append(text[last:])
+    text = "".join(out)
 
-    # section numbering
-    sec_no, counters, out = {}, [0, 0, 0], []
+    # 3) section numbering and cross-references
+    sec_no, counters, lines = {}, [0, 0, 0], []
     for line in text.split("\n"):
         m = re.match(r"^(#{1,3}) (.*?)(\s*\{#sec:([\w-]+)\})?\s*$", line)
         if m and not line.startswith("#### "):
             lvl = len(m.group(1))
             title = m.group(2)
-            unnumbered = title.strip() in ("References", "Highlights", "Abstract") or "{-}" in line \
-                or title.startswith("Appendix") or title.startswith("Declaration") or title.startswith("CRediT") \
-                or title.startswith("Data and code") or title.startswith("Acknowledg") or title.startswith("Funding")
-            if unnumbered:
-                out.append(f"{m.group(1)} {title.replace('{-}', '').strip()}")
+            if "{-}" in line or title.strip() in ("References", "Highlights", "Abstract"):
+                lines.append(f"{m.group(1)} {title.replace('{-}', '').strip()}")
                 continue
             counters[lvl - 1] += 1
             for j in range(lvl, 3):
@@ -242,24 +316,46 @@ def render():
             num = ".".join(str(x) for x in counters[:lvl])
             if m.group(4):
                 sec_no[m.group(4)] = num
-            out.append(f"{m.group(1)} {num}. {title}" if lvl == 1 else f"{m.group(1)} {num} {title}")
+            lines.append(f"{m.group(1)} {num}. {title}" if lvl == 1 else f"{m.group(1)} {num} {title}")
         else:
-            out.append(line)
-    text = "\n".join(out)
-    text = re.sub(r"\[-@sec:([\w-]+)\]", lambda mo: sec_no[mo.group(1)], text)
-    text = re.sub(r"\[-@tbl:([\w-]+)\]", lambda mo: str(tab_no[mo.group(1)]), text)
-    text = re.sub(r"\[-@fig:([\w-]+)\]", lambda mo: str(fig_no[mo.group(1)]), text)
-    # equation tags -> visible numbers
-    text = re.sub(r"\\tag\{(\w+)\}", r"\\qquad\\text{(\1)}", text)
-
-    missing = sorted(set(re.findall(r"\{\{([^}]+)\}\}", text)) - set(ctx))
-    if missing:
-        raise SystemExit("Unresolved placeholders: " + ", ".join(missing))
-    text = re.sub(r"\{\{([^}]+)\}\}", lambda mo: ctx[mo.group(1)], text)
+            lines.append(line)
+    text = "\n".join(lines)
+    for kind, table in (("sec", sec_no), ("tbl", tab_no), ("fig", fig_no)):
+        missing = sorted(set(re.findall(r"\[-@" + kind + r":([\w-]+)\]", text)) - set(table))
+        if missing:
+            raise SystemExit(f"Undefined {kind} labels: {missing}")
+        text = re.sub(r"\[-@" + kind + r":([\w-]+)\]", lambda mo: str(table[mo.group(1)]), text)
+    text = re.sub(r"\\tag\{(\w+)\}", r"\\qquad (\1)", text)
+    # notation that renders identically in Word (OMML) and LibreOffice
+    text = text.replace("\\mid", "\\,|\\,")
+    for op in ("Var", "Cov", "sd", "TV"):
+        text = text.replace("\\mathrm{" + op + "}", "\\operatorname{" + op + "}")
+    if "{{" in text:
+        raise SystemExit("Unresolved token: " + text[text.index("{{"):text.index("{{") + 80])
     BUILD.mkdir(parents=True, exist_ok=True)
     (BUILD / "manuscript_filled.md").write_text(text)
     json.dump(ctx, open(BUILD / "placeholder_values.json", "w"), indent=1)
     return text
+
+
+def render_aux(src_name, out_name, max_chars=None):
+    """Fill placeholders of an auxiliary source (highlights, cover letter) and build its DOCX."""
+    global ORDER
+    saved = ORDER
+    ORDER = [src_name]
+    try:
+        text = render()
+    finally:
+        ORDER = saved
+    if max_chars:
+        for line in text.splitlines():
+            if line.startswith("- ") and len(line[2:]) > max_chars:
+                raise SystemExit(f"Highlight too long ({len(line[2:])} > {max_chars}): {line[2:]}")
+    md = BUILD / (Path(src_name).stem + "_filled.md")
+    md.write_text(text)
+    ref = BUILD / "reference.docx"
+    subprocess.run(["pandoc", str(md), "-o", str(MS / out_name), f"--reference-doc={ref}"], check=True)
+    print("written", MS / out_name)
 
 
 def build_docx():
@@ -280,5 +376,8 @@ def build_docx():
 
 
 if __name__ == "__main__":
+    render_aux("highlights.md", "highlights.docx", max_chars=85)
+    if (SRC / "cover_letter.md").exists():
+        render_aux("cover_letter.md", "cover_letter.docx")
     render()
     build_docx()

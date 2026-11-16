@@ -1,0 +1,78 @@
+{
+ "mlp_tests_worst_stratum": {
+  "SCP": {
+   "median_diff": 0.22385262646081294,
+   "p_holm": 2.7939677238464355e-09,
+   "rbc": 1.0,
+   "n": 31
+  },
+  "NCP": {
+   "median_diff": 0.04421090994698518,
+   "p_holm": 4.2887404561042786e-07,
+   "rbc": 0.9193548387096774,
+   "n": 31
+  },
+  "Mondrian-\u0177": {
+   "median_diff": 0.084031861758602,
+   "p_holm": 2.60770320892334e-08,
+   "rbc": 0.9758064516129032,
+   "n": 31
+  },
+  "DCP": {
+   "median_diff": 0.03932534895949402,
+   "p_holm": 4.2887404561042786e-07,
+   "rbc": 0.9233870967741935,
+   "n": 31
+  },
+  "HPD-split": {
+   "median_diff": 0.03623015338125035,
+   "p_holm": 4.2887404561042786e-07,
+   "rbc": 0.9112903225806451,
+   "n": 31
+  },
+  "DLS": {
+   "median_diff": 0.13971748498580705,
+   "p_holm": 1.6298145055770874e-08,
+   "rbc": 0.9838709677419355,
+   "n": 31
+  }
+ },
+ "mlp_n_datasets": 31,
+ "mlp_n_seeds": 5,
+ "mlp_size_tests": {
+  "BCCP": {
+   "geo": 0.9539476137906261,
+   "n_smaller": 23,
+   "n": 31,
+   "p_holm": 0.024645620957016945
+  },
+  "S-NCP": {
+   "geo": 0.9226723185082868,
+   "n_smaller": 29,
+   "n": 31,
+   "p_holm": 3.4786760807037354e-05
+  },
+  "S-HPD": {
+   "geo": 0.9106963877780424,
+   "n_smaller": 30,
+   "n": 31,
+   "p_holm": 3.5231932997703552e-06
+  }
+ },
+ "mlp_price_SDLC_vs_DLS_geo": 1.1476196812354151,
+ "mlp_price_SNCP_vs_NCP_geo": 1.106855470260698,
+ "synthetic_oracle_sdlc_smallest_in_all_seeds": true,
+ "synthetic_osdlc_smallest_seeds": 10,
+ "synthetic_est_sdlc_lt_bccp_seeds": 10,
+ "synthetic_est_sdlc_lt_sncp_seeds": 9,
+ "synthetic_est_sdlc_lt_scqr_seeds": 10,
+ "synthetic_oracle_sizes": {
+  "O-DLS-M": 1.58442592748447,
+  "O-HDR-X (exact X-conditional)": 1.63153972451421,
+  "O-S-HPD": 1.819985793380076,
+  "O-S-NCP": 1.839138074081744,
+  "O-S-Res": 2.132020036578326,
+  "O-SDLC": 1.7616115082038515
+ },
+ "synthetic_n_seeds": 10
+}

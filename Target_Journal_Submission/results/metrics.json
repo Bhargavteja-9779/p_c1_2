@@ -3,6 +3,29 @@
  "n_seeds_min": 10,
  "n_runs": 310,
  "frac_test_out_domain_max": 0.0038461538461537007,
+ "frac_test_out_domain_mean": 0.00025348011088837064,
+ "max_n_test": 18000,
+ "forest_zero_frac": 0.47775628626692457,
+ "inf_threshold": {
+  "0.1": {
+   "runs_with_inf": 2,
+   "runs": 310,
+   "datasets_with_inf": 2,
+   "strata_inf_total": 2
+  },
+  "0.05": {
+   "runs_with_inf": 32,
+   "runs": 310,
+   "datasets_with_inf": 7,
+   "strata_inf_total": 42
+  },
+  "0.2": {
+   "runs_with_inf": 0,
+   "runs": 310,
+   "datasets_with_inf": 0,
+   "strata_inf_total": 0
+  }
+ },
  "datasets_LS_better_nll": 26,
  "main": {
   "SCP": {

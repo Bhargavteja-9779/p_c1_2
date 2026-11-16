@@ -14,19 +14,22 @@ H3 (theory-driven) density-level score yields smaller stratified sets than resid
 H4 stratified methods remain valid under target (label) shift; marginal ones degrade.
 H5 floor variant interpolates (marginal ≥1-α and stratum ≥1-2α) at intermediate size.
 
-## Status (checkpoint 2026-11-16 07:10 UTC)
+## Status (checkpoint 2026-11-16 18:40 UTC)
 - [x] Journal selection (ESWA; ≤100-day acceptance not verifiable — disclosed)
-- [x] Literature matrix (65 verified refs) + ESWA benchmark (32 papers) — supplementary/
-- [x] PRIOR ART: BCCP (Randahl et al. 2026) and BFQR (Wang et al. 2023) already calibrate within Y-bins → novelty repositioned
-- [x] v1 pre-registered benchmark complete (310/310), archived: results/raw_v1_preregistered; analysis: supplementary/v1_preregistered_analysis
-- [x] v1 finding: H1 supported; H3 not supported (grid artifact diagnosed) → exact grid-free LS implementation (src/methods/ls_exact.py)
-- [~] v2 fit-only run caching model outputs: results/raw_contexts (124/310 at checkpoint; restarted: results/experiment_logs/fitonly_v2_part2.log)
-- [ ] evaluate_from_cache.py over all 310 contexts → results/raw_eval
-- [ ] MLP learner study (experiments/run_learner_generality.py) and synthetic oracle study (experiments/synthetic.py)
-- [ ] analyze.py (default RAW = results/raw_eval), analyze_extra.py, figures_extra.py, render_manuscript.py
-- [x] Drafts: 01_intro, 015_related (agent), 02_theory, 03_setup, drafts/positioning.md (agent)
-- [ ] Failed agents to re-run (usage limit): declarations, proof-check A/B, citation audit
-- [ ] Results/discussion/conclusion/abstract; 10-agent review cycles; DOCX; cover letter; final audits
+- [x] Literature matrix (65+ verified refs) + ESWA benchmark (32 papers); BCCP/BFQR prior art → novelty repositioned
+- [x] v1 pre-registered benchmark (archived results/raw_v1_preregistered; analysis supplementary/v1_preregistered_analysis)
+- [x] v2 fits cached (results/raw_contexts, 310/310); exact LS evaluation (results/raw_eval, 310/310)
+- [x] MLP learner study (results/raw_mlp, 155/155); synthetic oracle study; timing experiment (results/timing_methods.csv)
+- [x] analyze.py / analyze_extra.py / figures_extra.py → results/*.json, tables/, figures/
+- [x] Manuscript sources manuscript/src/*.md; rendered DOCX manuscript/Final_Manuscript.docx (+ highlights.docx)
+- [ ] 10-agent review cycles (code/scripts/review_cycle_workflow.js) — next
+- [ ] Cover letter, final PDF (pandoc→MathML HTML→Chromium), final audits, rejection-risk report, manifest
+
+## Key results (all machine-generated)
+H1 supported (SDLC > every marginal method on worst-stratum coverage, Holm p<0.001, ≥30/31 datasets).
+Null reference: stratified methods consistent with exact validity (0–3/31 datasets below null 5%).
+H3 (exact implementation): SDLC smaller than BCCP (geo 0.932, 22/31, p=0.018), S-CQR (0.833), S-HPD (0.949);
+vs S-NCP typical but not uniform (24/31 smaller, geo 1.004). MLP study: SDLC smaller than BCCP, S-NCP, S-HPD.
 
 ## Next step
-Resume workflow wf_fb169d56-2b7 (failed agents) while fits run; then evaluation stage.
+Run review cycle 1 workflow; fix; iterate.

@@ -17,7 +17,7 @@ FONT = "Times New Roman"
 
 def make_reference(path: Path):
     with open(path, "wb") as fh:
-        subprocess.run(["pandoc", "-o", "-", "--print-default-data-file", "reference.docx"], stdout=fh, check=True)
+        subprocess.run(["pandoc", "--print-default-data-file", "reference.docx"], stdout=fh, check=True)
     d = Document(path)
     for st in d.styles:
         try:
