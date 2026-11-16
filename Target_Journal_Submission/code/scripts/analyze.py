@@ -86,14 +86,53 @@ def per_dataset(d, cols):
     return d.groupby(["did", "dataset", "method"])[cols].mean().reset_index()
 
 
+def modal_k(d):
+    """Keep, per dataset, only splits whose realised number of strata equals the modal one (tied
+    targets can merge cut points differently across splits; only health_insurance is affected)."""
+    mk = d.groupby("did").K.agg(lambda k: k.value_counts().idxmax())
+    return d[d.K == d.did.map(mk)]
+
+
 def stratum_profile(d):
     """Seed-averaged coverage of every stratum, then min over strata (avoids the downward
     bias of taking the minimum of noisy single-seed estimates)."""
+    d = modal_k(d)
     cc = [c for c in d.columns if c.startswith("cal_cov_")]
     g = d.groupby(["did", "dataset", "method"])[cc].mean()
     out = pd.DataFrame({"worst_stratum": g.min(axis=1, skipna=True),
                         "mean_deficit": (0.9 - g).clip(lower=0).mean(axis=1, skipna=True)})
     return out.reset_index()
+
+
+def null_worst_stratum(d, alpha=0.1, B=4000, seed=0):
+    """Null reference for worst-stratum coverage under EXACT split-conformal validity.
+    For each dataset: per seed and stratum, conditional coverage C ~ Beta(r, n+1-r) with
+    r = ceil((n+1)(1-alpha)) (C = 1 if r > n), test coverage ~ Binomial(m, C)/m with the realised
+    calibration size n and test size m of the stratum; average over seeds; minimum over strata.
+    Returns {did: (mean, 5% quantile)}."""
+    rng = np.random.default_rng(seed)
+    out = {}
+    one = d.drop_duplicates(["did", "seed"])
+    for did, g in one.groupby("did"):
+        sims = np.zeros((B, len(g)))
+        covs = []
+        for j, (_, r) in enumerate(g.iterrows()):
+            nk = r["ncal_strata"]
+            K = len(nk)
+            cs = np.zeros((B, K))
+            for k in range(K):
+                n, m = int(nk[k]), int(r.get(f"cal_n_{k}", 0) or 0)
+                if m == 0:
+                    cs[:, k] = np.nan
+                    continue
+                rk = int(np.ceil((n + 1) * (1 - alpha)))
+                C = np.ones(B) if rk > n else rng.beta(rk, n + 1 - rk, B)
+                cs[:, k] = rng.binomial(m, C) / m
+            covs.append(cs)
+        avg = np.nanmean(np.stack(covs, 0), axis=0)      # B x K, averaged over seeds
+        w = np.nanmin(avg, axis=1)
+        out[did] = (float(w.mean()), float(np.quantile(w, 0.05)))
+    return out
 
 
 def main():
@@ -130,8 +169,13 @@ def main():
 
     # ---------------------------------------------------------------- main table
     cols = ["coverage", "nsize", "tail_lo", "tail_hi", "components", "wsc", "empty_rate",
-            "dec_worst", "ext_cov_0", "ext_cov_2", "t_calib_predict"]
+            "dec_worst", "ext_cov_0", "ext_cov_2"] + (["t_calib_predict"] if "t_calib_predict" in a10 else [])
     pdm = per_dataset(a10, cols).merge(stratum_profile(a10), on=["did", "dataset", "method"])
+    if "ncal_strata" in a10.columns:
+        nul = null_worst_stratum(modal_k(a10[a10.method == PROPOSED]))
+        pdm["null_worst_mean"] = pdm.did.map(lambda d: nul[d][0])
+        pdm["null_worst_q05"] = pdm.did.map(lambda d: nul[d][1])
+        pdm["below_null"] = pdm.worst_stratum < pdm.null_worst_q05
     pdm.to_csv(RES / "per_dataset_main.csv", index=False)
     rows = []
     for m in MAIN + VARIANTS:
@@ -144,7 +188,9 @@ def main():
                      "n_ds_worst_lt_0.85": int((x.worst_stratum < 0.85).sum()),
                      "top5pct_cov": x.ext_cov_2.mean(), "bottom5pct_cov": x.ext_cov_0.mean(),
                      "nsize_mean": x.nsize.mean(), "nsize_median": x.nsize.median(),
-                     "components": x.components.mean(), "wsc": x.wsc.mean()})
+                     "components": x.components.mean(), "wsc": x.wsc.mean(),
+                     "null_worst_mean": x.null_worst_mean.mean() if "null_worst_mean" in x else np.nan,
+                     "n_ds_below_null": int(x.below_null.sum()) if "below_null" in x else -1})
     T2 = pd.DataFrame(rows)
     table(T2, "T2_main_results")
     METRICS["main"] = T2.set_index("code").to_dict(orient="index")
@@ -266,17 +312,19 @@ def main():
     save(fig, "F4_upper_tail_per_dataset")
 
     # ---------------------------------------------------------------- trade-off figure
-    fig, ax = plt.subplots(figsize=(4.6, 3.2))
+    from adjustText import adjust_text
+    fig, ax = plt.subplots(figsize=(4.8, 3.4))
+    texts = []
     for m in MAIN:
         x = pdm[pdm.method == m]
         c = BLUE if m == PROPOSED else (AQUA if m in STRAT else (ORANGE if "floor" in m or "hull" in m else GRAY))
-        ax.scatter(x.worst_stratum.mean(), np.exp(np.log(x.nsize).mean()), color=c, s=28, zorder=3,
-                   edgecolor="white", linewidth=0.8)
-        ax.annotate(NAME[m], (x.worst_stratum.mean(), np.exp(np.log(x.nsize).mean())), fontsize=6,
-                    xytext=(3, 2), textcoords="offset points", color="#52514e")
+        xv, yv = x.worst_stratum.mean(), np.exp(np.log(x.nsize).mean())
+        ax.scatter(xv, yv, color=c, s=30, zorder=3, edgecolor="white", linewidth=0.8)
+        texts.append(ax.text(xv, yv, NAME[m], fontsize=6.5, color="#0b0b0b" if m == PROPOSED else "#52514e"))
     ax.axvline(0.9, color="#0b0b0b", lw=0.8)
     ax.set_xlabel("Worst-stratum coverage (mean over datasets)")
     ax.set_ylabel("Set size / sd(y)  (geometric mean)")
+    adjust_text(texts, ax=ax, arrowprops=dict(arrowstyle="-", color="#c3c2b7", lw=0.5), expand=(1.2, 1.4))
     save(fig, "F2_coverage_size_tradeoff")
 
     # ---------------------------------------------------------------- alpha sensitivity
@@ -403,38 +451,51 @@ def main():
         T13 = pd.DataFrame(rows)
         table(T13.drop(columns="code"), "T13_tail_alerts")
         METRICS["alerts"] = T13.set_index("code").to_dict(orient="index")
-        fig, ax = plt.subplots(figsize=(4.6, 3.2))
-        for _, r_ in T13.iterrows():
-            c = BLUE if r_.code == PROPOSED else (AQUA if r_.code in STRAT else GRAY)
-            ax.scatter(r_.alert_hi_recall, r_.alert_hi_precision, color=c, s=26, edgecolor="white", lw=0.8, zorder=3)
-            ax.annotate(r_.method, (r_.alert_hi_recall, r_.alert_hi_precision), fontsize=6, xytext=(3, 2),
-                        textcoords="offset points", color="#52514e")
+        fig, ax = plt.subplots(figsize=(4.8, 3.4))
+        texts = []
+        keym = ["SCP", "NCP", "CQR", "HPD-split-LS", "S-Res", "S-Res-hull", "S-NCP", "S-CQR", "SDLC-LS",
+                "SDLC-LS-floor", "SDLC-LS-hull"]
+        sub = T13[T13.code.isin(keym)].copy()
+        sub["key"] = list(zip(sub.alert_hi_recall.round(4), sub.alert_hi_precision.round(4)))
+        for key, grp in sub.groupby("key", sort=False):   # coincident points share one label
+            codes = list(grp.code)
+            c = BLUE if PROPOSED in codes else (AQUA if any(cc in STRAT for cc in codes) else
+                                                (ORANGE if any("floor" in cc or "hull" in cc for cc in codes) else GRAY))
+            ax.scatter(key[0], key[1], color=c, s=30, edgecolor="white", lw=0.8, zorder=4 if PROPOSED in codes else 3)
+            texts.append(ax.text(key[0], key[1], " = ".join(grp.method), fontsize=6.5,
+                                 color="#0b0b0b" if PROPOSED in codes else "#52514e"))
         ax.axvline(0.9, color="#0b0b0b", lw=0.8)
-        ax.set_xlabel("Upper-tail alert recall  P(C(X) ∩ B_K ≠ ∅ | Y ∈ B_K)")
+        ax.set_xlabel("Upper-tail alert recall:  P(set reaches the upper stratum | Y in it)")
         ax.set_ylabel("Upper-tail alert precision")
+        adjust_text(texts, ax=ax, arrowprops=dict(arrowstyle="-", color="#c3c2b7", lw=0.5), expand=(1.2, 1.5))
         save(fig, "F10_tail_alerts")
 
     # ---------------------------------------------------------------- efficiency
-    fit_cols = [c for c in a10.columns if c.startswith("t_fit_")]
-    ft = first.groupby("did")[fit_cols + ["n"]].mean()
-    eff = {"fit_seconds_median": ft[fit_cols].median().to_dict(),
-           "fit_seconds_max": ft[fit_cols].max().to_dict()}
-    tc = a10.groupby("method").t_calib_predict.median()
+    # fit times: recorded by the fitting run (results/raw/*.jsonl, one base record per dataset x seed)
+    fr = pd.concat([pd.read_json(f, lines=True) for f in sorted(glob.glob(str(TOP / "results" / "raw" / "*.jsonl")))],
+                   ignore_index=True)
+    fit_cols = [c for c in fr.columns if c.startswith("t_fit_")]
+    ft = fr.drop_duplicates(["did", "seed"]).groupby("did")[fit_cols + ["n"]].mean()
+    eff = {"fit_seconds_median": ft[fit_cols].median().to_dict(), "fit_seconds_max": ft[fit_cols].max().to_dict()}
+    tpath = RES / "timing_methods.csv"
+    tc = pd.read_csv(tpath).groupby("method").seconds.median() if tpath.exists() else pd.Series(dtype=float)
+    tmax = pd.read_csv(tpath).groupby("method").seconds.max() if tpath.exists() else pd.Series(dtype=float)
     eff["calib_predict_seconds_median"] = tc.to_dict()
     STATS["efficiency"] = eff
     rows = []
     model_cost = {"SCP": ["point"], "NCP": ["point", "scale"], "CQR": ["quantile"], "MCP-yhat": ["point"],
                   "DCP-LS": ["point", "scale", "density_LS"], "HPD-split-LS": ["point", "scale", "density_LS"],
-                  "DLS-M-LS": ["point", "scale", "density_LS"], "S-Res": ["point"], "S-NCP": ["point", "scale"],
-                  "S-CQR": ["quantile"], "S-HPD-LS": ["point", "scale", "density_LS"],
-                  "SDLC-LS": ["point", "scale", "density_LS"], "SDLC-H": ["density_H"]}
+                  "DLS-M-LS": ["point", "scale", "density_LS"], "S-Res": ["point"], "S-Res-hull": ["point"],
+                  "S-NCP": ["point", "scale"], "S-CQR": ["quantile"], "S-HPD-LS": ["point", "scale", "density_LS"],
+                  "SDLC-LS": ["point", "scale", "density_LS"], "SDLC-LS-floor": ["point", "scale", "density_LS"],
+                  "SDLC-LS2": ["point", "scale", "density_LS2"], "SDLC-H": ["density_H"]}
     for m, parts in model_cost.items():
         fitt = sum(ft[f"t_fit_{p}"] for p in parts)
         if "quantile" in parts:
-            fitt = fitt / len(CFG["alphas"])   # quantile time was summed over the 3 alphas
+            fitt = fitt / len(CFG["alphas"])   # quantile fit time was summed over the 3 alphas
         rows.append({"method": NAME[m], "fit_s_median": float(fitt.median()), "fit_s_max": float(fitt.max()),
                      "calib_predict_s_median": float(tc.get(m, np.nan)),
-                     "calib_predict_s_max": float(a10[a10.method == m].t_calib_predict.max())})
+                     "calib_predict_s_max": float(tmax.get(m, np.nan))})
     T9 = pd.DataFrame(rows)
     table(T9, "T9_computational_cost", 3)
 
@@ -454,15 +515,30 @@ def main():
     STATS["error_analysis"] = {"spearman_price_vs_rmse_over_sd": [float(rho1.statistic), float(rho1.pvalue)],
                                "spearman_worst_stratum_vs_ncal": [float(rho2.statistic), float(rho2.pvalue)],
                                "spearman_price_vs_abs_skew": [float(rho3.statistic), float(rho3.pvalue)]}
-    fig, axs = plt.subplots(1, 2, figsize=(7.0, 2.8))
-    axs[0].scatter(sd.rmse_over_sd, sd.price_vs_DLS, color=BLUE, s=14)
-    axs[0].set_xlabel("Test RMSE / sd(y)  (1 − predictability)")
-    axs[0].set_ylabel("Size ratio SDLC / DLS")
-    axs[1].scatter(sd.n_cal, sd.worst_stratum, color=BLUE, s=14)
+    fig, axs = plt.subplots(1, 2, figsize=(7.2, 3.0))
+    axs[0].scatter(sd.rmse_over_sd, sd.price_vs_DLS, color=BLUE, s=16, zorder=3)
+    axs[0].set_yscale("log")
+    from matplotlib.ticker import FixedLocator, NullFormatter, ScalarFormatter
+    axs[0].yaxis.set_major_locator(FixedLocator([1, 1.5, 2, 4, 8]))
+    axs[0].yaxis.set_major_formatter(ScalarFormatter())
+    axs[0].yaxis.set_minor_formatter(NullFormatter())
+    tx = [axs[0].text(r_.rmse_over_sd, r_.price_vs_DLS, r_.dataset, fontsize=6, color="#52514e")
+          for _, r_ in sd[sd.price_vs_DLS > 1.4].iterrows()]
+    adjust_text(tx, ax=axs[0], arrowprops=dict(arrowstyle="-", color="#c3c2b7", lw=0.5))
+    axs[0].axhline(1.0, color="#0b0b0b", lw=0.8)
+    axs[0].set_xlabel("Test RMSE / sd(y)")
+    axs[0].set_ylabel("Size ratio SDLC / DLS (log scale)")
+    if "null_worst_mean" in sd:
+        dev_ = sd.worst_stratum - sd.null_worst_mean
+        band = sd.null_worst_q05 - sd.null_worst_mean
+        o = np.argsort(sd.n_cal.values)
+        axs[1].fill_between(sd.n_cal.values[o], band.values[o], 0, color="#e6e5e0", lw=0, label="null 5% band")
+        axs[1].scatter(sd.n_cal, dev_, color=BLUE, s=16, zorder=3, label="SDLC")
+        axs[1].axhline(0, color="#0b0b0b", lw=0.8)
+        axs[1].set_ylabel("Worst-stratum coverage minus null mean")
+        axs[1].legend(frameon=False, fontsize=7, loc="lower right")
     axs[1].set_xscale("log")
-    axs[1].axhline(0.9, color="#0b0b0b", lw=0.8)
     axs[1].set_xlabel("Calibration-set size")
-    axs[1].set_ylabel("Worst-stratum coverage (SDLC)")
     save(fig, "F8_error_analysis")
 
     # ---------------------------------------------------------------- per-dataset supplementary table

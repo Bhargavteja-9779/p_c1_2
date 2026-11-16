@@ -20,7 +20,7 @@ from matplotlib.patches import FancyArrowPatch, FancyBboxPatch  # noqa: E402
 ROOT = Path(__file__).resolve().parents[1]
 TOP = ROOT.parent
 sys.path.insert(0, str(ROOT))
-from scripts.analyze import BLUE, ORANGE, AQUA, GRAY, DARK, save, FIG, TAB, table  # noqa: E402
+from scripts.analyze import BLUE, ORANGE, AQUA, GRAY, DARK, save, FIG, TAB, table  # noqa: E402,F401
 
 
 def f1():
@@ -72,45 +72,42 @@ def f0():
 
 
 def f9(did=44977, seed=0, n_show=70):
-    from experiments.run_benchmark import fit_context, run_methods
+    """Example prediction sets for test points of one dataset, built from the cached model outputs
+    with exactly the code used for the benchmark evaluation (grid-free location-scale sets)."""
+    from experiments.evaluate_from_cache import CACHE, all_sets, context_from_cache
+    from experiments.run_benchmark import CFG
     from src.data.openml_ctr23 import load
-    X, y, meta = load(did)
-    ctx, part, _ = fit_context(X, y, seed, [0.1], 200, 4, 40)
-    sets = run_methods(ctx, 0.1, part, which="all")
+    from src.evaluation.metrics import covered
+    from src.methods.strata import make_partition
+    c = dict(np.load(CACHE / f"{did}_{seed}.npz"))
+    meta = load(did)[2]
+    part = make_partition(c["y_train"], n_fine=CFG["n_fine"], n_coarse=CFG["n_coarse"])
+    ctx, tables, scales = context_from_cache(c, part, CFG["alphas"])
+    sets = all_sets(ctx, tables, scales, 0.1, part)
     yt = ctx["yt"]
     rng = np.random.default_rng(1)
     st = part.stratum(yt)
-    # show a stratified random sample with over-representation of the two tail strata
     idx = np.concatenate([rng.choice(np.where(st == k)[0], n_show // part.K, replace=False)
                           for k in range(part.K)])
     idx = idx[np.argsort(yt[idx])]
     fig, axs = plt.subplots(1, 3, figsize=(7.2, 3.0), sharey=True)
     scale = 1e3
-    for ax, m, col in zip(axs, ["CQR", "HPD-split-LS", "SDLC-LS"], [ORANGE, DARK, BLUE]):
+    names = {"CQR": "CQR", "S-Res": "BCCP", "SDLC-LS": "SDLC (proposed)"}
+    for ax, m, col in zip(axs, ["CQR", "S-Res", "SDLC-LS"], [ORANGE, GRAY, BLUE]):
         S = sets[m]
         for j, i in enumerate(idx):
-            if S[0] == "int":
-                for lo, hi in zip(S[1][i], S[2][i]):
-                    if hi > lo:
-                        ax.plot([j, j], [lo / scale, hi / scale], color=col, lw=1.2, alpha=0.8)
-            else:
-                m_ = S[1][i]
-                e = part.fine_edges
-                runs = np.flatnonzero(np.diff(np.r_[0, m_.astype(int), 0]))
-                for a, b in zip(runs[::2], runs[1::2]):
-                    ax.plot([j, j], [e[a] / scale, e[b] / scale], color=col, lw=1.2, alpha=0.8)
-        cov = [None] * len(idx)
-        from src.evaluation.metrics import covered
-        c = covered(S, yt, part)[idx]
-        ax.scatter(np.arange(len(idx))[c], yt[idx][c] / scale, s=5, color="#0b0b0b", zorder=3)
-        ax.scatter(np.arange(len(idx))[~c], yt[idx][~c] / scale, s=12, marker="x", color="#e34948", zorder=4)
+            for lo, hi in zip(S[1][i], S[2][i]):
+                if np.isfinite(lo) and np.isfinite(hi) and hi > lo:
+                    ax.plot([j, j], [lo / scale, hi / scale], color=col, lw=1.2, alpha=0.85)
+        cv = covered(S, yt, part)[idx]
+        ax.scatter(np.arange(len(idx))[cv], yt[idx][cv] / scale, s=5, color="#0b0b0b", zorder=3)
+        ax.scatter(np.arange(len(idx))[~cv], yt[idx][~cv] / scale, s=14, marker="x", color="#e34948", zorder=4)
         for e_ in part.strata_inner:
             ax.axhline(e_ / scale, color="#c3c2b7", lw=0.6, ls="--")
-        nm = {"CQR": "CQR", "HPD-split-LS": "HPD-split", "SDLC-LS": "SDLC (proposed)"}[m]
-        ax.set_title(f"{nm}: {int((~c).sum())} misses", fontsize=8)
+        ax.set_title(f"{names[m]}: {int((~cv).sum())} of {len(idx)} missed", fontsize=8)
         ax.set_xlabel("Test points sorted by true target")
         ax.set_xticks([])
-    axs[0].set_ylabel(f"{meta['target']} (×1000)")
+    axs[0].set_ylabel(f"{meta['target']} (thousands)")
     save(fig, "F9_example_sets_california")
 
 

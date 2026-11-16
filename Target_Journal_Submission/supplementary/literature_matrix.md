@@ -206,3 +206,14 @@ Result: **no paper titled or framed as "conformal prediction for imbalanced regr
 - *Guha et al. (2024)*: the ICLR 2024 venue is taken from the arXiv journal-ref only. Check that the OpenReview or ICLR proceedings entry exists, or cite as arXiv.
 
 No requested reference was found to be non-existent.
+
+
+---
+### Verification addenda (2026-11-16)
+- guha2024conformal: ICLR 2024 venue confirmed on the official proceedings page
+  (proceedings.iclr.cc/paper_files/paper/2024/hash/3a9bbcfde7cbcf2a4b14e3c952e0aee4-Abstract-Conference.html); bib entry upgraded to @inproceedings.
+- holm1979simple: Scandinavian Journal of Statistics 6(2):65–70 (1979), JSTOR stable 4615733; confirmed by several
+  independent bibliographic sources (no Crossref DOI exists).
+- fischer2023openml (OpenML-CTR23): suite id 353, 35 datasets, inclusion criteria (500–100,000 observations, <5000 features
+  after one-hot encoding, non-sparse, i.i.d. observations) confirmed from the OpenML API study description
+  (https://www.openml.org/api/v1/json/study/353), retrieved 2026-11-15.

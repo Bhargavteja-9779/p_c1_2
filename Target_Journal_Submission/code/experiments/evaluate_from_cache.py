@@ -84,6 +84,7 @@ def eval_one(did, seed):
     # calibration counts per stratum and how often a stratum threshold is +inf (n_k < 1/alpha - 1)
     nk = np.bincount(part.stratum(ctx["yc"]), minlength=part.K)
     base["ncal_min_stratum"] = int(nk.min())
+    base["ncal_strata"] = nk.tolist()
     for a in alphas:
         base[f"n_strata_inf_a{a}"] = int(sum(int(np.ceil((n + 1) * (1 - a))) > n for n in nk))
     base["train_stratum_mass"] = (np.bincount(part.stratum(part.y_train), minlength=part.K) / len(part.y_train)).round(4).tolist()
