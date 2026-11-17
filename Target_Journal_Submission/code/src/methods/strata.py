@@ -64,12 +64,14 @@ class Partition:
 
 
 def make_partition(y_train, strata_probs=PRIMARY_STRATA, n_fine=200, margin=0.05,
-                   anchor_schemes=tuple(ALL_STRATA_SCHEMES.values()), n_coarse=40):
+                   anchor_schemes=tuple(ALL_STRATA_SCHEMES.values()), n_coarse=40, nonneg=False):
     """Evaluation grid of ~n_fine equal-mass cells. The coarse histogram-classifier bins
     (n_coarse equal-mass bins) and all stratum edges are subsets of the grid edges."""
     y = np.asarray(y_train, float)
     r = y.max() - y.min()
     lo, hi = y.min() - margin * r, y.max() + margin * r
+    if nonneg and y.min() >= 0:      # v3: known support of non-negative targets (decided from training data)
+        lo = max(lo, 0.0)
     probs = list(np.arange(1, n_fine) / n_fine) + list(np.arange(1, n_coarse) / n_coarse)
     for s in anchor_schemes:
         probs += list(s)

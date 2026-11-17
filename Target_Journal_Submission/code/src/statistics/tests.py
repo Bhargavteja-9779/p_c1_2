@@ -62,3 +62,58 @@ def nemenyi_cd(k, n, alpha=0.05):
     """Critical difference of the Nemenyi test (Demšar, 2006) using the studentized range."""
     q = stats.studentized_range.ppf(1 - alpha, k, np.inf) / np.sqrt(2)
     return float(q * np.sqrt(k * (k + 1) / (6 * n)))
+
+
+# ---------------------------------------------------------------- additions (review cycle 1)
+def sign_test(d):
+    d = np.asarray(d, float)
+    d = d[np.isfinite(d) & (d != 0)]
+    if len(d) == 0:
+        return 1.0
+    return float(stats.binomtest(int((d > 0).sum()), len(d), 0.5).pvalue)
+
+
+def hodges_lehmann(d, level=0.95):
+    """Hodges-Lehmann pseudo-median of paired differences with the distribution-free CI obtained by
+    inverting the Wilcoxon signed-rank test (Walsh averages; normal approximation for the critical rank)."""
+    d = np.asarray(d, float)
+    d = d[np.isfinite(d)]
+    n = len(d)
+    i, j = np.triu_indices(n)
+    w = np.sort((d[i] + d[j]) / 2)
+    hl = float(np.median(w))
+    z = stats.norm.ppf(1 - (1 - level) / 2)
+    c = int(np.floor(n * (n + 1) / 4 - z * np.sqrt(n * (n + 1) * (2 * n + 1) / 24)))
+    c = max(c, 0)
+    return hl, (float(w[c]), float(w[len(w) - 1 - c]))
+
+
+def tost_wilcoxon(d, margin):
+    """Equivalence test |median shift| < margin: two one-sided Wilcoxon tests; returns the larger p."""
+    d = np.asarray(d, float)
+    d = d[np.isfinite(d)]
+    p_low = stats.wilcoxon(d + margin, alternative="greater").pvalue
+    p_up = stats.wilcoxon(d - margin, alternative="less").pvalue
+    return float(max(p_low, p_up))
+
+
+def paired_summary(a, b, better="smaller", log=False, alternative="two-sided"):
+    """Full paired comparison of per-dataset values a (method) vs b (comparator).
+    better: 'smaller' (size) or 'larger' (coverage) -> defines wins/losses of `a`."""
+    a, b = np.asarray(a, float), np.asarray(b, float)
+    ok = np.isfinite(a) & np.isfinite(b)
+    if log:
+        ok &= (a > 0) & (b > 0)
+    a, b = a[ok], b[ok]
+    d = (np.log(a) - np.log(b)) if log else (a - b)
+    res = paired_wilcoxon(a if not log else np.log(a), b if not log else np.log(b), alternative=alternative)
+    hl, (lo, hi) = hodges_lehmann(d)
+    wins = int((d < 0).sum()) if better == "smaller" else int((d > 0).sum())
+    losses = int((d > 0).sum()) if better == "smaller" else int((d < 0).sum())
+    out = dict(n=int(len(d)), p=res["p"], p_sign=sign_test(d), hl=hl, hl_lo=lo, hl_hi=hi, rbc=res["rbc"],
+               wins=wins, losses=losses, ties=int((d == 0).sum()))
+    if log:
+        lo_, hi_ = bootstrap_ci(d, fn=np.mean)
+        out.update(geo_ratio=float(np.exp(d.mean())), geo_lo=float(np.exp(lo_)), geo_hi=float(np.exp(hi_)),
+                   hl_ratio=float(np.exp(hl)), hl_ratio_lo=float(np.exp(lo)), hl_ratio_hi=float(np.exp(hi)))
+    return out

@@ -64,6 +64,11 @@ def load(did: int) -> tuple[np.ndarray, np.ndarray, dict]:
         mj.write_text(json.dumps(meta, indent=1))
     df = pd.read_parquet(pq)
     meta = json.loads(mj.read_text())
+    nmax = int(os.environ.get("TSCP_NMAX", "0"))
+    if nmax and len(df) > nmax:          # confirmatory study: fixed, pre-specified random subsample
+        keep = np.sort(np.random.default_rng(2026).choice(len(df), nmax, replace=False))
+        df = df.iloc[keep].reset_index(drop=True)
+        meta = {**meta, "n_full": meta["n"], "n": nmax}
     y = df.pop("__target__").to_numpy(float)
     return df.to_numpy(float), y, meta
 

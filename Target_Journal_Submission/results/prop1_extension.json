@@ -1,0 +1,74 @@
+[
+ {
+  "model": "t3 signal, Gaussian noise",
+  "R2": 0.5,
+  "bottom10": 0.64568,
+  "central80": 0.963629375,
+  "top10": 0.64784,
+  "top1": 0.6254,
+  "marginal": 0.9002555
+ },
+ {
+  "model": "t5 signal, Gaussian noise",
+  "R2": 0.5,
+  "bottom10": 0.68503,
+  "central80": 0.95391375,
+  "top10": 0.684005,
+  "top1": 0.5486,
+  "marginal": 0.9000345
+ },
+ {
+  "model": "t30 signal, Gaussian noise",
+  "R2": 0.5,
+  "bottom10": 0.703655,
+  "central80": 0.949209375,
+  "top10": 0.701995,
+  "top1": 0.3957,
+  "marginal": 0.8999325
+ },
+ {
+  "model": "Gaussian signal, Gamma(2) noise",
+  "R2": 0.5,
+  "bottom10": 0.98727,
+  "central80": 0.949093125,
+  "top10": 0.41766,
+  "top1": 0.0294,
+  "marginal": 0.8997675
+ },
+ {
+  "model": "t3 signal, Gaussian noise",
+  "R2": 0.9,
+  "bottom10": 0.83932,
+  "central80": 0.914695625,
+  "top10": 0.837705,
+  "top1": 0.86905,
+  "marginal": 0.899459
+ },
+ {
+  "model": "t5 signal, Gaussian noise",
+  "R2": 0.9,
+  "bottom10": 0.854325,
+  "central80": 0.910915625,
+  "top10": 0.85543,
+  "top1": 0.86015,
+  "marginal": 0.899708
+ },
+ {
+  "model": "t30 signal, Gaussian noise",
+  "R2": 0.9,
+  "bottom10": 0.86041,
+  "central80": 0.909815,
+  "top10": 0.859535,
+  "top1": 0.8033,
+  "marginal": 0.8998465
+ },
+ {
+  "model": "Gaussian signal, Gamma(2) noise",
+  "R2": 0.9,
+  "bottom10": 0.973135,
+  "central80": 0.91155625,
+  "top10": 0.732505,
+  "top1": 0.55405,
+  "marginal": 0.899809
+ }
+]

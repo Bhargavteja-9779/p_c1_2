@@ -8,6 +8,7 @@ Output: results/timing_methods.csv (dataset, method, repetition, seconds, n_cal,
 """
 from __future__ import annotations
 
+import os
 import sys
 import time
 from pathlib import Path
@@ -17,14 +18,14 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from experiments.evaluate_from_cache import CACHE, context_from_cache  # noqa: E402
+from experiments.evaluate_from_cache3 import CACHE, CACHE3, build_context  # noqa: E402
 from experiments.run_benchmark import CFG, run_methods  # noqa: E402
 from src.data.openml_ctr23 import load  # noqa: E402
-from src.methods import ls_exact as LX  # noqa: E402
+from src.methods import ls_exact3 as LX  # noqa: E402
 from src.methods.conformal import conformal_quantile  # noqa: E402
 from src.methods.strata import make_partition  # noqa: E402
 
-OUT = ROOT.parent / "results" / "timing_methods.csv"
+OUT = ROOT.parent / "results" / "timing_methods_v3.csv"
 
 
 def ls_timed(T, tag, mu_c, smc, spc, yc, mu_t, smt, spt, yt, part, st_c, alpha=0.1):
@@ -66,20 +67,25 @@ def ls_timed(T, tag, mu_c, smc, spc, yc, mu_t, smt, spt, yt, part, st_c, alpha=0
 
 
 def main(reps=3):
+    for v in ("OMP_NUM_THREADS", "MKL_NUM_THREADS", "OPENBLAS_NUM_THREADS"):
+        os.environ[v] = "1"
     rows = []
     for did in CFG["datasets"]:
         c = dict(np.load(CACHE / f"{did}_0.npz"))
+        c3 = dict(np.load(CACHE3 / f"{did}_0.npz"))
         name = load(did)[2]["name"]
-        part = make_partition(c["y_train"], n_fine=CFG["n_fine"], n_coarse=CFG["n_coarse"])
-        ctx, tables, scales = context_from_cache(c, part, CFG["alphas"])
+        part = make_partition(c["y_train"], n_fine=CFG["n_fine"], n_coarse=CFG["n_coarse"], nonneg=True)
+        ctx, tables, scales = build_context(c, c3, part, CFG["alphas"])
         st_c = part.stratum(ctx["yc"])
-        for r in range(reps):
+        for r in range(reps + 1):          # repetition 0 is a discarded warm-up
             tmd = {}
             run_methods(ctx, 0.1, part, which="all", timings=tmd)
-            for tag in ("LS", "LS2"):
+            for tag in ("LS", "LS2", "N"):
                 smc, spc, smt, spt = scales[tag]
                 tmd.update(ls_timed(tables[tag], tag, ctx["mu_c"], smc, spc, ctx["yc"], ctx["mu_t"], smt, spt,
                                     ctx["yt"], part, st_c))
+            if r == 0:
+                continue
             for m, sec in tmd.items():
                 rows.append(dict(did=did, dataset=name, method=m, rep=r, seconds=sec,
                                  n_cal=len(ctx["yc"]), n_test=len(ctx["yt"])))

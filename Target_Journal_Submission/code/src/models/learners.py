@@ -21,10 +21,15 @@ MAX_ROUNDS = 2000
 PATIENCE = 50
 
 
-def _fit(est, X, y, seed, n_jobs):
+def _fit(est, X, y, seed, n_jobs, sample_weight=None):
     est.set_params(random_state=seed, n_jobs=n_jobs)
-    Xtr, Xva, ytr, yva = train_test_split(X, y, test_size=0.1, random_state=seed)
-    est.fit(Xtr, ytr, eval_set=[(Xva, yva)],
+    if sample_weight is None:
+        Xtr, Xva, ytr, yva = train_test_split(X, y, test_size=0.1, random_state=seed)
+        est.fit(Xtr, ytr, eval_set=[(Xva, yva)],
+                callbacks=[lgb.early_stopping(PATIENCE, verbose=False)])
+        return est
+    Xtr, Xva, ytr, yva, wtr, wva = train_test_split(X, y, sample_weight, test_size=0.1, random_state=seed)
+    est.fit(Xtr, ytr, sample_weight=wtr, eval_set=[(Xva, yva)], eval_sample_weight=[wva],
             callbacks=[lgb.early_stopping(PATIENCE, verbose=False)])
     return est
 

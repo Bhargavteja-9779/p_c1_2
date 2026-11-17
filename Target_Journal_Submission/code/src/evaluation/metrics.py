@@ -8,6 +8,8 @@ from src.methods.strata import Partition
 
 def covered(S, y, part: Partition):
     ind = part.in_domain(y)
+    if S[0] == "geo":
+        return np.asarray(S[6], bool) & ind
     if len(S) == 4:          # grid-free sets carry their exact coverage indicator
         return np.asarray(S[3], bool) & ind
     if S[0] == "int":
@@ -19,12 +21,16 @@ def covered(S, y, part: Partition):
 
 
 def sizes(S, part):
+    if S[0] == "geo":
+        return S[1]
     if S[0] == "int":
         return np.clip(S[2] - S[1], 0, None).sum(1)
     return S[1] @ part.widths
 
 
 def n_components(S, part):
+    if S[0] == "geo":
+        return S[2].astype(float)
     if S[0] == "int":
         lo, hi = S[1], S[2]
         ok = hi > lo
@@ -75,6 +81,8 @@ def intersects_stratum(S, part, k):
     """Boolean per test point: does the prediction set intersect target stratum k?"""
     E = part.strata_edges
     a, b = E[k], E[k + 1]
+    if S[0] == "geo":
+        return S[5][:, k]
     if S[0] == "int":
         lo, hi = S[1], S[2]
         return ((hi >= lo) & (hi >= a) & (lo < b if k < part.K - 1 else lo <= b)).any(1)
@@ -108,8 +116,17 @@ def evaluate(S, y, part, alpha, eval_strata, weights=None):
         out[f"alert_{tag}_recall"] = float(al[ink].mean()) if ink.any() else np.nan
         out[f"alert_{tag}_rate"] = float(al.mean())
         out[f"alert_{tag}_precision"] = float(ink[al].mean()) if al.any() else np.nan
+    lab = eval_strata.get("cal") if eval_strata else None
     for name, w in (weights or {}).items():
         w = w / w.sum()
         out[f"shift_{name}_cov"] = float((w * c).sum())
         out[f"shift_{name}_size"] = float((w * sz).sum())
+        if lab is not None:      # stratum-wise coverage under the tilted law (what Corollary 1 concerns)
+            covs = []
+            for k in np.unique(lab):
+                mk = lab == k
+                ck = float((w[mk] * c[mk]).sum() / w[mk].sum())
+                out[f"shift_{name}_cal_cov_{k}"] = ck
+                covs.append(ck)
+            out[f"shift_{name}_cal_worst"] = float(np.min(covs))
     return out, c

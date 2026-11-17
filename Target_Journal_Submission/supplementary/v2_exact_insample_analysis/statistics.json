@@ -1,0 +1,871 @@
+{
+ "tests": [
+  {
+   "hypothesis": "H1",
+   "metric": "worst_stratum",
+   "comparison": "SDLC vs SCP",
+   "alternative": "greater",
+   "n": 31,
+   "stat": 496.0,
+   "p": 4.656612873077393e-10,
+   "median_diff": 0.22108862001431673,
+   "rbc": 1.0,
+   "wins": 31,
+   "losses": 0,
+   "ci_low": 0.18663960816812886,
+   "ci_high": 0.3886918762066609,
+   "p_holm": 3.259629011154175e-09
+  },
+  {
+   "hypothesis": "H1",
+   "metric": "worst_stratum",
+   "comparison": "SDLC vs NCP",
+   "alternative": "greater",
+   "n": 31,
+   "stat": 495.0,
+   "p": 9.313225746154785e-10,
+   "median_diff": 0.04800516479565231,
+   "rbc": 0.9959677419354839,
+   "wins": 30,
+   "losses": 1,
+   "ci_low": 0.027811602842766847,
+   "ci_high": 0.1501457290058088,
+   "p_holm": 3.725290298461914e-09
+  },
+  {
+   "hypothesis": "H1",
+   "metric": "worst_stratum",
+   "comparison": "SDLC vs CQR",
+   "alternative": "greater",
+   "n": 31,
+   "stat": 496.0,
+   "p": 4.656612873077393e-10,
+   "median_diff": 0.14178319888389568,
+   "rbc": 1.0,
+   "wins": 31,
+   "losses": 0,
+   "ci_low": 0.06613897885445963,
+   "ci_high": 0.2146498304495238,
+   "p_holm": 3.259629011154175e-09
+  },
+  {
+   "hypothesis": "H1",
+   "metric": "worst_stratum",
+   "comparison": "SDLC vs Mondrian-\u0177",
+   "alternative": "greater",
+   "n": 31,
+   "stat": 495.0,
+   "p": 9.313225746154785e-10,
+   "median_diff": 0.08302504660008658,
+   "rbc": 0.9959677419354839,
+   "wins": 30,
+   "losses": 1,
+   "ci_low": 0.053030994416243926,
+   "ci_high": 0.1410727404690253,
+   "p_holm": 3.725290298461914e-09
+  },
+  {
+   "hypothesis": "H1",
+   "metric": "worst_stratum",
+   "comparison": "SDLC vs DCP",
+   "alternative": "greater",
+   "n": 31,
+   "stat": 495.0,
+   "p": 9.313225746154785e-10,
+   "median_diff": 0.04932348620985305,
+   "rbc": 0.9959677419354839,
+   "wins": 30,
+   "losses": 1,
+   "ci_low": 0.029590458521386753,
+   "ci_high": 0.12660270646333271,
+   "p_holm": 3.725290298461914e-09
+  },
+  {
+   "hypothesis": "H1",
+   "metric": "worst_stratum",
+   "comparison": "SDLC vs HPD-split",
+   "alternative": "greater",
+   "n": 31,
+   "stat": 495.0,
+   "p": 9.313225746154785e-10,
+   "median_diff": 0.047090802236979146,
+   "rbc": 0.9959677419354839,
+   "wins": 30,
+   "losses": 1,
+   "ci_low": 0.02848170766492686,
+   "ci_high": 0.15051581737354347,
+   "p_holm": 3.725290298461914e-09
+  },
+  {
+   "hypothesis": "H1",
+   "metric": "worst_stratum",
+   "comparison": "SDLC vs DLS",
+   "alternative": "greater",
+   "n": 31,
+   "stat": 496.0,
+   "p": 4.656612873077393e-10,
+   "median_diff": 0.17890782366569513,
+   "rbc": 1.0,
+   "wins": 31,
+   "losses": 0,
+   "ci_low": 0.14214224201506553,
+   "ci_high": 0.2381604825468494,
+   "p_holm": 3.259629011154175e-09
+  },
+  {
+   "hypothesis": "H1",
+   "metric": "upper_tail",
+   "comparison": "SDLC vs SCP",
+   "alternative": "greater",
+   "n": 31,
+   "stat": 472.0,
+   "p": 3.548339009284973e-07,
+   "median_diff": 0.20351403061024043,
+   "rbc": 0.9032258064516129,
+   "wins": 26,
+   "losses": 5,
+   "ci_low": 0.08517030570049156,
+   "ci_high": 0.27151993922154904,
+   "p_holm": 1.7741695046424866e-06
+  },
+  {
+   "hypothesis": "H1",
+   "metric": "upper_tail",
+   "comparison": "SDLC vs NCP",
+   "alternative": "greater",
+   "n": 31,
+   "stat": 423.0,
+   "p": 0.00015730177983641624,
+   "median_diff": 0.04352499008261479,
+   "rbc": 0.7056451612903226,
+   "wins": 23,
+   "losses": 8,
+   "ci_low": 0.02024367915740166,
+   "ci_high": 0.10699565312568426,
+   "p_holm": 0.00019535142928361893
+  },
+  {
+   "hypothesis": "H1",
+   "metric": "upper_tail",
+   "comparison": "SDLC vs CQR",
+   "alternative": "greater",
+   "n": 31,
+   "stat": 492.0,
+   "p": 3.259629011154175e-09,
+   "median_diff": 0.1321125026381177,
+   "rbc": 0.9838709677419355,
+   "wins": 30,
+   "losses": 1,
+   "ci_low": 0.07693360131440663,
+   "ci_high": 0.18700113531003337,
+   "p_holm": 2.2817403078079224e-08
+  },
+  {
+   "hypothesis": "H1",
+   "metric": "upper_tail",
+   "comparison": "SDLC vs Mondrian-\u0177",
+   "alternative": "greater",
+   "n": 31,
+   "stat": 489.0,
+   "p": 8.847564458847046e-09,
+   "median_diff": 0.05977589870447031,
+   "rbc": 0.9717741935483871,
+   "wins": 29,
+   "losses": 2,
+   "ci_low": 0.04282234446037758,
+   "ci_high": 0.10149870022450669,
+   "p_holm": 5.3085386753082275e-08
+  },
+  {
+   "hypothesis": "H1",
+   "metric": "upper_tail",
+   "comparison": "SDLC vs DCP",
+   "alternative": "greater",
+   "n": 31,
+   "stat": 439.0,
+   "p": 3.1332019716501236e-05,
+   "median_diff": 0.052627956711148505,
+   "rbc": 0.7701612903225806,
+   "wins": 24,
+   "losses": 7,
+   "ci_low": 0.02567999166958057,
+   "ci_high": 0.10156026174154431,
+   "p_holm": 9.399605914950371e-05
+  },
+  {
+   "hypothesis": "H1",
+   "metric": "upper_tail",
+   "comparison": "SDLC vs HPD-split",
+   "alternative": "greater",
+   "n": 31,
+   "stat": 428.0,
+   "p": 9.767571464180946e-05,
+   "median_diff": 0.05086362404968947,
+   "rbc": 0.7258064516129032,
+   "wins": 23,
+   "losses": 8,
+   "ci_low": 0.013922932896962115,
+   "ci_high": 0.10027472527472514,
+   "p_holm": 0.00019535142928361893
+  },
+  {
+   "hypothesis": "H1",
+   "metric": "upper_tail",
+   "comparison": "SDLC vs DLS",
+   "alternative": "greater",
+   "n": 31,
+   "stat": 463.0,
+   "p": 1.494772732257843e-06,
+   "median_diff": 0.08684149478906822,
+   "rbc": 0.8669354838709677,
+   "wins": 27,
+   "losses": 4,
+   "ci_low": 0.04444408613518869,
+   "ci_high": 0.20247474541777621,
+   "p_holm": 5.979090929031372e-06
+  },
+  {
+   "hypothesis": "H3",
+   "metric": "log_size",
+   "comparison": "SDLC vs BCCP",
+   "alternative": "two-sided",
+   "n": 31,
+   "stat": 110.0,
+   "p": 0.005818215198814869,
+   "median_diff": -0.04208365157672933,
+   "rbc": -0.5564516129032258,
+   "wins": 9,
+   "losses": 22,
+   "ci_low": -0.09984718005580162,
+   "ci_high": -0.01488063023552566,
+   "p_holm": 0.017454645596444607
+  },
+  {
+   "hypothesis": "H3",
+   "metric": "log_size",
+   "comparison": "SDLC vs S-NCP",
+   "alternative": "two-sided",
+   "n": 31,
+   "stat": 128.0,
+   "p": 0.017661521211266518,
+   "median_diff": -0.03026622867288009,
+   "rbc": -0.4838709677419355,
+   "wins": 7,
+   "losses": 24,
+   "ci_low": -0.04916756534994815,
+   "ci_high": -0.01066718442687098,
+   "p_holm": 0.035323042422533035
+  },
+  {
+   "hypothesis": "H3",
+   "metric": "log_size",
+   "comparison": "SDLC vs S-CQR",
+   "alternative": "two-sided",
+   "n": 31,
+   "stat": 87.0,
+   "p": 0.0010653818026185036,
+   "median_diff": -0.12062088604937526,
+   "rbc": -0.6491935483870968,
+   "wins": 5,
+   "losses": 26,
+   "ci_low": -0.21918810944593636,
+   "ci_high": -0.08923964722400379,
+   "p_holm": 0.004261527210474014
+  },
+  {
+   "hypothesis": "H3",
+   "metric": "log_size",
+   "comparison": "SDLC vs S-HPD",
+   "alternative": "two-sided",
+   "n": 31,
+   "stat": 28.0,
+   "p": 1.3811513781547546e-06,
+   "median_diff": -0.04650159548733712,
+   "rbc": -0.8870967741935484,
+   "wins": 1,
+   "losses": 30,
+   "ci_low": -0.06399521558444743,
+   "ci_high": -0.030258967003179427,
+   "p_holm": 6.905756890773773e-06
+  },
+  {
+   "hypothesis": "H3",
+   "metric": "log_size",
+   "comparison": "SDLC vs SDLC-2p",
+   "alternative": "two-sided",
+   "n": 31,
+   "stat": 209.0,
+   "p": 0.4559155162423849,
+   "median_diff": -0.004986250262038805,
+   "rbc": -0.15725806451612903,
+   "wins": 13,
+   "losses": 18,
+   "ci_low": -0.017637833868208636,
+   "ci_high": 0.004277725548583133,
+   "p_holm": 0.4559155162423849
+  },
+  {
+   "hypothesis": "H3",
+   "metric": "log_size",
+   "comparison": "SDLC vs SDLC (hist.)",
+   "alternative": "two-sided",
+   "n": 31,
+   "stat": 25.0,
+   "p": 8.419156074523926e-07,
+   "median_diff": -0.5185109985153924,
+   "rbc": -0.8991935483870968,
+   "wins": 3,
+   "losses": 28,
+   "ci_low": -0.6688111985825824,
+   "ci_high": -0.342724690609204,
+   "p_holm": 5.0514936447143555e-06
+  },
+  {
+   "hypothesis": "H3",
+   "metric": "worst_stratum",
+   "comparison": "SDLC vs BCCP",
+   "alternative": "two-sided",
+   "n": 31,
+   "stat": 205.0,
+   "p": 0.4102047085762024,
+   "median_diff": 0.00039112284326681124,
+   "rbc": 0.17338709677419356,
+   "wins": 17,
+   "losses": 14,
+   "ci_low": -0.001348391954219097,
+   "ci_high": 0.002658145160974179,
+   "p_holm": 1.0
+  },
+  {
+   "hypothesis": "H3",
+   "metric": "worst_stratum",
+   "comparison": "SDLC vs S-NCP",
+   "alternative": "two-sided",
+   "n": 31,
+   "stat": 221.0,
+   "p": 0.608313562348485,
+   "median_diff": -0.00017771203505334565,
+   "rbc": -0.10887096774193548,
+   "wins": 15,
+   "losses": 16,
+   "ci_low": -0.001680950842006923,
+   "ci_high": 0.0011785761103284553,
+   "p_holm": 1.0
+  },
+  {
+   "hypothesis": "H3",
+   "metric": "worst_stratum",
+   "comparison": "SDLC vs S-CQR",
+   "alternative": "two-sided",
+   "n": 31,
+   "stat": 211.0,
+   "p": 0.4797733975574374,
+   "median_diff": 0.0012146050412005227,
+   "rbc": -0.14919354838709678,
+   "wins": 16,
+   "losses": 15,
+   "ci_low": -0.0034633955655627435,
+   "ci_high": 0.0016423928129203347,
+   "p_holm": 1.0
+  },
+  {
+   "hypothesis": "H3",
+   "metric": "worst_stratum",
+   "comparison": "SDLC vs S-HPD",
+   "alternative": "two-sided",
+   "n": 31,
+   "stat": 220.0,
+   "p": 0.5948144253343344,
+   "median_diff": -0.0002757737136398486,
+   "rbc": -0.11290322580645161,
+   "wins": 15,
+   "losses": 16,
+   "ci_low": -0.001058229666144439,
+   "ci_high": 0.0007219551057623397,
+   "p_holm": 1.0
+  },
+  {
+   "hypothesis": "H3",
+   "metric": "worst_stratum",
+   "comparison": "SDLC vs SDLC-2p",
+   "alternative": "two-sided",
+   "n": 31,
+   "stat": 221.0,
+   "p": 0.608313562348485,
+   "median_diff": 0.000994814864232474,
+   "rbc": 0.10887096774193548,
+   "wins": 18,
+   "losses": 13,
+   "ci_low": -0.001626295356984997,
+   "ci_high": 0.0025665037865333362,
+   "p_holm": 1.0
+  },
+  {
+   "hypothesis": "H3",
+   "metric": "worst_stratum",
+   "comparison": "SDLC vs SDLC (hist.)",
+   "alternative": "two-sided",
+   "n": 31,
+   "stat": 244.0,
+   "p": 0.9461012529209256,
+   "median_diff": 0.0005556322203255082,
+   "rbc": -0.016129032258064516,
+   "wins": 16,
+   "losses": 15,
+   "ci_low": -0.003017243120378099,
+   "ci_high": 0.004009421166893734,
+   "p_holm": 1.0
+  }
+ ],
+ "confirmatory_excl_dev": [
+  {
+   "comparison": "SDLC vs SCP",
+   "n": 28,
+   "p": 3.725290298461914e-09,
+   "median_diff": 0.2267819089968604,
+   "rbc": 1.0,
+   "p_holm": 2.60770320892334e-08
+  },
+  {
+   "comparison": "SDLC vs NCP",
+   "n": 28,
+   "p": 7.450580596923828e-09,
+   "median_diff": 0.06606961330626959,
+   "rbc": 0.9950738916256158,
+   "p_holm": 2.60770320892334e-08
+  },
+  {
+   "comparison": "SDLC vs CQR",
+   "n": 28,
+   "p": 3.725290298461914e-09,
+   "median_diff": 0.13318667389815686,
+   "rbc": 1.0,
+   "p_holm": 2.60770320892334e-08
+  },
+  {
+   "comparison": "SDLC vs Mondrian-\u0177",
+   "n": 28,
+   "p": 3.725290298461914e-09,
+   "median_diff": 0.08484555337374378,
+   "rbc": 1.0,
+   "p_holm": 2.60770320892334e-08
+  },
+  {
+   "comparison": "SDLC vs DCP",
+   "n": 28,
+   "p": 7.450580596923828e-09,
+   "median_diff": 0.06609434409977522,
+   "rbc": 0.9950738916256158,
+   "p_holm": 2.60770320892334e-08
+  },
+  {
+   "comparison": "SDLC vs HPD-split",
+   "n": 28,
+   "p": 7.450580596923828e-09,
+   "median_diff": 0.06865233670139848,
+   "rbc": 0.9950738916256158,
+   "p_holm": 2.60770320892334e-08
+  },
+  {
+   "comparison": "SDLC vs DLS",
+   "n": 28,
+   "p": 3.725290298461914e-09,
+   "median_diff": 0.1812823463496812,
+   "rbc": 1.0,
+   "p_holm": 2.60770320892334e-08
+  }
+ ],
+ "price": [
+  {
+   "marginal": "SCP",
+   "stratified": "BCCP",
+   "geo_mean_size_ratio": 1.2334917414549003,
+   "ci_low": 1.0933186073737093,
+   "ci_high": 1.444426856645166,
+   "median_ratio": 1.0971018621746287,
+   "worst_stratum_gain_mean": 0.2597991988564854,
+   "n_ds_size_ratio_gt_1.5": 4
+  },
+  {
+   "marginal": "NCP",
+   "stratified": "S-NCP",
+   "geo_mean_size_ratio": 1.15749022634503,
+   "ci_low": 1.0530384288325068,
+   "ci_high": 1.3266557963100056,
+   "median_ratio": 1.0540648960409298,
+   "worst_stratum_gain_mean": 0.1260984980001715,
+   "n_ds_size_ratio_gt_1.5": 1
+  },
+  {
+   "marginal": "CQR",
+   "stratified": "S-CQR",
+   "geo_mean_size_ratio": 1.18507492052568,
+   "ci_low": 1.084042222931632,
+   "ci_high": 1.3483945056955617,
+   "median_ratio": 1.0786381257364779,
+   "worst_stratum_gain_mean": 0.1729707346856975,
+   "n_ds_size_ratio_gt_1.5": 2
+  },
+  {
+   "marginal": "HPD-split",
+   "stratified": "S-HPD",
+   "geo_mean_size_ratio": 1.186025043482217,
+   "ci_low": 1.0836313249351364,
+   "ci_high": 1.3341371285354786,
+   "median_ratio": 1.0596596637128284,
+   "worst_stratum_gain_mean": 0.12679435435065892,
+   "n_ds_size_ratio_gt_1.5": 3
+  },
+  {
+   "marginal": "DLS",
+   "stratified": "SDLC (proposed)",
+   "geo_mean_size_ratio": 1.2367300997284214,
+   "ci_low": 1.1216272178237006,
+   "ci_high": 1.4302961467503512,
+   "median_ratio": 1.1412808594299066,
+   "worst_stratum_gain_mean": 0.21048279388941865,
+   "n_ds_size_ratio_gt_1.5": 2
+  },
+  {
+   "marginal": "DLS-2p",
+   "stratified": "SDLC-2p",
+   "geo_mean_size_ratio": 1.2630072691352048,
+   "ci_low": 1.1250226732243653,
+   "ci_high": 1.481964122305536,
+   "median_ratio": 1.1389940984928961,
+   "worst_stratum_gain_mean": 0.2021898752755808,
+   "n_ds_size_ratio_gt_1.5": 4
+  },
+  {
+   "marginal": "DLS (hist.)",
+   "stratified": "SDLC (hist.)",
+   "geo_mean_size_ratio": 1.506950345130209,
+   "ci_low": 1.2727071784298318,
+   "ci_high": 1.841977172551714,
+   "median_ratio": 1.2375091163409007,
+   "worst_stratum_gain_mean": 0.2594649784162955,
+   "n_ds_size_ratio_gt_1.5": 9
+  }
+ ],
+ "friedman": {
+  "worst_stratum": {
+   "chi2": 284.3792276964049,
+   "p": 8.880275401458353e-54,
+   "mean_ranks": {
+    "SCP": 12.258064516129032,
+    "NCP": 8.580645161290322,
+    "CQR": 11.03225806451613,
+    "MCP-yhat": 9.161290322580646,
+    "DCP-LS": 8.064516129032258,
+    "HPD-split-LS": 8.774193548387096,
+    "DLS-M-LS": 11.064516129032258,
+    "S-Res": 4.032258064516129,
+    "S-Res-hull": 2.967741935483871,
+    "S-NCP": 3.629032258064516,
+    "S-CQR": 4.064516129032258,
+    "S-HPD-LS": 3.661290322580645,
+    "SDLC-LS": 3.7096774193548385
+   }
+  },
+  "size": {
+   "chi2": 180.77419354838707,
+   "p": 2.959082986513794e-32,
+   "mean_ranks": {
+    "SCP": 5.870967741935484,
+    "NCP": 4.612903225806452,
+    "CQR": 8.225806451612904,
+    "MCP-yhat": 5.548387096774194,
+    "DCP-LS": 5.225806451612903,
+    "HPD-split-LS": 4.935483870967742,
+    "DLS-M-LS": 1.6129032258064515,
+    "S-Res": 8.935483870967742,
+    "S-Res-hull": 10.903225806451612,
+    "S-NCP": 8.258064516129032,
+    "S-CQR": 10.741935483870968,
+    "S-HPD-LS": 9.580645161290322,
+    "SDLC-LS": 6.548387096774194
+   }
+  },
+  "nemenyi_cd_0.05": 3.2769241509932003,
+  "n": 31
+ },
+ "label_shift": {
+  "shift_up1_cov": {
+   "SCP": {
+    "median_diff": 0.07028195261386883,
+    "p_holm": 2.090074121952057e-05,
+    "rbc": 0.8306451612903226
+   },
+   "NCP": {
+    "median_diff": 0.02219034036098877,
+    "p_holm": 0.005086471326649189,
+    "rbc": 0.5483870967741935
+   },
+   "CQR": {
+    "median_diff": 0.053703927286639086,
+    "p_holm": 2.2817403078079224e-07,
+    "rbc": 0.9516129032258065
+   },
+   "Mondrian-\u0177": {
+    "median_diff": 0.022717132405595142,
+    "p_holm": 1.2489035725593567e-06,
+    "rbc": 0.9153225806451613
+   },
+   "DCP": {
+    "median_diff": 0.021861353060847133,
+    "p_holm": 0.0034882407635450363,
+    "rbc": 0.6088709677419355
+   },
+   "HPD-split": {
+    "median_diff": 0.02491927198495092,
+    "p_holm": 0.005086471326649189,
+    "rbc": 0.5645161290322581
+   },
+   "DLS": {
+    "median_diff": 0.04192939400488438,
+    "p_holm": 1.3294629752635956e-05,
+    "rbc": 0.8508064516129032
+   }
+  },
+  "shift_up2_cov": {
+   "SCP": {
+    "median_diff": 0.2032642585814075,
+    "p_holm": 2.4889595806598663e-06,
+    "rbc": 0.8911290322580645
+   },
+   "NCP": {
+    "median_diff": 0.04002999322808842,
+    "p_holm": 0.01134053897112608,
+    "rbc": 0.5201612903225806
+   },
+   "CQR": {
+    "median_diff": 0.15175610309718834,
+    "p_holm": 8.149072527885437e-08,
+    "rbc": 0.967741935483871
+   },
+   "Mondrian-\u0177": {
+    "median_diff": 0.09902332935127311,
+    "p_holm": 1.2014061212539673e-07,
+    "rbc": 0.9596774193548387
+   },
+   "DCP": {
+    "median_diff": 0.04472632552087685,
+    "p_holm": 0.01134053897112608,
+    "rbc": 0.5403225806451613
+   },
+   "HPD-split": {
+    "median_diff": 0.05116293951348483,
+    "p_holm": 0.01134053897112608,
+    "rbc": 0.5403225806451613
+   },
+   "DLS": {
+    "median_diff": 0.10850434450600699,
+    "p_holm": 2.4889595806598663e-06,
+    "rbc": 0.8951612903225806
+   }
+  },
+  "shift_tails1_cov": {
+   "SCP": {
+    "median_diff": 0.06152282244812857,
+    "p_holm": 4.423782229423523e-08,
+    "rbc": 0.9717741935483871
+   },
+   "NCP": {
+    "median_diff": 0.024255628076522262,
+    "p_holm": 6.92903995513916e-06,
+    "rbc": 0.8467741935483871
+   },
+   "CQR": {
+    "median_diff": 0.0483621617828508,
+    "p_holm": 4.423782229423523e-08,
+    "rbc": 0.9717741935483871
+   },
+   "Mondrian-\u0177": {
+    "median_diff": 0.03991844409463652,
+    "p_holm": 6.51925802230835e-09,
+    "rbc": 0.9959677419354839
+   },
+   "DCP": {
+    "median_diff": 0.023381089286406587,
+    "p_holm": 6.92903995513916e-06,
+    "rbc": 0.8548387096774194
+   },
+   "HPD-split": {
+    "median_diff": 0.02539910307300608,
+    "p_holm": 6.92903995513916e-06,
+    "rbc": 0.8467741935483871
+   },
+   "DLS": {
+    "median_diff": 0.04624286854742232,
+    "p_holm": 1.3969838619232178e-08,
+    "rbc": 0.9879032258064516
+   }
+  },
+  "shift_down1_cov": {
+   "SCP": {
+    "median_diff": -0.015048807106450068,
+    "p_holm": 0.9153939224779606,
+    "rbc": -0.08870967741935484
+   },
+   "NCP": {
+    "median_diff": 0.005920300427652236,
+    "p_holm": 0.3907937742769718,
+    "rbc": 0.2701612903225806
+   },
+   "CQR": {
+    "median_diff": 0.013350116662868894,
+    "p_holm": 0.04455622471868992,
+    "rbc": 0.4959677419354839
+   },
+   "Mondrian-\u0177": {
+    "median_diff": 0.018756139474053635,
+    "p_holm": 0.001323852688074112,
+    "rbc": 0.6975806451612904
+   },
+   "DCP": {
+    "median_diff": 0.008157542950428365,
+    "p_holm": 0.05227222107350826,
+    "rbc": 0.4717741935483871
+   },
+   "HPD-split": {
+    "median_diff": 0.005102392460946348,
+    "p_holm": 0.3907937742769718,
+    "rbc": 0.24596774193548387
+   },
+   "DLS": {
+    "median_diff": -0.005277189971628626,
+    "p_holm": 0.9153939224779606,
+    "rbc": 0.024193548387096774
+   }
+  }
+ },
+ "hull_vs_bccp_hull": {
+  "n": 31,
+  "stat": 123.0,
+  "p": 0.01319857221096754,
+  "median_diff": -0.04520425896310076,
+  "rbc": -0.5040322580645161,
+  "wins": 9,
+  "losses": 22,
+  "ci": [
+   -0.1115077483884413,
+   -0.0037813051087074445
+  ],
+  "geo_ratio": 0.930420163409965
+ },
+ "sdlc_size_ratios": {
+  "S-Res": {
+   "geo": 0.9323148492298212,
+   "ci": [
+    0.8623704162755166,
+    1.0027363580031279
+   ],
+   "n_smaller": 22,
+   "n": 31
+  },
+  "S-NCP": {
+   "geo": 1.0044172678884546,
+   "ci": [
+    0.9633789586040891,
+    1.0587029792162028
+   ],
+   "n_smaller": 24,
+   "n": 31
+  },
+  "S-CQR": {
+   "geo": 0.8328679697035308,
+   "ci": [
+    0.7278077319291758,
+    0.9332766508215176
+   ],
+   "n_smaller": 26,
+   "n": 31
+  },
+  "S-HPD-LS": {
+   "geo": 0.9490910451385447,
+   "ci": [
+    0.9294651609991554,
+    0.9678294317860869
+   ],
+   "n_smaller": 30,
+   "n": 31
+  },
+  "SDLC-LS2": {
+   "geo": 0.9916593927609599,
+   "ci": [
+    0.9679343727667137,
+    1.0128505384038384
+   ],
+   "n_smaller": 18,
+   "n": 31
+  },
+  "SDLC-H": {
+   "geo": 0.5167659856033145,
+   "ci": [
+    0.4026284759750384,
+    0.6431637286888379
+   ],
+   "n_smaller": 28,
+   "n": 31
+  }
+ },
+ "efficiency": {
+  "fit_seconds_median": {
+   "t_fit_point": 0.34243261679996495,
+   "t_fit_scale": 1.0636511069000163,
+   "t_fit_quantile": 1.6558240903999883,
+   "t_fit_density_H": 4.334466039300037,
+   "t_fit_density_LS": 0.8202125765001196,
+   "t_fit_density_LS2": 0.6779972293999943
+  },
+  "fit_seconds_max": {
+   "t_fit_point": 10.527162141599955,
+   "t_fit_scale": 35.83226679960001,
+   "t_fit_quantile": 37.711769105100046,
+   "t_fit_density_H": 131.76974561789993,
+   "t_fit_density_LS": 14.59879579250001,
+   "t_fit_density_LS2": 6.512186047499978
+  },
+  "calib_predict_seconds_median": {
+   "CQR": 4.037999997308361e-05,
+   "DCP-H": 0.0050500500001362,
+   "DCP-LS": 0.000691672999892,
+   "DCP-LS2": 0.0006834129999333,
+   "DLS-M-H": 0.000992928999949,
+   "DLS-M-LS": 0.2401624310000443,
+   "DLS-M-LS2": 0.2334674129997438,
+   "HPD-split-H": 0.0165127280001797,
+   "HPD-split-LS": 0.2160104129998217,
+   "HPD-split-LS2": 0.2244787209997412,
+   "MCP-yhat": 0.0005692940003427,
+   "NCP": 4.07879997510463e-05,
+   "S-CQR": 0.000199129000066,
+   "S-HPD-H": 0.0193863260001307,
+   "S-HPD-LS": 0.2177584510000088,
+   "S-HPD-LS2": 0.2125121389999549,
+   "S-NCP": 0.0002701200000956,
+   "S-Res": 0.0001846469999691,
+   "S-Res-hull": 0.0003587080000215,
+   "SCP": 6.15680000919383e-05,
+   "SDLC-H": 0.0005916729996897,
+   "SDLC-H-floor": 0.0004739760001939,
+   "SDLC-H-hull": 0.0005206860000726,
+   "SDLC-LS": 0.2373324160002994,
+   "SDLC-LS2": 0.2477242290001413
+  }
+ },
+ "error_analysis": {
+  "spearman_price_vs_rmse_over_sd": [
+   0.467741935483871,
+   0.007969493559158315
+  ],
+  "spearman_worst_stratum_vs_ncal": [
+   0.4344494100951769,
+   0.014599148967404905
+  ],
+  "spearman_price_vs_abs_skew": [
+   0.5951612903225807,
+   0.0004129486777852601
+  ]
+ }
+}

@@ -32,7 +32,7 @@ def _clip_int(lo, hi, part):
 
 
 def interval_method(score_cal, base_test, alpha, part, *, kind, strata_cal=None, scale_test=None,
-                    alpha_k=None):
+                    alpha_k=None, floor_beta=None, half_open=True):
     """Generic residual-type conformal intervals.
 
     kind='res' : base_test = mu (n,), score |y-mu|, set mu +- t
@@ -57,7 +57,11 @@ def interval_method(score_cal, base_test, alpha, part, *, kind, strata_cal=None,
         return ("int", lo[:, None], hi[:, None])
     K = part.K
     ak = np.full(K, alpha) if alpha_k is None else np.asarray(alpha_k)
+    if floor_beta is not None:
+        ak = np.full(K, floor_beta)
     tk = np.array([conformal_quantile(score_cal[strata_cal == k], ak[k]) for k in range(K)])
+    if floor_beta is not None:   # floor rule: max(marginal threshold at alpha, stratum threshold at beta)
+        tk = np.maximum(tk, conformal_quantile(score_cal, alpha))
     E = part.strata_edges
     n = len(base_test[0]) if kind == "cqr" else len(base_test)
     LO, HI = np.empty((n, K)), np.empty((n, K))
@@ -66,7 +70,9 @@ def interval_method(score_cal, base_test, alpha, part, *, kind, strata_cal=None,
             l, h = np.full(n, E[k]), np.full(n, E[k + 1])
         else:
             l, h = interval(tk[k])
-        LO[:, k], HI[:, k] = np.maximum(l, E[k]), np.minimum(h, E[k + 1])
+        # strata are half-open [e_k, e_{k+1}): the piece of stratum k must exclude its upper edge
+        upper = np.nextafter(E[k + 1], -np.inf) if (half_open and k < K - 1) else E[k + 1]
+        LO[:, k], HI[:, k] = np.maximum(l, E[k]), np.minimum(h, upper)
     return ("int", LO, HI)
 
 

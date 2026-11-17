@@ -28,7 +28,7 @@ from src.methods.strata import ALL_STRATA_SCHEMES, make_partition  # noqa: E402
 from src.models import density as D  # noqa: E402
 from src.models import learners as Lr  # noqa: E402
 
-CFG = json.loads((ROOT / "config" / "benchmark.json").read_text())
+CFG = json.loads((ROOT / "config" / os.environ.get("TSCP_CONFIG", "benchmark.json")).read_text())
 
 
 def split(n, seed, fr=None):

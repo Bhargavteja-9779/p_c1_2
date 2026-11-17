@@ -109,3 +109,81 @@ def cdf_inv(F, u, part):
     r = np.arange(len(F))
     frac = np.clip((u - cs[r, j]) / np.maximum(Mass[r, j], 1e-300), 0, 1)
     return part.fine_edges[j] + frac * part.widths[j]
+
+
+# ============================================================================ v3 estimator
+def silverman(z):
+    z = np.asarray(z, float)
+    sd = z.std()
+    iqr = np.subtract(*np.quantile(z, [0.75, 0.25]))
+    s = min(sd, iqr / 1.349) if iqr > 0 else sd
+    return max(0.9 * s * len(z) ** (-0.2), 1e-3)
+
+
+class RobustLSDensity:
+    """Noise density g for the (two-piece) location-scale model, v3.
+
+    g = (1 - eps) * KDE(z_train; Gaussian kernel, Silverman bandwidth x bw_mult)
+        + eps * t_nu(z / s_t) / s_t,          s_t = robust scale (IQR/1.349) of z_train.
+    The defensive Student-t component makes g a proper density with polynomial tails and no
+    arbitrary floor (z beyond the data receive a smooth, strictly decreasing density). The KDE is
+    computed by linear binning + FFT convolution on a uniform grid of spacing <= h/4 that covers the
+    data +/- 5h; the model g is the piecewise-linear interpolant of the mixture on that grid, and the
+    exact t component outside it. z_train should be CROSS-FITTED standardised residuals.
+    """
+
+    def __init__(self, z_train, eps=0.01, nu=2.0, bw_mult=1.0, max_grid=2 ** 18):
+        from scipy.signal import fftconvolve
+        from scipy.stats import t as student_t
+        z = np.asarray(z_train, float)
+        z = z[np.isfinite(z)]
+        self.n, self.eps, self.nu = len(z), eps, nu
+        self.h = h = silverman(z) * bw_mult
+        iqr = np.subtract(*np.quantile(z, [0.75, 0.25]))
+        self.s_t = iqr / 1.349 if iqr > 0 else max(z.std(), 1e-3)
+        lo, hi = z.min() - 5 * h, z.max() + 5 * h
+        d = h / 4
+        if (hi - lo) / d > max_grid:
+            d = (hi - lo) / max_grid
+        m = int(np.ceil((hi - lo) / d)) + 1
+        grid = lo + d * np.arange(m)
+        pos = (z - lo) / d
+        i0 = np.clip(np.floor(pos).astype(int), 0, m - 2)
+        w1 = pos - i0
+        counts = np.bincount(i0, weights=1 - w1, minlength=m) + np.bincount(i0 + 1, weights=w1, minlength=m)
+        kk = np.arange(-int(np.ceil(5 * h / d)), int(np.ceil(5 * h / d)) + 1) * d
+        kern = np.exp(-0.5 * (kk / h) ** 2) / (h * np.sqrt(2 * np.pi))
+        kde = np.maximum(fftconvolve(counts, kern, mode="same") / self.n, 0.0)
+        self._t = student_t(nu)
+        self._zq = np.quantile(z, [0.001, 0.999])
+        self.grid = grid
+        self.g = (1 - eps) * kde + eps * self._t.pdf(grid / self.s_t) / self.s_t
+        self.gfloor = 0.0  # no floor in v3
+
+    def tail_pdf(self, z):
+        return self.eps * self._t.pdf(np.asarray(z, float) / self.s_t) / self.s_t
+
+    def tail_cdf(self, z):
+        return self.eps * self._t.cdf(np.asarray(z, float) / self.s_t)
+
+    def g_at(self, z):
+        z = np.asarray(z, float)
+        inside = (z >= self.grid[0]) & (z <= self.grid[-1])
+        out = self.tail_pdf(z)
+        out[inside] = np.interp(z[inside], self.grid, self.g)
+        return out
+
+
+class GaussianNoiseDensity(RobustLSDensity):
+    """Ablation: g = (1 - eps) N(0,1) + eps t_nu(z/s_t)/s_t (no data-driven shape; s_t = 1).
+    With this g the SDLC score -g(z)/sigma(x) differs from the normalised residual |z| only through
+    the factor 1/sigma(x) and the (negligible) defensive component."""
+
+    def __init__(self, eps=0.01, nu=2.0):
+        from scipy.stats import norm, t as student_t
+        self.n, self.eps, self.nu, self.h, self.s_t = 0, eps, nu, 0.01, 1.0
+        self._t = student_t(nu)
+        self.grid = np.linspace(-40, 40, 32001)
+        self.g = (1 - eps) * norm.pdf(self.grid) + eps * self._t.pdf(self.grid)
+        self._zq = np.array([-3.09, 3.09])
+        self.gfloor = 0.0

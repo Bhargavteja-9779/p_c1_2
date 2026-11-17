@@ -481,7 +481,8 @@ def main():
 
     # ---------------------------------------------------------------- efficiency
     # fit times: recorded by the fitting run (results/raw/*.jsonl, one base record per dataset x seed)
-    fr = pd.concat([pd.read_json(f, lines=True) for f in sorted(glob.glob(str(TOP / "results" / "raw" / "*.jsonl")))],
+    fit_dir = Path(os.environ.get("TSCP_FIT_DIR", TOP / "results" / "raw"))
+    fr = pd.concat([pd.read_json(f, lines=True) for f in sorted(glob.glob(str(fit_dir / "*.jsonl")))],
                    ignore_index=True)
     fit_cols = [c for c in fr.columns if c.startswith("t_fit_")]
     ft = fr.drop_duplicates(["did", "seed"]).groupby("did")[fit_cols + ["n"]].mean()

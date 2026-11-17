@@ -31,8 +31,9 @@ from src.methods.strata import ALL_STRATA_SCHEMES, make_partition  # noqa: E402
 from src.models import density as D  # noqa: E402
 
 TOP = ROOT.parent
-CACHE = TOP / "results" / "raw_contexts"
-OUT = TOP / "results" / "raw_eval"
+import os  # noqa: E402
+CACHE = Path(os.environ.get("TSCP_CACHE_DIR", TOP / "results" / "raw_contexts"))
+OUT = Path(os.environ.get("TSCP_EVAL_DIR", TOP / "results" / "raw_eval"))
 
 
 def context_from_cache(c, part, alphas):

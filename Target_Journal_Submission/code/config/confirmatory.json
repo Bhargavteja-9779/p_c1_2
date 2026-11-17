@@ -1,0 +1,106 @@
+{
+ "seeds": [
+  0,
+  1,
+  2,
+  3,
+  4
+ ],
+ "split": [
+  0.5,
+  0.25,
+  0.25
+ ],
+ "alphas": [
+  0.1
+ ],
+ "n_fine": 200,
+ "strata_probs_primary": [
+  0.1,
+  0.25,
+  0.75,
+  0.9
+ ],
+ "cal_fracs": [],
+ "cal_frac_methods": [
+  "SCP",
+  "NCP",
+  "CQR",
+  "S-Res",
+  "S-NCP",
+  "S-CQR",
+  "DLS-M-LS",
+  "SDLC-LS",
+  "SDLC-LS2",
+  "SDLC-H",
+  "HPD-split-LS"
+ ],
+ "workers": 4,
+ "n_jobs_per_task": 1,
+ "n_coarse": 40,
+ "description": "Confirmatory replication on held-out datasets (Grinsztajn et al. tabular benchmark, OpenML suites 336/335) not sharing source data with OpenML-CTR23. Fixed before any confirmatory result was computed.",
+ "candidate_datasets": {
+  "44133": "pol",
+  "44134": "elevators",
+  "44137": "Ailerons",
+  "44139": "house_16H",
+  "44142": "Bike_Sharing_Demand",
+  "44143": "nyc-taxi-green-dec-2016",
+  "44145": "sulfur",
+  "44146": "medical_charges",
+  "45032": "yprop_4_1",
+  "45034": "delays_zurich_transport",
+  "44055": "analcatdata_supreme",
+  "44056": "visualizing_soil",
+  "44061": "Mercedes_Benz_Greener_Manufacturing",
+  "44068": "particulate-matter-ukair-2017",
+  "44069": "SGEMM_GPU_kernel_performance",
+  "45041": "topo_2_1",
+  "45043": "seattlecrime6",
+  "45046": "Allstate_Claims_Severity",
+  "45047": "Airlines_DepDelay_1M"
+ },
+ "datasets": [
+  44056,
+  44061,
+  44068,
+  44069,
+  44134,
+  44137,
+  44139,
+  44142,
+  44143,
+  44145,
+  44146,
+  45032,
+  45034,
+  45041,
+  45043,
+  45046,
+  45047
+ ],
+ "n_max": 50000,
+ "excluded_by_content_overlap_with_CTR23": [
+  "cpu_act (cpu_activity)",
+  "houses (california_housing)",
+  "house_sales (kings_county)",
+  "MiamiHousing2016 (miami_housing)",
+  "superconduct (superconductivity)",
+  "diamonds",
+  "Brazilian_houses",
+  "abalone",
+  "wine_quality (wine)"
+ ],
+ "duplicate_versions_dropped": [
+  "Bike_Sharing_Demand 44063",
+  "nyc-taxi 44065",
+  "house_sales 44066",
+  "delays_zurich 45045",
+  "medical_charges 45048"
+ ],
+ "exclusion_rule": "targets with fewer than 20 distinct values (same rule as main study), applied after download",
+ "excluded_by_rule_after_download": {
+  "44055 analcatdata_supreme": "10 distinct target values",
+  "44133 pol": "11 distinct target values"
+ }
+}
