@@ -72,40 +72,54 @@ def f0():
 
 
 def f9(did=44977, seed=0, n_show=70):
-    """Example prediction sets for test points of one dataset, built from the cached model outputs
-    with exactly the code used for the benchmark evaluation (grid-free location-scale sets)."""
-    from experiments.evaluate_from_cache import CACHE, all_sets, context_from_cache
+    """Example prediction sets for test points of one dataset, built from the cached model outputs with
+    exactly the v3 code used for the benchmark evaluation (stratum-exact location-scale sets)."""
+    from experiments.evaluate_from_cache3 import CACHE, CACHE3, all_sets, build_context
     from experiments.run_benchmark import CFG
     from src.data.openml_ctr23 import load
     from src.evaluation.metrics import covered
+    from src.methods import ls_exact3 as L3
+    from src.methods.conformal import conformal_quantile
     from src.methods.strata import make_partition
-    c = dict(np.load(CACHE / f"{did}_{seed}.npz"))
+    c, c3 = dict(np.load(CACHE / f"{did}_{seed}.npz")), dict(np.load(CACHE3 / f"{did}_{seed}.npz"))
     meta = load(did)[2]
-    part = make_partition(c["y_train"], n_fine=CFG["n_fine"], n_coarse=CFG["n_coarse"])
-    ctx, tables, scales = context_from_cache(c, part, CFG["alphas"])
-    sets = all_sets(ctx, tables, scales, 0.1, part)
-    yt = ctx["yt"]
+    part = make_partition(c["y_train"], n_fine=CFG["n_fine"], n_coarse=CFG["n_coarse"], nonneg=True)
+    ctx, tables, scales = build_context(c, c3, part, CFG["alphas"])
+    sets = all_sets(ctx, tables, scales, 0.1, part, which="all", only={"CQR", "S-Res", "S-NCP"})
+    yt, yc = ctx["yt"], ctx["yc"]
+    T = tables["LS"]
+    sc_c = L3.scores("density", T, yc, ctx["mu_c"], ctx["sg_c"], ctx["sg_c"], part)
+    sc_t = L3.scores("density", T, yt, ctx["mu_t"], ctx["sg_t"], ctx["sg_t"], part)
+    st_c = part.stratum(yc)
+    q = np.array([conformal_quantile(sc_c[st_c == k], 0.1) for k in range(part.K)])
+    S_sdlc, iv = L3.build_sets("density", T, ctx["mu_t"], ctx["sg_t"], ctx["sg_t"], q, part, yt, sc_t,
+                               return_intervals=True)
     rng = np.random.default_rng(1)
     st = part.stratum(yt)
     idx = np.concatenate([rng.choice(np.where(st == k)[0], n_show // part.K, replace=False)
                           for k in range(part.K)])
     idx = idx[np.argsort(yt[idx])]
-    fig, axs = plt.subplots(1, 3, figsize=(7.2, 3.0), sharey=True)
+    fig, axs = plt.subplots(1, 4, figsize=(7.4, 3.0), sharey=True)
     scale = 1e3
-    names = {"CQR": "CQR", "S-Res": "BCCP", "SDLC-LS": "SDLC (proposed)"}
-    for ax, m, col in zip(axs, ["CQR", "S-Res", "SDLC-LS"], [ORANGE, GRAY, BLUE]):
-        S = sets[m]
-        for j, i in enumerate(idx):
-            for lo, hi in zip(S[1][i], S[2][i]):
+    names = {"CQR": "CQR", "S-Res": "BCCP", "S-NCP": "S-NCP", "SDLC-LS": "SDLC"}
+    for ax, m, col in zip(axs, ["CQR", "S-Res", "S-NCP", "SDLC-LS"], [ORANGE, GRAY, AQUA, BLUE]):
+        if m == "SDLC-LS":
+            pieces = [iv[i] for i in idx]
+            cv = S_sdlc[6][idx]
+        else:
+            S = sets[m]
+            pieces = [list(zip(S[1][i], S[2][i])) for i in idx]
+            cv = covered(S, yt, part)[idx]
+        for j, pc in enumerate(pieces):
+            for lo, hi in pc:
                 if np.isfinite(lo) and np.isfinite(hi) and hi > lo:
-                    ax.plot([j, j], [lo / scale, hi / scale], color=col, lw=1.2, alpha=0.85)
-        cv = covered(S, yt, part)[idx]
-        ax.scatter(np.arange(len(idx))[cv], yt[idx][cv] / scale, s=5, color="#0b0b0b", zorder=3)
-        ax.scatter(np.arange(len(idx))[~cv], yt[idx][~cv] / scale, s=14, marker="x", color="#e34948", zorder=4)
+                    ax.plot([j, j], [lo / scale, hi / scale], color=col, lw=1.0, alpha=0.85)
+        ax.scatter(np.arange(len(idx))[cv], yt[idx][cv] / scale, s=4, color="#0b0b0b", zorder=3)
+        ax.scatter(np.arange(len(idx))[~cv], yt[idx][~cv] / scale, s=12, marker="x", color="#e34948", zorder=4)
         for e_ in part.strata_inner:
             ax.axhline(e_ / scale, color="#c3c2b7", lw=0.6, ls="--")
-        ax.set_title(f"{names[m]}: {int((~cv).sum())} of {len(idx)} missed", fontsize=8)
-        ax.set_xlabel("Test points sorted by true target")
+        ax.set_title(f"{names[m]}: {int((~cv).sum())} of {len(idx)} missed", fontsize=7.5)
+        ax.set_xlabel("Test points (sorted by y)", fontsize=7)
         ax.set_xticks([])
     axs[0].set_ylabel(f"{meta['target']} (thousands)")
     save(fig, "F9_example_sets_california")

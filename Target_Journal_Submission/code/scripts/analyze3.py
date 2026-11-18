@@ -130,7 +130,7 @@ def main():
     df = load()
     df.to_csv(RES / "raw_results_v3.csv.gz", index=False, compression="gzip")
     a10 = df[(df.alpha == 0.1) & (df.scheme == "S5") & (df.cal_frac == 1.0)]
-    METRICS.update(n_datasets=int(a10.did.nunique()), n_seeds_min=int(a10.groupby("did").seed.nunique().min()),
+    METRICS.update(n_methods_main=len(MAIN), n_datasets=int(a10.did.nunique()), n_seeds_min=int(a10.groupby("did").seed.nunique().min()),
                    n_runs=int(a10[["did", "seed"]].drop_duplicates().shape[0]))
     first = a10.drop_duplicates(["did", "seed"])
     # ---------------------------------------------------------------- dataset table (incl. realised strata)
@@ -367,6 +367,7 @@ def main():
     timing_study()
     # ---------------------------------------------------------------- figures
     figures(df, a10, pdm, S, T7, sd)
+    display_tables()
     json.dump(METRICS, open(RES / "metrics_v3.json", "w"), indent=1, default=float)
     json.dump(STATS, open(RES / "statistics_v3.json", "w"), indent=1, default=float)
     print(T2[["method", "coverage", "upper_tail_cov", "worst_stratum", "n_ds_below_null", "top5_cov", "top1_cov",
@@ -438,6 +439,16 @@ def synthetic_study():
                               "ratio_sncp": float(np.exp(np.mean(np.log(pv[P] / pv["S-NCP"])))),
                               "ratio_bccp": float(np.exp(np.mean(np.log(pv[P] / pv["S-Res"]))))}
     METRICS["synthetic"] = wins
+    gm = g.set_index(["dgp", "n", "method"])["size"]
+    gains = [1 - gm.loc[(d_, 5000, "O-SDLC")] / gm.loc[(d_, 5000, "O-S-NCP")] for d_ in "ABCD"]
+    METRICS["synthetic_oracle_gain_min"], METRICS["synthetic_oracle_gain_max"] = float(min(gains)), float(max(gains))
+    METRICS["synthetic_est_lt_sncp"] = int(sum(wins[f"{d_}_5000"]["sdlc_lt_sncp"] for d_ in "ABCDE"))
+    METRICS["synthetic_est_lt_bccp"] = int(sum(wins[f"{d_}_5000"]["sdlc_lt_bccp"] for d_ in "ABCDE"))
+    METRICS["synthetic_small_lt_sncp"] = int(sum(wins[f"{d_}_500"]["sdlc_lt_sncp"] for d_ in "AB"))
+    METRICS["synthetic_gap_C"] = float(gm.loc[("C", 5000, "SDLC")] / gm.loc[("C", 5000, "O-SDLC")] - 1)
+    up = g.set_index(["dgp", "n", "method"])["upper"]
+    METRICS["synthetic_hdrx_upper_A"] = float(up.loc[("A", 5000, "O-HDR-X")])
+    METRICS["synthetic_hdrx_upper_C"] = float(up.loc[("C", 5000, "O-HDR-X")])
     sh = sy[(sy.gamma > 0) | ((sy.gamma == 0) & sy.dgp.isin(["A", "B"]) & (sy.n == 5000))]
     sh = sh[sh.method.isin(["SCP", "CQR", "HPD-split-LS", "S-Res", "S-NCP", "S-CQR", P, "O-SDLC", "O-HDR-X"])]
     t = sh.groupby(["dgp", "gamma", "method"])[["coverage", "upper", "worst"]].mean().reset_index()
@@ -585,6 +596,116 @@ def alerts_study(a10, ratios=(1, 5, 10, 20)):
     axs[0].set_ylabel("Expected cost per unit")
     axs[2].legend(frameon=False, fontsize=6, loc="upper left")
     save(fig, "F13_alert_costs")
+
+
+def _ci(g, lo, hi, d=3):
+    return f"{g:.{d}f} [{lo:.{d}f}, {hi:.{d}f}]"
+
+
+def _p(p):
+    return "< 0.001" if p < 0.001 else f"{p:.3f}"
+
+
+def display_tables():
+    """Print-ready tables (strings) for the manuscript and the supplement: tables/D*.csv."""
+    T2 = pd.read_csv(TAB / "T2_main_results.csv")
+    d = pd.DataFrame({"Method": T2.method, "Marginal": T2.coverage.map("{:.3f}".format),
+                      "Lower tail": T2.lower_tail_cov.map("{:.3f}".format),
+                      "Upper tail": T2.upper_tail_cov.map("{:.3f}".format),
+                      "Worst stratum": T2.worst_stratum.map("{:.3f}".format),
+                      "Below null": T2.n_ds_below_null.astype(int).astype(str),
+                      "Top 5%": T2.top5_cov.map("{:.3f}".format), "Top 1%": T2.top1_cov.map("{:.3f}".format),
+                      "Size": T2.size_geo.map("{:.3f}".format), "Empty %": (100 * T2.empty_rate).map("{:.2f}".format),
+                      "Pieces": T2.pieces.map("{:.2f}".format)})
+    d.to_csv(TAB / "D2_main.csv", index=False)
+    T3 = pd.read_csv(TAB / "T3_statistical_tests.csv")
+    fams = {"H3 size (primary)": "Score (stratified)", "Decomposition BCCP -> S-NCP -> SDLC-N -> SDLC": "Decomposition",
+            "H3 size (hull forms)": "Hull forms", "H3 size (secondary)": "Density estimator"}
+    x = T3[T3.family.isin(fams)].copy()
+    d = pd.DataFrame({"Family": x.family.map(fams), "Comparison": x.comparison,
+                      "Ratio [95% CI]": [_ci(a, b, c_) for a, b, c_ in zip(x.geo_ratio, x.geo_lo, x.geo_hi)],
+                      "HL ratio": x.hl_ratio.map("{:.3f}".format),
+                      "Wins/losses": [f"{int(w)}/{int(l)}" for w, l in zip(x.wins, x.losses)],
+                      "Holm p": x.p_holm.map(_p)})
+    d.to_csv(TAB / "D3_size_tests.csv", index=False)
+    Ts = pd.read_csv(TAB / "T3s_h3_sensitivity.csv")
+    d = pd.DataFrame({"Analysis": Ts.analysis, "Comparison": Ts.comparison, "n": Ts.n.astype(int).astype(str),
+                      "Ratio [95% CI]": [_ci(a, b, c_) for a, b, c_ in zip(Ts.geo_ratio, Ts.geo_lo, Ts.geo_hi)],
+                      "Wins/losses": [f"{int(w)}/{int(l)}" for w, l in zip(Ts.wins, Ts.losses)],
+                      "Holm p": Ts.p_holm.map(_p)})
+    d.to_csv(TAB / "D3s_sensitivity.csv", index=False)
+    T4 = pd.read_csv(TAB / "T4_price.csv")
+    d = pd.DataFrame({"Score": [f"{a} → {b}" for a, b in zip(T4.marginal, T4.stratified)],
+                      "Size ratio [95% CI]": [_ci(a, b, c_, 2) for a, b, c_ in zip(T4.geo_ratio, T4.ci_low, T4.ci_high)],
+                      "Median ratio": T4.median_ratio.map("{:.2f}".format),
+                      "Datasets > 1.5": T4["n_ratio_gt_1.5"].astype(int).astype(str),
+                      "Worst-stratum gain": T4.worst_gain.map("{:+.3f}".format)})
+    d.to_csv(TAB / "D4_price.csv", index=False)
+    T4b = pd.read_csv(TAB / "T4b_matched_coverage.csv")
+    d = pd.DataFrame({"Marginal method (α = 0.05)": T4b["method_at_alpha_0.05"],
+                      "Worst stratum": T4b.worst_stratum.map("{:.3f}".format),
+                      "Size": T4b.size_geo.map("{:.3f}".format),
+                      "SDLC (α = 0.1) smaller on": T4b.n_ds_SDLC_smaller.astype(int).map(lambda v: f"{v}/31")})
+    d.to_csv(TAB / "D4b_matched.csv", index=False)
+    T8 = pd.read_csv(TAB / "T8_shift.csv")
+    d = pd.DataFrame({"Method": T8.method, "Positive control: marginal": T8.pc_marginal.map("{:.3f}".format),
+                      "Positive control: worst stratum": T8.pc_worst.map("{:.3f}".format),
+                      "Tilt γ=1: upper stratum": T8.up1_upper.map("{:.3f}".format),
+                      "Tilt γ=2: upper stratum": T8.up2_upper.map("{:.3f}".format),
+                      "Tilt γ=2: upper (ESS ≥ 50)": T8.up2_upper_ess50.map("{:.3f}".format),
+                      "Tilt γ=2: marginal": T8.up2_marginal.map("{:.3f}".format)})
+    d.to_csv(TAB / "D8_shift.csv", index=False)
+    T13 = pd.read_csv(TAB / "T13_tail_alerts.csv")
+    x = T13[T13.side == "hi"]
+    order = ["SCP", "CQR", "HPD-split", "BCCP", "S-NCP", "S-CQR", "SDLC", "SDLC-floor", "TC-LS", "TC-H", "CS-BH-0.1",
+             "CS-BH-0.2", "Point"]
+    x = x.set_index("rule").loc[[o for o in order if o in set(x.rule)]].reset_index()
+    d = pd.DataFrame({"Rule": x.rule, "Recall": x.recall.map("{:.3f}".format), "Alert rate": x.rate.map("{:.3f}".format),
+                      "Precision": x.precision.map("{:.3f}".format),
+                      "Datasets recall ≥ 0.9": x["n_ds_recall_ge_0.9"].astype(int).astype(str),
+                      "Cost r=1": x.cost_r1.map("{:.3f}".format), "Cost r=10": x.cost_r10.map("{:.3f}".format),
+                      "Cost r=20": x.cost_r20.map("{:.3f}".format)})
+    d.to_csv(TAB / "D13_alerts.csv", index=False)
+    T1 = pd.read_csv(TAB / "T1_datasets.csv").sort_values("n")
+    d = pd.DataFrame({"Dataset": T1.dataset.str.replace("_", " "), "n": T1.n.map("{:,}".format), "p": T1.p.astype(str),
+                      "Skewness": T1.skew_y.map("{:.2f}".format), "Distinct y": T1.n_unique_y.map("{:,}".format),
+                      "K": T1.K.astype(int).astype(str), "Lower mass": T1.lower_mass.map("{:.3f}".format),
+                      "Upper mass": T1.upper_mass.map("{:.3f}".format), "RMSE/sd": T1.rmse_over_sd.map("{:.2f}".format)})
+    d.to_csv(TAB / "D1_datasets.csv", index=False)
+    if (TAB / "T11_synthetic.csv").exists():
+        t = pd.read_csv(TAB / "T11_synthetic.csv")
+        t = t[t.n == 5000]
+        order = ["O-HDR-X", "O-SDLC", "O-S-NCP", "O-S-Res", "SCP", "CQR", "HPD-split", "BCCP", "S-NCP", "S-CQR", "S-HPD",
+                 "SDLC-N", "SDLC"]
+        rows = []
+        for m in order:
+            r = {"Method": m}
+            for dgp in "ABCDE":
+                x = t[(t.dgp == dgp) & (t.method == m)]
+                r[dgp] = "" if x.empty else f"{x.upper.iloc[0]:.3f} / {x.size_vs_SNCP.iloc[0]:.3f}"
+            rows.append(r)
+        pd.DataFrame(rows).to_csv(TAB / "D11_synthetic.csv", index=False)
+    if (TAB / "T12_synthetic_label_shift.csv").exists():
+        t = pd.read_csv(TAB / "T12_synthetic_label_shift.csv")
+        order = ["SCP", "CQR", "HPD-split", "O-HDR-X", "BCCP", "S-NCP", "S-CQR", "SDLC", "O-SDLC"]
+        rows = []
+        for m in order:
+            r = {"Method": m}
+            for dgp in "AB":
+                for g in (0.0, 0.5, 1.0, 2.0):
+                    x = t[(t.dgp == dgp) & (t.method == m) & (t.gamma == g)]
+                    r[f"{dgp}, γ={g:g}"] = "" if x.empty else f"{x.upper.iloc[0]:.3f}"
+            rows.append(r)
+        pd.DataFrame(rows).to_csv(TAB / "D12_synthetic_shift.csv", index=False)
+    for nm, src in (("D5_alpha", "T5_alpha_sensitivity"), ("D6_strata", "T6_strata_schemes"),
+                    ("D7_calsize", "T7_calibration_size"), ("D2b_variants", "T2b_variants"),
+                    ("D10_error", "T10_error_analysis")):
+        if (TAB / f"{src}.csv").exists():
+            t = pd.read_csv(TAB / f"{src}.csv")
+            for c_ in t.columns:
+                if pd.api.types.is_float_dtype(t[c_]):
+                    t[c_] = t[c_].map(lambda v: "" if pd.isna(v) else f"{v:.3f}")
+            t.to_csv(TAB / f"{nm}.csv", index=False)
 
 
 def figures(df, a10, pdm, S, T7, sd):

@@ -38,152 +38,151 @@ def pfmt(p):
     return "< 0.001" if p < 0.001 else f"{p:.3f}"
 
 
+FAM = {"H1 worst stratum": "h1w", "H1 upper tail": "h1u", "H1 worst stratum (excl. development)": "h1wx",
+       "H3 size (primary)": "h3", "H3 size (secondary)": "h3s", "Decomposition BCCP -> S-NCP -> SDLC-N -> SDLC": "dec",
+       "H3 size (hull forms)": "h3h", "Upper alert rate vs stratified": "alr",
+       "Upper alert precision vs stratified": "alp"}
+SENS = {"primary (alpha=0.1, S5, all datasets)": "primary", "excluding development datasets": "nodev",
+        "excluding development + diagnostic datasets": "nodiag", "datasets with nominal tail strata": "nominal",
+        "|skewness| > 1": "skewed", "|skewness| <= 1": "symm", "n >= 1600": "large", "n < 1600": "small",
+        "alpha = 0.05": "a05", "alpha = 0.2": "a20", "strata S3": "S3", "strata S10": "S10"}
+
+
+def _comp(c):
+    for pre in ("SDLC vs ", "SDLC-hull vs "):
+        if c.startswith(pre):
+            return c[len(pre):].replace(" ", "")
+    c = c.replace(" vs ", "_vs_")
+    return c.replace("-hull", "-hull").replace(" ", "")
+
+
+def _put_test(c, key, t):
+    if "geo_ratio" in t and t["geo_ratio"] == t["geo_ratio"]:
+        c[key + ".geo"] = f(t["geo_ratio"])
+        c[key + ".lo"] = f(t["geo_lo"])
+        c[key + ".hi"] = f(t["geo_hi"])
+        c[key + ".hlr"] = f(t["hl_ratio"])
+    c[key + ".hl"] = f(t["hl"])
+    c[key + ".hllo"] = f(t["hl_lo"])
+    c[key + ".hlhi"] = f(t["hl_hi"])
+    c[key + ".wins"] = str(t["wins"])
+    c[key + ".losses"] = str(t["losses"])
+    c[key + ".n"] = str(t["n"])
+    c[key + ".rbc"] = f(t["rbc"], 2)
+    c[key + ".p"] = pfmt(t.get("p_holm", t["p"]))
+    c[key + ".praw"] = pfmt(t["p"])
+    c[key + ".psign"] = pfmt(t["p_sign"])
+
+
 def context():
-    M = json.loads((RES / "metrics.json").read_text())
-    S = json.loads((RES / "statistics.json").read_text())
-    E = json.loads((RES / "statistics_extra.json").read_text()) if (RES / "statistics_extra.json").exists() else {}
+    """Placeholder values for the v3 manuscript (results/metrics_v3.json, results/statistics_v3.json,
+    tables/*.csv). Generic lookups {{T:...}} and {{J:...}} are resolved in render()."""
+    M = json.loads((RES / "metrics_v3.json").read_text())
+    S = json.loads((RES / "statistics_v3.json").read_text())
     P = json.loads((RES / "prop1_gaussian.json").read_text())
     c = {}
     r05 = [r for r in P["rows"] if r["R2"] == 0.5][0]
+    r09 = [r for r in P["rows"] if r["R2"] == 0.9][0]
     c["prop1.upper10_r05"] = pct(r05["analytic_upper10"])
     c["prop1.upper1_r05"] = pct(r05["analytic_upper1"])
     c["prop1.central_r05"] = pct(r05["analytic_central80"])
-    r09 = [r for r in P["rows"] if r["R2"] == 0.9][0]
     c["prop1.upper10_r09"] = pct(r09["analytic_upper10"])
     c["n_datasets"] = str(M["n_datasets"])
     c["n_seeds"] = str(M["n_seeds_min"])
     c["n_runs"] = str(M["n_runs"])
+    c["n_nominal"] = str(M["n_nominal_tails"])
+    c["n_methods_main"] = str(M.get("n_methods_main", 13))
     T1 = pd.read_csv(TAB / "T1_datasets.csv")
     c["ds_n_min"], c["ds_n_max"] = f"{T1.n.min():,}", f"{T1.n.max():,}"
     c["ds_p_min"], c["ds_p_max"] = str(T1.p.min()), str(T1.p.max())
     c["n_skewed"] = str(int((T1.skew_y.abs() > 1).sum()))
-    from scripts.analyze import MAIN
-    c["n_methods_main"] = str(len(MAIN))
-    c["out_dom_max"] = pct(M["frac_test_out_domain_max"], 2)
-    c["n_ls_better"] = str(M["datasets_LS_better_nll"])
+    CC = json.loads((ROOT / "config" / "confirmatory.json").read_text())
+    c["conf.n_datasets"] = str(len(CC["datasets"]))
     main = M["main"]
     for code, r in main.items():
-        k = code
-        for col in ("coverage", "lower_tail_cov", "upper_tail_cov", "worst_stratum", "top5pct_cov",
-                    "bottom5pct_cov", "nsize_mean", "nsize_median", "components", "wsc"):
-            c[f"main.{k}.{col}"] = f(r[col])
-        c[f"main.{k}.n_ds_worst_lt_0.85"] = str(r["n_ds_worst_lt_0.85"])
-        c[f"main.{k}.upper_tail_pct"] = pct(r["upper_tail_cov"])
-        c[f"main.{k}.lower_tail_pct"] = pct(r["lower_tail_cov"])
-        c[f"main.{k}.worst_pct"] = pct(r["worst_stratum"])
-        c[f"main.{k}.top5_pct"] = pct(r["top5pct_cov"])
+        for col in ("coverage", "lower_tail_cov", "upper_tail_cov", "worst_stratum", "top5_cov", "top1_cov",
+                    "size_geo", "pieces", "sigma_decile_worst", "wsc"):
+            c[f"main.{code}.{col}"] = f(r[col])
+            c[f"main.{code}.{col}.pct"] = pct(r[col])
+        c[f"main.{code}.empty_pct"] = pct(r["empty_rate"], 2)
+        c[f"main.{code}.below_null"] = str(r["n_ds_below_null"])
+    for code, r in M["variants"].items():
+        for col in ("worst_stratum", "size_geo", "pieces", "upper_tail_cov"):
+            c[f"var.{code}.{col}"] = f(r[col])
     marg = ["SCP", "NCP", "CQR", "MCP-yhat", "DCP-LS", "HPD-split-LS", "DLS-M-LS"]
-    c["marg.upper_min"] = pct(min(main[m]["upper_tail_cov"] for m in marg))
-    c["marg.upper_max"] = pct(max(main[m]["upper_tail_cov"] for m in marg))
-    c["marg.worst_min"] = pct(min(main[m]["worst_stratum"] for m in marg))
-    c["marg.worst_max"] = pct(max(main[m]["worst_stratum"] for m in marg))
-    c["marg.top5_min"] = pct(min(main[m]["top5pct_cov"] for m in marg))
-    c["marg.top5_max"] = pct(max(main[m]["top5pct_cov"] for m in marg))
-    strat = ["S-Res", "S-NCP", "S-CQR", "S-HPD-LS", "SDLC-LS"]
-    c["strat.worst_min"] = pct(min(main[m]["worst_stratum"] for m in strat))
-    c["strat.worst_max"] = pct(max(main[m]["worst_stratum"] for m in strat))
-    c["strat.upper_min"] = pct(min(main[m]["upper_tail_cov"] for m in strat))
-    c["strat.upper_max"] = pct(max(main[m]["upper_tail_cov"] for m in strat))
-    # tests
+    strat = ["S-Res", "S-NCP", "S-CQR", "S-HPD-LS", "SDLC-N", "SDLC-LS"]
+    for grp, ms in (("marg", marg), ("strat", strat)):
+        for col in ("upper_tail_cov", "worst_stratum", "top5_cov", "top1_cov", "lower_tail_cov"):
+            c[f"{grp}.{col}.min"] = pct(min(main[m][col] for m in ms))
+            c[f"{grp}.{col}.max"] = pct(max(main[m][col] for m in ms))
+        c[f"{grp}.below.min"] = str(min(main[m]["n_ds_below_null"] for m in ms))
+        c[f"{grp}.below.max"] = str(max(main[m]["n_ds_below_null"] for m in ms))
+    c["null_mean"] = f(M["null_worst_mean_avg"])
     for t in S["tests"]:
-        key = f"test.{t['hypothesis']}.{t['metric']}.{t['comparison'].replace('SDLC vs ', '')}"
-        c[key + ".p"] = pfmt(t["p_holm"])
-        c[key + ".md"] = f(t["median_diff"])
-        c[key + ".rbc"] = f(t["rbc"], 2)
-        c[key + ".wins"] = f"{t['wins']}/{t['n']}"
-        c[key + ".ci"] = f"[{f(t['ci_low'])}, {f(t['ci_high'])}]"
-    h1 = [t for t in S["tests"] if t["hypothesis"] == "H1" and t["metric"] == "worst_stratum"]
-    c["H1.max_p"] = pfmt(max(t["p_holm"] for t in h1))
-    c["H1.min_rbc"] = f(min(t["rbc"] for t in h1), 2)
-    c["H1.min_md"] = f(min(t["median_diff"] for t in h1))
-    c["H1.max_md"] = f(max(t["median_diff"] for t in h1))
-    conf = S["confirmatory_excl_dev"]
-    c["conf.max_p"] = pfmt(max(t["p_holm"] for t in conf))
-    c["conf.n"] = str(conf[0]["n"])
-    V1 = json.loads((RES / "statistics_v1_preregistered.json").read_text())
-    for t in V1["tests"]:
-        key = f"v1.{t['hypothesis']}.{t['metric']}.{t['comparison'].replace('SDLC vs ', '')}"
-        c[key + ".p"] = pfmt(t["p_holm"])
-        c[key + ".wins"] = f"{t['wins']}/{t['n']}"
-    for p in S["price"]:
-        key = f"price.{p['stratified']}"
-        c[key + ".gm"] = f(p["geo_mean_size_ratio"], 2)
-        c[key + ".ci"] = f"[{f(p['ci_low'], 2)}, {f(p['ci_high'], 2)}]"
-        c[key + ".med"] = f(p["median_ratio"], 2)
-        c[key + ".gain"] = f(p["worst_stratum_gain_mean"])
-        c[key + ".n15"] = str(p["n_ds_size_ratio_gt_1.5"])
-    fr = S["friedman"]
-    c["friedman.ws.chi2"] = f(fr["worst_stratum"]["chi2"], 1)
-    c["friedman.ws.p"] = pfmt(fr["worst_stratum"]["p"])
-    c["friedman.size.chi2"] = f(fr["size"]["chi2"], 1)
-    c["friedman.size.p"] = pfmt(fr["size"]["p"])
-    c["friedman.cd"] = f(fr["nemenyi_cd_0.05"], 2)
-    c["friedman.n"] = str(fr["n"])
-    for metric in ("worst_stratum", "size"):
-        for m, r in fr[metric]["mean_ranks"].items():
-            c[f"rank.{metric}.{m}"] = f(r, 2)
-    ls = S["label_shift"]
-    for sc, dd in ls.items():
-        for m, v in dd.items():
-            c[f"shift.{sc}.{m}.p"] = pfmt(v["p_holm"])
-    for sc, dd in ls.items():
-        c[f"shift.{sc.replace('shift_', '').replace('_cov', '')}.max_p"] = pfmt(max(v["p_holm"] for v in dd.values()))
-    T8 = pd.read_csv(TAB / "T8_label_shift.csv").set_index("method")
-    for m in T8.index:
-        for col in ("up1", "up2", "tails1", "down1"):
-            c[f"T8.{m}.{col}"] = pct(T8.loc[m, col])
-            c[f"T8.{m}.{col}_min"] = pct(T8.loc[m, col + "_min_ds"])
+        fam = FAM.get(t["family"], "ext." + t["metric"] if t["family"].startswith("Extreme") else None)
+        if fam:
+            _put_test(c, f"{fam}.{_comp(t['comparison'])}", t)
+    for fam in ("h1w", "h1u", "h1wx"):
+        ps = [t["p_holm"] for t in S["tests"] if FAM.get(t["family"]) == fam]
+        c[f"{fam}.maxp"] = pfmt(max(ps))
+        hls = [t["hl"] for t in S["tests"] if FAM.get(t["family"]) == fam]
+        c[f"{fam}.hlmin"], c[f"{fam}.hlmax"] = f(min(hls)), f(max(hls))
+    c["h1w.minwins"] = str(min(t["wins"] for t in S["tests"] if FAM.get(t["family"]) == "h1w"))
+    c["price.gain.min"] = f(min(p_["worst_gain"] for p_ in S["price"]))
+    c["price.gain.max"] = f(max(p_["worst_gain"] for p_ in S["price"]))
+    rob = [t["p_holm"] for t in S["h3_sensitivity"] if SENS[t["analysis"]] in ("nodev", "nodiag", "nominal", "a05", "a20", "S3", "S10")]
+    c["sens.robust.maxp"] = pfmt(max(rob))
+    T13 = pd.read_csv(TAB / "T13_tail_alerts.csv")
+    st_ = T13[(T13.side == "hi") & T13.rule.isin(["BCCP", "S-NCP", "S-CQR", "SDLC"])]
+    c["alert.strat.recall.min"], c["alert.strat.recall.max"] = f(st_.recall.min()), f(st_.recall.max())
+    for t in S["h3_sensitivity"]:
+        _put_test(c, f"sens.{SENS[t['analysis']]}.{_comp(t['comparison'])}", t)
+    for t in S["tost_worst_stratum"]:
+        c[f"tost.{_comp(t['comparison'])}"] = pfmt(t["p_tost"])
+    for p_ in S["price"]:
+        k = f"price.{p_['stratified']}"
+        c[k + ".geo"], c[k + ".lo"], c[k + ".hi"] = f(p_["geo_ratio"], 2), f(p_["ci_low"], 2), f(p_["ci_high"], 2)
+        c[k + ".med"], c[k + ".gain"], c[k + ".n15"] = f(p_["median_ratio"], 2), f(p_["worst_gain"]), str(p_["n_ratio_gt_1.5"])
+    for r in S["matched_coverage"]:
+        k = f"mc.{r['method_at_alpha_0.05']}"
+        c[k + ".worst"], c[k + ".size"], c[k + ".nsmaller"] = f(r["worst_stratum"]), f(r["size_geo"]), str(r["n_ds_SDLC_smaller"])
+    c["mc.nsmaller.min"] = str(min(r["n_ds_SDLC_smaller"] for r in S["matched_coverage"]))
+    c["mc.nsmaller.max"] = str(max(r["n_ds_SDLC_smaller"] for r in S["matched_coverage"]))
     ea = S["error_analysis"]
-    c["ea.rho_price_rmse"] = f(ea["spearman_price_vs_rmse_over_sd"][0], 2)
-    c["ea.p_price_rmse"] = pfmt(ea["spearman_price_vs_rmse_over_sd"][1])
-    c["ea.rho_ws_ncal"] = f(ea["spearman_worst_stratum_vs_ncal"][0], 2)
-    c["ea.p_ws_ncal"] = pfmt(ea["spearman_worst_stratum_vs_ncal"][1])
-    c["ea.rho_price_skew"] = f(ea["spearman_price_vs_abs_skew"][0], 2)
-    c["ea.p_price_skew"] = pfmt(ea["spearman_price_vs_abs_skew"][1])
-    eff = S["efficiency"]
-    c["eff.calib_SDLC_ms"] = f(1000 * eff["calib_predict_seconds_median"]["SDLC-LS"], 1)
-    c["eff.calib_SCP_ms"] = f(1000 * eff["calib_predict_seconds_median"]["SCP"], 1)
-    c["eff.calib_CQR_ms"] = f(1000 * eff["calib_predict_seconds_median"]["CQR"], 1)
-    c["eff.fit_LS_med"] = f(eff["fit_seconds_median"]["t_fit_density_LS"], 2)
-    c["eff.fit_H_med"] = f(eff["fit_seconds_median"]["t_fit_density_H"], 2)
-    c["eff.fit_H_max"] = f(eff["fit_seconds_max"]["t_fit_density_H"], 1)
-    c["eff.fit_scale_med"] = f(eff["fit_seconds_median"]["t_fit_scale"], 2)
-    c["eff.fit_point_med"] = f(eff["fit_seconds_median"]["t_fit_point"], 2)
-    # robustness tables
-    T5 = pd.read_csv(TAB / "T5_alpha_sensitivity.csv")
-    for _, r in T5.iterrows():
-        c[f"T5.{r['alpha']}.{r['method']}.worst"] = f(r["worst_stratum"])
-        c[f"T5.{r['alpha']}.{r['method']}.upper"] = f(r["upper_tail"])
-    T7 = pd.read_csv(TAB / "T7_calibration_size_sensitivity.csv")
-    for _, r in T7.iterrows():
-        c[f"T7.{r['cal_frac']}.{r['method']}.worst"] = f(r["worst_stratum"])
-        c[f"T7.{r['cal_frac']}.{r['method']}.size"] = f(r["nsize_geo"])
-    T6 = pd.read_csv(TAB / "T6_strata_scheme_sensitivity.csv")
-    for _, r in T6.iterrows():
-        c[f"T6.{r['scheme']}.{r['method']}.worst"] = f(r["worst_stratum"])
-        c[f"T6.{r['scheme']}.{r['method']}.dec"] = f(r["decile_worst_seedavg"])
-        c[f"T6.{r['scheme']}.{r['method']}.size"] = f(r["nsize_geo"])
-    for k, v in E.items():
-        if isinstance(v, (int, float, bool)):
-            c[f"extra.{k}"] = f(v, 2) if isinstance(v, float) else str(v)
-    if "mlp_tests_worst_stratum" in E:
-        c["extra.mlp_max_p"] = pfmt(max(v["p_holm"] for v in E["mlp_tests_worst_stratum"].values()))
-    if (TAB / "T12_mlp_generality.csv").exists():
-        T12 = pd.read_csv(TAB / "T12_mlp_generality.csv").set_index("method")
-        for m in T12.index:
-            c[f"T12.{m}.worst"] = f(T12.loc[m, "worst_stratum"])
-            c[f"T12.{m}.upper"] = f(T12.loc[m, "upper_tail"])
-            c[f"T12.{m}.size"] = f(T12.loc[m, "nsize_geo"])
-    if (TAB / "T11_synthetic_oracle.csv").exists():
-        T11 = pd.read_csv(TAB / "T11_synthetic_oracle.csv")
-        for _, r in T11.iterrows():
-            c[f"T11.{r['scores']}.{r['method']}.size"] = f(r["size"])
-            c[f"T11.{r['scores']}.{r['method']}.worst"] = f(r["worst_stratum"])
-            c[f"T11.{r['scores']}.{r['method']}.upper"] = f(r["upper_tail"])
-    T9 = pd.read_csv(TAB / "T9_computational_cost.csv").set_index("method")
-    for m in T9.index:
-        c[f"T9.{m}.fit"] = f(T9.loc[m, "fit_s_median"], 2)
-        c[f"T9.{m}.cal_ms"] = f(1000 * T9.loc[m, "calib_predict_s_median"], 1)
+    for k, v in ea.items():
+        if isinstance(v, list):
+            c[f"ea.{k}.rho"], c[f"ea.{k}.p"] = f(v[0], 2), pfmt(v[1])
+    for t in S.get("alerts", []):
+        cmp_ = t["comparison"]
+        key = ("cost." + cmp_.split("SDLC vs ")[1]) if cmp_.startswith("cost r=10: ") else _comp(cmp_)
+        _put_test(c, f"al.{t['side']}.{key}", t)
+    L = S.get("learners", {})
+    for tag in ("mlp", "dw"):
+        for t in L.get(tag, {}).get("tests", []):
+            _put_test(c, f"{tag}.{_comp(t['comparison'])}", t)
+        if tag in L:
+            c[f"{tag}.n_datasets"] = str(L[tag]["n_datasets"])
+            c[f"{tag}.n_seeds"] = str(L[tag]["n_seeds"])
+    for k in ("shift_n_ess_ge_50",):
+        c[k] = str(M[k])
+    c["ess_up2_min"], c["ess_up2_median"] = f(M["ess_up2_min"], 1), f(M["ess_up2_median"], 0)
+    cf = RES / "confirmatory" / "statistics_confirmatory.json"
+    if cf.exists():
+        CF = json.loads(cf.read_text())
+        c["conf.n_eval"] = str(CF["n_datasets"])
+        for h in ("C-H1", "C-H3"):
+            for t in CF[h]["tests"]:
+                _put_test(c, f"{h}.{_comp(t['comparison'])}", t)
+        c["C-H1.maxp"] = pfmt(max(t["p_holm"] for t in CF["C-H1"]["tests"]))
+        c["C-H1.supported"] = "supported" if CF["C-H1"]["supported"] else "not supported"
+        c["C-H2.below"], c["C-H2.crit"] = str(CF["C-H2"]["n_below_null_q05"]), str(CF["C-H2"]["critical"])
+        c["C-H2.p"] = pfmt(CF["C-H2"]["binom_p_excess"])
+        for t in CF["C-H4"]:
+            c[f"C-H4.{_comp(t['comparison'])}"] = pfmt(t["p_tost"])
+        for code, r in CF["summary"].items():
+            for col in ("worst_stratum", "size_geo", "top1", "upper_tail", "empty_rate", "sigma_decile_worst"):
+                c[f"cs.{code}.{col}"] = f(r[col])
+        c["conf.price"] = f(CF["price_vs_DLS_geo"], 2)
     return c
 
 
@@ -191,13 +190,13 @@ def context():
 TABLES = {}
 
 
-def md_table(name, cols, rename=None, fmt=None, query=None, sort=None):
-    df = pd.read_csv(TAB / f"{name}.csv")
+def md_table(name, cols=None, rename=None, fmt=None, query=None, sort=None):
+    df = pd.read_csv(TAB / f"{name}.csv", dtype=str if name.startswith(("D", "C")) else None, keep_default_na=False)
     if query:
         df = df.query(query)
     if sort:
         df = df.sort_values(sort)
-    df = df[cols].copy()
+    df = df[cols if cols else list(df.columns)].copy()
     fmt = fmt or {}
     for col in df.columns:
         if col in fmt:

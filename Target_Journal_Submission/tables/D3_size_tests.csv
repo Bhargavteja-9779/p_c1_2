@@ -1,0 +1,13 @@
+Family,Comparison,Ratio [95% CI],HL ratio,Wins/losses,Holm p
+Score (stratified),SDLC vs BCCP,"0.902 [0.841, 0.956]",0.933,24/7,< 0.001
+Score (stratified),SDLC vs S-NCP,"0.975 [0.941, 1.020]",0.962,27/4,< 0.001
+Score (stratified),SDLC vs S-CQR,"0.795 [0.702, 0.878]",0.827,27/4,< 0.001
+Score (stratified),SDLC vs S-HPD,"0.947 [0.929, 0.963]",0.953,28/3,< 0.001
+Density estimator,SDLC vs SDLC-N,"0.993 [0.985, 0.999]",0.994,23/8,0.068
+Density estimator,SDLC vs SDLC-2p,"0.992 [0.976, 1.005]",0.998,17/14,0.581
+Density estimator,SDLC vs SDLC-hist,"0.501 [0.391, 0.622]",0.543,28/3,< 0.001
+Decomposition,S-NCP vs BCCP,"0.926 [0.842, 0.995]",0.973,18/13,0.111
+Decomposition,SDLC-N vs S-NCP,"0.982 [0.948, 1.029]",0.970,26/5,< 0.001
+Decomposition,SDLC vs SDLC-N,"0.993 [0.985, 0.999]",0.994,23/8,0.068
+Hull forms,SDLC-hull vs BCCP-hull,"0.903 [0.826, 0.980]",0.925,25/6,0.002
+Hull forms,SDLC-hull vs S-NCP-hull,"1.014 [0.959, 1.089]",0.979,23/8,0.034

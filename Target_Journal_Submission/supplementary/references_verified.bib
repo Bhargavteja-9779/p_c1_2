@@ -11,6 +11,18 @@
 %       NeurIPS proceedings Bibtex files, keys renamed).
 %   (c) arXiv-only entries: constructed from arXiv API metadata (@misc).
 %   (d) fischer2023openml: OpenReview API; holm1979simple: no DOI exists (doi.org 404), verified via secondary indexes.
+% Revision 2026-11-18 (review issue C1-39 / C1-42), all changes re-verified against primary sources:
+%   - arXiv-only entries converted from @misc to @article with journal = {arXiv preprint arXiv:...} and the
+%     DataCite arXiv DOI (10.48550/arXiv.*, resolvable on api.datacite.org); santos2026loboost now cites TMLR (OpenReview RdQbKSjMHX).
+%   - article numbers added as pages (Crossref article-number): PNAS e2107794118, Stat e261, Artif. Intell. Rev. 82;
+%     malik2026uncertainty updated to Crossref issue data (vol. 335, issue year 2027; key unchanged).
+%   - editor fields removed from NeurIPS entries; NeurIPS/PMLR booktitles set to the official proceedings titles
+%     (PMLR BibTeX; NeurIPS volume number in booktitle as in the DOI-bearing NeurIPS entries).
+%     Pages for NeurIPS 2017/2019 (ke2017lightgbm, romano2019conformalized, tibshirani2019conformal) are NOT given:
+%     the official NeurIPS BibTeX has an empty pages field and dblp was not reachable.
+%   - braced capitals for proper nouns/acronyms; author names normalised (Barber, Rina Foygel; Cand{\`e}s, Emmanuel J.;
+%     McInerney); bairaktari2025kandinsky co-author corrected to Zhiwei Steven Wu (arXiv 2502.17264 and the PMLR PDF).
+%   - new entries (Part C at the end of this file).
 
 % ===================== PART B: literature matrix (DOI entries) =====================
 
@@ -112,8 +124,9 @@
   number = {1},
   journal = {Stat},
   publisher = {Wiley},
-  author = {Sesia, Matteo and Candès, Emmanuel J.},
-  year = {2020}
+  author = {Sesia, Matteo and Cand{\`e}s, Emmanuel J.},
+  year = {2020},
+  pages = {e261}
 }
 
 @article{chernozhukov2021distributional,
@@ -126,7 +139,8 @@
   journal = {Proceedings of the National Academy of Sciences},
   publisher = {National Academy of Sciences},
   author = {Chernozhukov, Victor and Wüthrich, Kaspar and Zhu, Yinchu},
-  year = {2021}
+  year = {2021},
+  pages = {e2107794118}
 }
 
 @article{sadinle2019least,
@@ -172,7 +186,7 @@
 }
 
 @article{toccaceli2019combination,
-  title = {Combination of inductive mondrian conformal predictors},
+  title = {Combination of inductive {M}ondrian conformal predictors},
   volume = {108},
   ISSN = {1573-0565},
   url = {http://dx.doi.org/10.1007/s10994-018-5754-9},
@@ -205,7 +219,7 @@
   DOI = {10.52202/075280-2817},
   booktitle = {Advances in Neural Information Processing Systems 36},
   publisher = {Neural Information Processing Systems Foundation, Inc. (NeurIPS)},
-  author = {Ding, Tiffany and Angelopoulos, Anastasios and Bates, Stephen and Jordan, Michael and Tibshirani, Ryan},
+  author = {Ding, Tiffany and Angelopoulos, Anastasios N. and Bates, Stephen and Jordan, Michael I. and Tibshirani, Ryan J.},
   year = {2023},
   pages = {64555--64576},
   collection = {NeurIPS 2023}
@@ -220,7 +234,7 @@
   number = {4},
   journal = {Journal of the Royal Statistical Society Series B: Statistical Methodology},
   publisher = {Oxford University Press (OUP)},
-  author = {Gibbs, Isaac and Cherian, John J and Candès, Emmanuel J},
+  author = {Gibbs, Isaac and Cherian, John J. and Cand{\`e}s, Emmanuel J.},
   year = {2025},
   pages = {1100--1126}
 }
@@ -234,7 +248,7 @@
   number = {2},
   journal = {Information and Inference: A Journal of the IMA},
   publisher = {Oxford University Press (OUP)},
-  author = {Foygel Barber, Rina and Candès, Emmanuel J and Ramdas, Aaditya and Tibshirani, Ryan J},
+  author = {Barber, Rina Foygel and Cand{\`e}s, Emmanuel J. and Ramdas, Aaditya and Tibshirani, Ryan J.},
   year = {2021},
   pages = {455--482}
 }
@@ -248,7 +262,7 @@
   number = {1},
   journal = {The Annals of Statistics},
   publisher = {Institute of Mathematical Statistics},
-  author = {Barber, Rina Foygel and Candès, Emmanuel J. and Ramdas, Aaditya and Tibshirani, Ryan J.},
+  author = {Barber, Rina Foygel and Cand{\`e}s, Emmanuel J. and Ramdas, Aaditya and Tibshirani, Ryan J.},
   year = {2021},
   pages = {486--507}
 }
@@ -302,7 +316,7 @@
   DOI = {10.52202/079017-2296},
   booktitle = {Advances in Neural Information Processing Systems 37},
   publisher = {Neural Information Processing Systems Foundation, Inc. (NeurIPS)},
-  author = {Xie, Ran and Barber, Rina and Candès, Emmanuel},
+  author = {Xie, Ran and Barber, Rina Foygel and Cand{\`e}s, Emmanuel J.},
   year = {2024},
   pages = {71868--71899},
   collection = {NeurIPS 2024}
@@ -330,7 +344,7 @@
   number = {11-12},
   journal = {Machine Learning},
   publisher = {Springer Science and Business Media LLC},
-  author = {Gao, Ruijiang and Yin, Mingzhang and Mcinerney, James and Kallus, Nathan},
+  author = {Gao, Ruijiang and Yin, Mingzhang and McInerney, James and Kallus, Nathan},
   year = {2024},
   pages = {8347--8370}
 }
@@ -397,7 +411,7 @@
   DOI = {10.52202/075280-0340},
   booktitle = {Advances in Neural Information Processing Systems 36},
   publisher = {Neural Information Processing Systems Foundation, Inc. (NeurIPS)},
-  author = {Wang, Fangxin and Cheng, Lu and Guo, Ruocheng and Liu, Kay and Yu, Philip S},
+  author = {Wang, Fangxin and Cheng, Lu and Guo, Ruocheng and Liu, Kay and Yu, Philip S.},
   year = {2023},
   pages = {7743--7755},
   collection = {NeurIPS 2023}
@@ -430,7 +444,7 @@
 }
 
 @inbook{torgo2013smote,
-  title = {SMOTE for Regression},
+  title = {{SMOTE} for Regression},
   ISBN = {9783642406690},
   ISSN = {1611-3349},
   url = {http://dx.doi.org/10.1007/978-3-642-40669-0_33},
@@ -493,7 +507,8 @@
   journal = {Artificial Intelligence Review},
   publisher = {Springer Science and Business Media LLC},
   author = {Avelino, Juscimara G. and Cavalcanti, George D. C. and Cruz, Rafael M. O.},
-  year = {2024}
+  year = {2024},
+  pages = {82}
 }
 
 @article{gneiting2007strictly,
@@ -534,7 +549,7 @@
 }
 @article{benavoli2017time,
   author  = {Alessio Benavoli and Giorgio Corani and Janez Dem{\v{s}}ar and Marco Zaffalon},
-  title   = {Time for a Change: a Tutorial for Comparing Multiple Classifiers Through Bayesian Analysis},
+  title   = {Time for a Change: a Tutorial for Comparing Multiple Classifiers Through {B}ayesian Analysis},
   journal = {Journal of Machine Learning Research},
   year    = {2017},
   volume  = {18},
@@ -544,7 +559,7 @@
 }
 @article{izbicki2022cdsplit,
   author  = {Rafael Izbicki and Gilson Shimizu and Rafael B. Stern},
-  title   = {CD-split and HPD-split: Efficient Conformal Regions in High Dimensions},
+  title   = {{CD}-split and {HPD}-split: Efficient Conformal Regions in High Dimensions},
   journal = {Journal of Machine Learning Research},
   year    = {2022},
   volume  = {23},
@@ -568,7 +583,7 @@
 @inproceedings{vovk2012conditional,
   title = {Conditional Validity of Inductive Conformal Predictors},
   author = {Vovk, Vladimir},
-  booktitle = {Asian Conference on Machine Learning},
+  booktitle = {Proceedings of the Asian Conference on Machine Learning},
   series = {Proceedings of Machine Learning Research},
   volume = {25},
   pages = {475--490},
@@ -578,9 +593,9 @@
 }
 
 @inproceedings{bostrom2020mondrian,
-  title = {Mondrian conformal regressors},
+  title = {{M}ondrian conformal regressors},
   author = {Boström, Henrik and Johansson, Ulf},
-  booktitle = {Conformal and Probabilistic Prediction and Applications},
+  booktitle = {Proceedings of the Ninth Symposium on Conformal and Probabilistic Prediction and Applications},
   series = {Proceedings of Machine Learning Research},
   volume = {128},
   pages = {114--133},
@@ -590,9 +605,9 @@
 }
 
 @inproceedings{bostrom2021mondrian,
-  title = {Mondrian conformal predictive distributions},
+  title = {{M}ondrian conformal predictive distributions},
   author = {Boström, Henrik and Johansson, Ulf and Löfström, Tuwe},
-  booktitle = {Conformal and Probabilistic Prediction and Applications},
+  booktitle = {Proceedings of the Tenth Symposium on Conformal and Probabilistic Prediction and Applications},
   series = {Proceedings of Machine Learning Research},
   volume = {152},
   pages = {24--38},
@@ -604,7 +619,7 @@
 @inproceedings{podkopaev2021distribution,
   title = {Distribution-free uncertainty quantification for classification under label shift},
   author = {Podkopaev, Aleksandr and Ramdas, Aaditya},
-  booktitle = {Uncertainty in Artificial Intelligence},
+  booktitle = {Proceedings of the Thirty-Seventh Conference on Uncertainty in Artificial Intelligence},
   series = {Proceedings of Machine Learning Research},
   volume = {161},
   pages = {844--853},
@@ -616,7 +631,7 @@
 @inproceedings{yang2021delving,
   title = {Delving into Deep Imbalanced Regression},
   author = {Yang, Yuzhe and Zha, Kaiwen and Chen, Yingcong and Wang, Hao and Katabi, Dina},
-  booktitle = {International Conference on Machine Learning},
+  booktitle = {Proceedings of the 38th International Conference on Machine Learning},
   series = {Proceedings of Machine Learning Research},
   volume = {139},
   pages = {11842--11851},
@@ -626,9 +641,9 @@
 }
 
 @inproceedings{branco2017smogn,
-  title = {SMOGN: a Pre-processing Approach for Imbalanced Regression},
+  title = {{SMOGN}: a Pre-processing Approach for Imbalanced Regression},
   author = {Branco, Paula and Torgo, Luís and Ribeiro, Rita P.},
-  booktitle = {First International Workshop on Learning with Imbalanced Domains: Theory and Applications},
+  booktitle = {Proceedings of the First International Workshop on Learning with Imbalanced Domains: Theory and Applications},
   series = {Proceedings of Machine Learning Research},
   volume = {74},
   pages = {36--50},
@@ -640,7 +655,7 @@
 @inproceedings{izbicki2020flexible,
   title = {Flexible distribution-free conditional predictive bands using density estimators},
   author = {Izbicki, Rafael and Shimizu, Gilson and Stern, Rafael},
-  booktitle = {International Conference on Artificial Intelligence and Statistics},
+  booktitle = {Proceedings of the Twenty Third International Conference on Artificial Intelligence and Statistics},
   series = {Proceedings of Machine Learning Research},
   volume = {108},
   pages = {3068--3077},
@@ -650,21 +665,24 @@
 }
 
 @inproceedings{bairaktari2025kandinsky,
-  title = {Kandinsky Conformal Prediction: Beyond Class- and Covariate-Conditional Coverage},
-  author = {Bairaktari, Konstantina and Wu, Jiayun and Wu, Steven},
-  booktitle = {International Conference on Machine Learning},
+  title = {{K}andinsky Conformal Prediction: Beyond Class- and Covariate-Conditional Coverage},
+  author = {Bairaktari, Konstantina and Wu, Jiayun and Wu, Zhiwei Steven},
+  booktitle = {Proceedings of the 42nd International Conference on Machine Learning},
   series = {Proceedings of Machine Learning Research},
   volume = {267},
   pages = {2581--2602},
   year = {2025},
   publisher = {PMLR},
-  url = {https://proceedings.mlr.press/v267/bairaktari25a.html}
+  url = {https://proceedings.mlr.press/v267/bairaktari25a.html},
+  eprint = {2502.17264},
+  archivePrefix = {arXiv},
+  note = {Author names as printed in the paper (PMLR PDF and arXiv:2502.17264v2); the PMLR web metadata abbreviates the third author as "Steven Wu"}
 }
 
 @inproceedings{kuleshov2018accurate,
   title = {Accurate Uncertainties for Deep Learning Using Calibrated Regression},
   author = {Kuleshov, Volodymyr and Fenner, Nathan and Ermon, Stefano},
-  booktitle = {International Conference on Machine Learning},
+  booktitle = {Proceedings of the 35th International Conference on Machine Learning},
   series = {Proceedings of Machine Learning Research},
   volume = {80},
   pages = {2796--2804},
@@ -677,54 +695,59 @@
 
 @inproceedings{ke2017lightgbm,
  author = {Ke, Guolin and Meng, Qi and Finley, Thomas and Wang, Taifeng and Chen, Wei and Ma, Weidong and Ye, Qiwei and Liu, Tie-Yan},
- booktitle = {Advances in Neural Information Processing Systems},
- editor = {I. Guyon and U. Von Luxburg and S. Bengio and H. Wallach and R. Fergus and S. Vishwanathan and R. Garnett},
+ booktitle = {Advances in Neural Information Processing Systems 30},
  publisher = {Curran Associates, Inc.},
- title = {LightGBM: A Highly Efficient Gradient Boosting Decision Tree},
+ title = {{L}ight{GBM}: A Highly Efficient Gradient Boosting Decision Tree},
  url = {https://proceedings.neurips.cc/paper_files/paper/2017/file/6449f44a102fde848669bdd9eb6b76fa-Paper.pdf},
  volume = {30},
- year = {2017}
+ year = {2017},
+ note = {Official NeurIPS proceedings BibTeX gives no page range}
 }
 
 
 @inproceedings{romano2019conformalized,
- author = {Romano, Yaniv and Patterson, Evan and Candes, Emmanuel},
- booktitle = {Advances in Neural Information Processing Systems},
- editor = {H. Wallach and H. Larochelle and A. Beygelzimer and F. d\textquotesingle Alch\'{e}-Buc and E. Fox and R. Garnett},
+ author = {Romano, Yaniv and Patterson, Evan and Cand{\`e}s, Emmanuel J.},
+ booktitle = {Advances in Neural Information Processing Systems 32},
  publisher = {Curran Associates, Inc.},
  title = {Conformalized Quantile Regression},
  url = {https://proceedings.neurips.cc/paper_files/paper/2019/file/5103c3584b063c431bd1268e9b5e76fb-Paper.pdf},
  volume = {32},
- year = {2019}
+ year = {2019},
+ eprint = {1905.03222},
+ archivePrefix = {arXiv},
+ note = {Official NeurIPS proceedings BibTeX gives no page range}
 }
 
 
 @inproceedings{tibshirani2019conformal,
- author = {Tibshirani, Ryan J and Foygel Barber, Rina and Candes, Emmanuel and Ramdas, Aaditya},
- booktitle = {Advances in Neural Information Processing Systems},
- editor = {H. Wallach and H. Larochelle and A. Beygelzimer and F. d\textquotesingle Alch\'{e}-Buc and E. Fox and R. Garnett},
+ author = {Tibshirani, Ryan J. and Barber, Rina Foygel and Cand{\`e}s, Emmanuel J. and Ramdas, Aaditya},
+ booktitle = {Advances in Neural Information Processing Systems 32},
  publisher = {Curran Associates, Inc.},
  title = {Conformal Prediction Under Covariate Shift},
  url = {https://proceedings.neurips.cc/paper_files/paper/2019/file/8fb21ee7a2207526da55a679f0332de2-Paper.pdf},
  volume = {32},
- year = {2019}
+ year = {2019},
+ eprint = {1904.06019},
+ archivePrefix = {arXiv},
+ note = {Official NeurIPS proceedings BibTeX gives no page range}
 }
 
 
 @inproceedings{sesia2021conformal,
  author = {Sesia, Matteo and Romano, Yaniv},
- booktitle = {Advances in Neural Information Processing Systems},
- editor = {M. Ranzato and A. Beygelzimer and Y. Dauphin and P.S. Liang and J. Wortman Vaughan},
+ booktitle = {Advances in Neural Information Processing Systems 34},
  pages = {6304--6315},
  publisher = {Curran Associates, Inc.},
  title = {Conformal Prediction using Conditional Histograms},
  url = {https://proceedings.neurips.cc/paper_files/paper/2021/file/31b3b31a1c2f8a370206f111127c0dbd-Paper.pdf},
  volume = {34},
- year = {2021}
+ year = {2021},
+ eprint = {2105.08747},
+ archivePrefix = {arXiv}
 }
 
 
-% ===================== PART B: arXiv-only entries =====================
+% ===================== PART B: ICLR, TMLR and arXiv-only entries =====================
 
 @inproceedings{guha2024conformal,
   title = {Conformal Prediction via Regression-as-Classification},
@@ -736,70 +759,81 @@
 }
 
 
-@misc{santos2026loboost,
-  title = {LoBoost: Model-Native Local Conformal Prediction for Gradient-Boosted Trees},
-  author = {Santos, Vagner and Coscrato, Victor and Cabezas, Luben and Izbicki, Rafael and Ramos, Thiago},
+@article{santos2026loboost,
+  title = {{LoBoost}: Model-Native Local Conformal Prediction for Gradient-Boosted Trees},
+  author = {Santos, Vagner Silva and Coscrato, Victor and Cabezas, Luben Miguel Cruz and Izbicki, Rafael and Ramos, Thiago},
+  journal = {Transactions on Machine Learning Research},
+  issn = {2835-8856},
   year = {2026},
+  url = {https://openreview.net/forum?id=RdQbKSjMHX},
   eprint = {2602.22432},
   archivePrefix = {arXiv},
-  primaryClass = {stat.ML},
-  url = {https://arxiv.org/abs/2602.22432},
-  note = {arXiv preprint arXiv:2602.22432 (version 3); accepted to Transactions on Machine Learning Research (11/2026) per arXiv journal-ref}
+  note = {Accepted by TMLR (OpenReview venue record, forum RdQbKSjMHX; author names as in the OpenReview record); arXiv:2602.22432v3 journal-ref: TMLR (11/2026). TMLR assigns no DOI or pages}
 }
 
-@misc{angelopoulos2024theoretical,
+@article{angelopoulos2024theoretical,
   title = {Theoretical Foundations of Conformal Prediction},
   author = {Angelopoulos, Anastasios N. and Barber, Rina Foygel and Bates, Stephen},
+  journal = {arXiv preprint arXiv:2411.11824},
   year = {2024},
+  doi = {10.48550/arXiv.2411.11824},
+  url = {https://arxiv.org/abs/2411.11824},
   eprint = {2411.11824},
   archivePrefix = {arXiv},
   primaryClass = {math.ST},
-  url = {https://arxiv.org/abs/2411.11824},
-  note = {arXiv preprint arXiv:2411.11824 (version 5); to be published by Cambridge University Press per arXiv comment}
+  note = {Version 5 (2026); arXiv comment: to be published by Cambridge University Press (no Crossref record for the book as of 2026-11-18)}
 }
 
-@misc{yi2025distribution,
+@article{yi2025distribution,
   title = {Distribution-Free Prediction Sets for Regression under Target Shift},
   author = {Yi, Menghan and Tang, Yanlin and Wang, Huixia Judy},
+  journal = {arXiv preprint arXiv:2510.10985},
   year = {2025},
+  doi = {10.48550/arXiv.2510.10985},
+  url = {https://arxiv.org/abs/2510.10985},
   eprint = {2510.10985},
   archivePrefix = {arXiv},
   primaryClass = {stat.ME},
-  url = {https://arxiv.org/abs/2510.10985},
-  note = {arXiv preprint arXiv:2510.10985 (version 1)}
+  note = {Version 1}
 }
 
-@misc{boruah2026distribution,
+@article{boruah2026distribution,
   title = {Distribution-Free Conformal Prediction for Steel Fatigue Strength: Marginal Validity Is Not Enough},
   author = {Boruah, Irene},
+  journal = {arXiv preprint arXiv:2608.07589},
   year = {2026},
+  doi = {10.48550/arXiv.2608.07589},
+  url = {https://arxiv.org/abs/2608.07589},
   eprint = {2608.07589},
   archivePrefix = {arXiv},
   primaryClass = {stat.AP},
-  url = {https://arxiv.org/abs/2608.07589},
-  note = {arXiv preprint arXiv:2608.07589 (version 2)}
+  note = {Version 2}
 }
 
-@misc{boruah2026null,
+@article{boruah2026null,
   title = {Null-Corrected Conditional Coverage in Materials Property Prediction: A Five-Dataset Replication},
   author = {Boruah, Irene},
+  journal = {arXiv preprint arXiv:2611.14521},
   year = {2026},
+  doi = {10.48550/arXiv.2611.14521},
+  url = {https://arxiv.org/abs/2611.14521},
   eprint = {2611.14521},
   archivePrefix = {arXiv},
   primaryClass = {stat.ME},
-  url = {https://arxiv.org/abs/2611.14521},
-  note = {arXiv preprint arXiv:2611.14521 (version 1)}
+  note = {Version 1; arXiv comment: submitted to Data-Centric Engineering}
 }
 
-@misc{lee2026split,
-  title = {Split Conformal Prediction with Label-Shift-Adjusted Bayesian Scores},
+@article{lee2026split,
+  title = {Split Conformal Prediction with Label-Shift-Adjusted {B}ayesian Scores},
   author = {Lee, Hyeonsu and Kim, Juyeon and Jadamba, Erkhembayar and Choi, Seungjin and Shin, Hyunjin},
+  journal = {arXiv preprint arXiv:2609.12386},
   year = {2026},
+  doi = {10.48550/arXiv.2609.12386},
+  url = {https://arxiv.org/abs/2609.12386},
   eprint = {2609.12386},
   archivePrefix = {arXiv},
   primaryClass = {cs.LG},
-  url = {https://arxiv.org/abs/2609.12386},
-  note = {arXiv preprint arXiv:2609.12386 (version 1)}
+  note = {Version 1; arXiv comment: 2nd Workshop on Epistemic Intelligence in Machine Learning (EIML@ICML 2026)}
 }
 
 % ===================== PART B: other (OpenReview / no-DOI classic) =====================
@@ -868,7 +902,7 @@
 }
 
 @article{oucheikh2022product,
-  title = {Product verification using OCR classification and Mondrian conformal prediction},
+  title = {Product verification using {OCR} classification and {M}ondrian conformal prediction},
   volume = {188},
   ISSN = {0957-4174},
   url = {http://dx.doi.org/10.1016/j.eswa.2021.115942},
@@ -907,7 +941,7 @@
 }
 
 @article{dey2027robust,
-  title = {Robust conformal gaussian process regression for CO2 laser engraving: Distribution-free uncertainty quantification and automated quality gating},
+  title = {Robust conformal {G}aussian process regression for {CO2} laser engraving: Distribution-free uncertainty quantification and automated quality gating},
   volume = {333},
   ISSN = {0957-4174},
   url = {http://dx.doi.org/10.1016/j.eswa.2026.134356},
@@ -920,19 +954,20 @@
 }
 
 @article{malik2026uncertainty,
-  title = {Uncertainty-aware conformal prediction of compressive strength in low-carbon UHPC: Framework development and experimental validation},
+  title = {Uncertainty-aware conformal prediction of compressive strength in low-carbon {UHPC}: Framework development and experimental validation},
+  volume = {335},
   ISSN = {0957-4174},
   url = {http://dx.doi.org/10.1016/j.eswa.2026.135089},
   DOI = {10.1016/j.eswa.2026.135089},
   journal = {Expert Systems with Applications},
   publisher = {Elsevier BV},
   author = {Malik, Umair Jalil and Mohotti, Damith and Mo, Huadong and Lee, Chi King},
-  year = {2026},
+  year = {2027},
   pages = {135089}
 }
 
 @article{carvalhosilva2027physics,
-  title = {Physics-informed Kolmogorov-Arnold networks with conformal prediction for multi-objective engine optimization},
+  title = {Physics-informed {K}olmogorov-{A}rnold networks with conformal prediction for multi-objective engine optimization},
   volume = {335},
   ISSN = {0957-4174},
   url = {http://dx.doi.org/10.1016/j.eswa.2026.135042},
@@ -1036,7 +1071,7 @@
 }
 
 @article{alahyari2026smogan,
-  title = {SMOGAN: Synthetic minority oversampling with GAN refinement for imbalanced regression},
+  title = {{SMOGAN}: Synthetic minority oversampling with {GAN} refinement for imbalanced regression},
   volume = {329},
   ISSN = {0957-4174},
   url = {http://dx.doi.org/10.1016/j.eswa.2026.133032},
@@ -1049,7 +1084,7 @@
 }
 
 @article{kim2026centerir,
-  title = {CenterIR: An imbalance-aware deep regression framework for EEG-based depression severity estimation in older adults},
+  title = {{CenterIR}: An imbalance-aware deep regression framework for {EEG}-based depression severity estimation in older adults},
   volume = {323},
   ISSN = {0957-4174},
   url = {http://dx.doi.org/10.1016/j.eswa.2026.132358},
@@ -1101,7 +1136,7 @@
 }
 
 @article{nguinabe2025bootstrap,
-  title = {Bootstrap prediction intervals for the long short term memory (LSTM) recurrent neural network},
+  title = {Bootstrap prediction intervals for the long short term memory ({LSTM}) recurrent neural network},
   volume = {284},
   ISSN = {0957-4174},
   url = {http://dx.doi.org/10.1016/j.eswa.2025.127728},
@@ -1140,7 +1175,7 @@
 }
 
 @article{hu2024evaluate,
-  title = {Evaluate asphalt pavement frictional characteristics based on IGWO-NGBoost using 3D macro-texture data},
+  title = {Evaluate asphalt pavement frictional characteristics based on {IGWO-NGBoost} using {3D} macro-texture data},
   volume = {242},
   ISSN = {0957-4174},
   url = {http://dx.doi.org/10.1016/j.eswa.2023.122786},
@@ -1215,4 +1250,145 @@
   author = {Golnari, Amin and Komeili, Mohammad Hossein and Azizi, Zahra},
   year = {2024},
   pages = {124404}
+}
+
+% ===================== PART C: entries added 2026-11-18 (review issues C1-13, C1-15, C1-21, C1-23, C1-42) =====================
+% Each verified on the source named in its note field (Crossref API, publisher/proceedings page, JMLR .bib, CRAN, OpenML API).
+
+@inproceedings{kiyani2024length,
+  title = {Length Optimization in Conformal Prediction},
+  author = {Kiyani, Shayan and Pappas, George and Hassani, Hamed},
+  booktitle = {Advances in Neural Information Processing Systems 37},
+  publisher = {Neural Information Processing Systems Foundation, Inc. (NeurIPS)},
+  year = {2024},
+  pages = {99519--99563},
+  DOI = {10.52202/079017-3158},
+  url = {https://proceedings.neurips.cc/paper_files/paper/2024/file/b41907dd4df5c60f86216b73fe0c7465-Paper-Conference.pdf},
+  eprint = {2406.18814},
+  archivePrefix = {arXiv},
+  note = {Verified: api.crossref.org/works/10.52202/079017-3158 and the official NeurIPS 2024 BibTeX}
+}
+
+@article{barber2023beyond,
+  title = {Conformal prediction beyond exchangeability},
+  author = {Barber, Rina Foygel and Cand{\`e}s, Emmanuel J. and Ramdas, Aaditya and Tibshirani, Ryan J.},
+  journal = {The Annals of Statistics},
+  volume = {51},
+  number = {2},
+  pages = {816--845},
+  year = {2023},
+  ISSN = {0090-5364},
+  DOI = {10.1214/23-AOS2276},
+  url = {http://dx.doi.org/10.1214/23-AOS2276},
+  publisher = {Institute of Mathematical Statistics},
+  note = {Verified: api.crossref.org/works/10.1214/23-AOS2276; arXiv:2202.13415}
+}
+
+@article{jin2023selection,
+  title = {Selection by Prediction with Conformal p-values},
+  author = {Jin, Ying and Cand{\`e}s, Emmanuel J.},
+  journal = {Journal of Machine Learning Research},
+  year = {2023},
+  volume = {24},
+  number = {244},
+  pages = {1--41},
+  url = {http://jmlr.org/papers/v24/22-1176.html},
+  eprint = {2210.01408},
+  archivePrefix = {arXiv},
+  note = {Verified: official JMLR BibTeX (jmlr.org/papers/v24/22-1176.bib); no DOI}
+}
+
+@article{steininger2021denseweight,
+  title = {Density-based weighting for imbalanced regression},
+  author = {Steininger, Michael and Kobs, Konstantin and Davidson, Padraig and Krause, Anna and Hotho, Andreas},
+  journal = {Machine Learning},
+  volume = {110},
+  number = {8},
+  pages = {2187--2211},
+  year = {2021},
+  ISSN = {1573-0565},
+  DOI = {10.1007/s10994-021-06023-5},
+  url = {http://dx.doi.org/10.1007/s10994-021-06023-5},
+  publisher = {Springer Science and Business Media LLC},
+  note = {Verified: api.crossref.org/works/10.1007/s10994-021-06023-5 (open access, CC BY 4.0)}
+}
+
+@inproceedings{ren2022balanced,
+  title = {Balanced {MSE} for Imbalanced Visual Regression},
+  author = {Ren, Jiawei and Zhang, Mingyuan and Yu, Cunjun and Liu, Ziwei},
+  booktitle = {2022 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+  publisher = {IEEE},
+  year = {2022},
+  pages = {7916--7925},
+  DOI = {10.1109/CVPR52688.2022.00777},
+  url = {http://dx.doi.org/10.1109/CVPR52688.2022.00777},
+  eprint = {2203.16427},
+  archivePrefix = {arXiv},
+  note = {Verified: api.crossref.org (IEEE record) and the CVF open-access page; four authors only. Pages are the IEEE pagination; the CVF open-access version is paginated 7926--7935}
+}
+
+@article{romano2020malice,
+  title = {With Malice Toward None: Assessing Uncertainty via Equalized Coverage},
+  author = {Romano, Yaniv and Barber, Rina Foygel and Sabatti, Chiara and Cand{\`e}s, Emmanuel J.},
+  journal = {Harvard Data Science Review},
+  volume = {2},
+  number = {2},
+  year = {2020},
+  ISSN = {2644-2353},
+  DOI = {10.1162/99608f92.03f00592},
+  url = {http://dx.doi.org/10.1162/99608f92.03f00592},
+  publisher = {MIT Press},
+  note = {Verified: api.crossref.org/works/10.1162/99608f92.03f00592; arXiv:1908.05428 (arXiv title: "With Malice Towards None"); HDSR assigns no page numbers}
+}
+
+@article{luo2025cti,
+  title = {Conformal Thresholded Intervals for Efficient Regression},
+  author = {Luo, Rui and Zhou, Zhixin},
+  journal = {Proceedings of the AAAI Conference on Artificial Intelligence},
+  volume = {39},
+  number = {18},
+  pages = {19216--19223},
+  year = {2025},
+  ISSN = {2374-3468},
+  DOI = {10.1609/aaai.v39i18.34115},
+  url = {http://dx.doi.org/10.1609/aaai.v39i18.34115},
+  publisher = {Association for the Advancement of Artificial Intelligence (AAAI)},
+  eprint = {2407.14495},
+  archivePrefix = {arXiv},
+  note = {Verified: api.crossref.org/works/10.1609/aaai.v39i18.34115 (AAAI-25)}
+}
+
+@manual{randahl2026pintervals,
+  title = {{pintervals}: Model Agnostic Prediction Intervals},
+  author = {Randahl, David},
+  year = {2026},
+  publisher = {R package version 1.3.3, Comprehensive R Archive Network (CRAN)},
+  version = {1.3.3},
+  DOI = {10.32614/CRAN.package.pintervals},
+  url = {https://CRAN.R-project.org/package=pintervals},
+  note = {Verified on the CRAN package page and reference manual (version 1.3.3, published 2026-10-27; David Randahl [aut, cre], Jonathan P. Williams [ctb], Anders Hjort [ctb]). Implements pinterval_bccp (bin-conditional CP) and pinterval_ccp (clustered conformal prediction over Mondrian classes)}
+}
+
+@book{serfling1980approximation,
+  title = {Approximation Theorems of Mathematical Statistics},
+  author = {Serfling, Robert J.},
+  publisher = {John Wiley \& Sons},
+  series = {Wiley Series in Probability and Statistics},
+  year = {1980},
+  ISBN = {9780471024033},
+  DOI = {10.1002/9780470316481},
+  url = {http://dx.doi.org/10.1002/9780470316481},
+  note = {Verified: api.crossref.org/works/10.1002/9780470316481 (monograph; Chapter 2 "The Basic Sample Statistics", pp. 55--116, DOI 10.1002/9780470316481.ch2). Section/theorem content not verified (publisher pages returned 403)}
+}
+
+@inproceedings{grinsztajn2022tree,
+  title = {Why do tree-based models still outperform deep learning on typical tabular data?},
+  author = {Grinsztajn, Leo and Oyallon, Edouard and Varoquaux, Gael},
+  booktitle = {Advances in Neural Information Processing Systems 35 (Datasets and Benchmarks Track)},
+  publisher = {Neural Information Processing Systems Foundation, Inc. (NeurIPS)},
+  year = {2022},
+  pages = {507--520},
+  DOI = {10.52202/068431-0037},
+  url = {https://proceedings.neurips.cc/paper_files/paper/2022/hash/0378c7692da36807bdec87ab043cdadc-Abstract-Datasets_and_Benchmarks.html},
+  note = {Verified: NeurIPS 2022 proceedings page (Datasets and Benchmarks Track) and api.crossref.org/works/10.52202/068431-0037. Regression datasets on OpenML: suites 335 (categorical regression, 17 tasks) and 336 (numerical regression, 19 tasks), January 2023 version (openml.org/api/v1/json/study/335, /336)}
 }

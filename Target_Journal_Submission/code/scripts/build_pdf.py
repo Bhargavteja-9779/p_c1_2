@@ -45,9 +45,12 @@ def main():
     md = BUILD / "manuscript_filled.md"
     if not md.exists():
         sys.exit("run scripts/render_manuscript.py first")
+    build(md, MS / "Final_Manuscript.pdf", BUILD / "manuscript.html")
+
+
+def build(md, out_pdf, html):
     css = BUILD / "pdf.css"
     css.write_text(CSS)
-    html = BUILD / "manuscript.html"
     subprocess.run(["pandoc", str(md), "-s", "--citeproc", "--mathml", "--embed-resources",
                     f"--bibliography={TOP / 'supplementary' / 'references_verified.bib'}",
                     f"--csl={BUILD / 'elsevier-harvard.csl'}", f"--css={css}", "--resource-path", str(TOP),
@@ -67,9 +70,9 @@ const { chromium } = require('playwright');
   await browser.close();
 })();
 """)
-    subprocess.run(["node", str(js), str(html), str(MS / "Final_Manuscript.pdf")], check=True,
+    subprocess.run(["node", str(js), str(html), str(out_pdf)], check=True,
                    env={**__import__("os").environ, "NODE_PATH": "/opt/node22/lib/node_modules"})
-    print("written", MS / "Final_Manuscript.pdf")
+    print("written", out_pdf)
 
 
 if __name__ == "__main__":

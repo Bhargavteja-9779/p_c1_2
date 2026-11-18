@@ -1,0 +1,8 @@
+Marginal method (α = 0.05),Worst stratum,Size,SDLC (α = 0.1) smaller on
+SCP,0.772,1.053,25/31
+NCP,0.858,1.005,28/31
+CQR,0.808,1.374,26/31
+Mondrian-ŷ,0.866,1.070,26/31
+DCP,0.878,1.017,27/31
+HPD-split,0.863,1.030,28/31
+DLS,0.819,0.937,23/31
