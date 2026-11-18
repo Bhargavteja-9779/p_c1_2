@@ -567,11 +567,12 @@ def alerts_study(a10, ratios=(1, 5, 10, 20)):
             if other in pv:
                 r_ = paired_summary(pv["SDLC"], pv[other], better="smaller", log=True)
                 cmp_.append({"side": side, "comparison": f"SDLC vs {other}", **r_})
-        pc = g[g.side == side].pivot(index="did", columns="rule", values="cost_r10")
-        for other in ("TC-LS", "CS-BH-0.2", "Point", "BCCP", "S-NCP"):
-            if other in pc:
-                r_ = paired_summary(pc["SDLC"], pc[other], better="smaller", log=False)
-                cmp_.append({"side": side, "comparison": f"cost r=10: SDLC vs {other}", **r_})
+        for rr in (10, 20):
+            pc = g[g.side == side].pivot(index="did", columns="rule", values=f"cost_r{rr}")
+            for other in ("TC-LS", "CS-BH-0.2", "Point", "BCCP", "S-NCP", "HPD-split"):
+                if other in pc:
+                    r_ = paired_summary(pc["SDLC"], pc[other], better="smaller", log=False)
+                    cmp_.append({"side": side, "comparison": f"cost r={rr}: SDLC vs {other}", **r_})
     T = pd.DataFrame(cmp_)
     table(T, "T13b_alert_tests", 4)
     STATS["alerts"] = T.to_dict("records")
@@ -807,8 +808,8 @@ def figures(df, a10, pdm, S, T7, sd):
     save(fig, "F7_calibration_size")
     # decomposition of size ratios (per-dataset), sorted
     fig, ax = plt.subplots(figsize=(4.8, 3.2))
-    steps = [("S-NCP", "S-Res", "S-NCP / BCCP (adds σ̂)"), ("SDLC-N", "S-NCP", "SDLC-N / S-NCP (adds 1/σ̂ weighting)"),
-             (P, "SDLC-N", "SDLC / SDLC-N (adds KDE shape)")]
+    steps = [("S-NCP", "S-Res", "S-NCP / BCCP\n(adds σ̂)"), ("SDLC-N", "S-NCP", "SDLC-N / S-NCP\n(adds 1/σ̂ weighting)"),
+             (P, "SDLC-N", "SDLC / SDLC-N\n(adds KDE shape)")]
     for i, (a, b, lab) in enumerate(steps):
         r = np.log(S[a] / S[b]).dropna()
         ax.scatter(np.full(len(r), i) + np.random.default_rng(i).uniform(-0.15, 0.15, len(r)), np.exp(r), s=10,
@@ -816,6 +817,10 @@ def figures(df, a10, pdm, S, T7, sd):
         ax.plot([i - 0.25, i + 0.25], [np.exp(r.mean())] * 2, color="#0b0b0b", lw=1.5)
     ax.axhline(1, color="#8a8984", lw=0.8)
     ax.set_yscale("log")
+    from matplotlib.ticker import FixedLocator, NullFormatter, ScalarFormatter
+    ax.yaxis.set_major_locator(FixedLocator([0.3, 0.5, 0.7, 0.85, 1.0, 1.2, 1.5]))
+    ax.yaxis.set_major_formatter(ScalarFormatter())
+    ax.yaxis.set_minor_formatter(NullFormatter())
     ax.set_xticks(range(3))
     ax.set_xticklabels([s[2] for s in steps], fontsize=6.5)
     ax.set_ylabel("Per-dataset set-size ratio (log scale)")

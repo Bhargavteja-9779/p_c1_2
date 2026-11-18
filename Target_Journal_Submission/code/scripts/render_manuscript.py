@@ -135,6 +135,10 @@ def context():
     T13 = pd.read_csv(TAB / "T13_tail_alerts.csv")
     st_ = T13[(T13.side == "hi") & T13.rule.isin(["BCCP", "S-NCP", "S-CQR", "SDLC"])]
     c["alert.strat.recall.min"], c["alert.strat.recall.max"] = f(st_.recall.min()), f(st_.recall.max())
+    mg_ = T13[(T13.side == "hi") & T13.rule.isin(["SCP", "CQR", "HPD-split"])]
+    nds = M["n_datasets"]
+    c["alert.marg.below09.min"] = str(int(nds - mg_["n_ds_recall_ge_0.9"].max()))
+    c["alert.marg.below09.max"] = str(int(nds - mg_["n_ds_recall_ge_0.9"].min()))
     for t in S["h3_sensitivity"]:
         _put_test(c, f"sens.{SENS[t['analysis']]}.{_comp(t['comparison'])}", t)
     for t in S["tost_worst_stratum"]:
@@ -154,7 +158,11 @@ def context():
             c[f"ea.{k}.rho"], c[f"ea.{k}.p"] = f(v[0], 2), pfmt(v[1])
     for t in S.get("alerts", []):
         cmp_ = t["comparison"]
-        key = ("cost." + cmp_.split("SDLC vs ")[1]) if cmp_.startswith("cost r=10: ") else _comp(cmp_)
+        if cmp_.startswith("cost r="):
+            rr = cmp_.split(":")[0].replace("cost r=", "")
+            key = ("cost." if rr == "10" else f"cost{rr}.") + cmp_.split("SDLC vs ")[1]
+        else:
+            key = _comp(cmp_)
         _put_test(c, f"al.{t['side']}.{key}", t)
     L = S.get("learners", {})
     for tag in ("mlp", "dw"):
