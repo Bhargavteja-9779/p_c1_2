@@ -7,10 +7,12 @@ from scipy import stats
 
 
 def holm(pvals):
+    """Holm step-down adjustment; NaN p-values (untestable comparisons) stay NaN and are not counted."""
     p = np.asarray(pvals, float)
-    o = np.argsort(p)
-    m = len(p)
-    adj = np.empty(m)
+    adj = np.full(len(p), np.nan)
+    fin = np.flatnonzero(np.isfinite(p))
+    o = fin[np.argsort(p[fin])]
+    m = len(fin)
     run = 0.0
     for r, i in enumerate(o):
         run = max(run, (m - r) * p[i])
@@ -106,6 +108,14 @@ def paired_summary(a, b, better="smaller", log=False, alternative="two-sided"):
         ok &= (a > 0) & (b > 0)
     a, b = a[ok], b[ok]
     d = (np.log(a) - np.log(b)) if log else (a - b)
+    if len(d) < 3:          # too few paired datasets for any test (e.g. quick mode or an empty subgroup)
+        nan = float("nan")
+        out = dict(n=int(len(d)), p=nan, p_sign=nan, hl=nan, hl_lo=nan, hl_hi=nan, rbc=nan, wins=int((d < 0).sum()),
+                   losses=int((d > 0).sum()), ties=int((d == 0).sum()))
+        if log:
+            out.update(geo_ratio=float(np.exp(d.mean())) if len(d) else nan, geo_lo=nan, geo_hi=nan, hl_ratio=nan,
+                       hl_ratio_lo=nan, hl_ratio_hi=nan)
+        return out
     res = paired_wilcoxon(a if not log else np.log(a), b if not log else np.log(b), alternative=alternative)
     hl, (lo, hi) = hodges_lehmann(d)
     wins = int((d < 0).sum()) if better == "smaller" else int((d > 0).sum())

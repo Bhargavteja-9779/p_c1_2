@@ -82,8 +82,11 @@ def _star(a):
 if __name__ == "__main__":
     OUT.mkdir(parents=True, exist_ok=True)
     workers = int(sys.argv[1]) if len(sys.argv) > 1 else CFG["workers"]
-    sizes = {d: load(d)[2]["n"] for d in CFG["datasets"]}
-    tasks = [(d, s) for s in CFG["seeds"] for d in sorted(CFG["datasets"], key=lambda d: -sizes[d])]
+    # every cached fit in CACHE (main study, confirmatory study or quick mode)
+    have = sorted({tuple(int(v) for v in p.name.split(".")[0].split("_")) for p in CACHE.glob("*.npz")
+                   if not p.name.endswith(".tmp.npz")})
+    sizes = {d: load(d)[2]["n"] for d in {d for d, _ in have}}
+    tasks = sorted(have, key=lambda t: (t[1], -sizes[t[0]]))
     with Pool(workers) as pool:
         for name, status in pool.imap_unordered(_star, tasks):
             print(name, status, flush=True)

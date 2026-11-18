@@ -44,7 +44,18 @@ The synthetic study separates the score from its estimate (Table [-@tbl:syntheti
 
 {{TABLE:synthetic|Synthetic study ($n_{\mathrm{train}}=n_{\mathrm{cal}}=5000$, 10 seeds, $\alpha=0.1$, 20,000 test points per seed). Each cell: coverage of the upper stratum / mean set size relative to S-NCP. Oracle methods (O-) use the true conditional density or the true $\mu$ and $\sigma$; O-HDR-X is the shortest set with exact covariate-conditional coverage. Design E has no density, hence no oracle.}}
 
-{{CONFIRMATORY_SECTION}}
+## Confirmatory replication on held-out datasets {#sec:confirmatory}
+
+On the {{conf.n_eval}} held-out datasets, analysed exactly as pre-registered (Supplementary Section S6), all four hypotheses were supported (Table [-@tbl:confirmatory]).
+
+* *C-H1 (tail coverage).* SDLC's worst-stratum coverage exceeded that of each of the seven marginal and covariate-adaptive methods (Holm $p$ {{C-H1.maxp}}).
+* *C-H2 (validity).* Its worst-stratum coverage fell below the 5% quantile of the exact-validity null reference on {{C-H2.below}} of {{conf.n_eval}} datasets (critical value {{C-H2.crit}}).
+* *C-H3 (set size).* SDLC's sets were smaller than those of BCCP (geometric-mean ratio {{C-H3.BCCP.geo}}, {{C-H3.BCCP.wins}}/{{C-H3.BCCP.losses}} datasets, Holm $p$ = {{C-H3.BCCP.p}}), S-CQR ({{C-H3.S-CQR.geo}}, {{C-H3.S-CQR.wins}}/{{C-H3.S-CQR.losses}}, $p$ {{C-H3.S-CQR.p}}), S-NCP ({{C-H3.S-NCP.geo}}, {{C-H3.S-NCP.wins}}/{{C-H3.S-NCP.losses}}, $p$ = {{C-H3.S-NCP.p}}) and S-HPD ({{C-H3.S-HPD.geo}}, {{C-H3.S-HPD.wins}}/{{C-H3.S-HPD.losses}}, $p$ = {{C-H3.S-HPD.p}}). By the pre-registered rule, every comparison favours SDLC. The gains over S-NCP and S-HPD are again small and consistent: the bootstrap intervals of their geometric-mean ratios ({{C-H3.S-NCP.lo}}–{{C-H3.S-NCP.hi}} and {{C-H3.S-HPD.lo}}–{{C-H3.S-HPD.hi}}) include one, while the signed-rank and sign tests show that the reduction occurs on most datasets.
+* *C-H4 (equivalence).* The worst-stratum coverage of SDLC was equivalent to that of S-NCP and BCCP within 0.02 (TOST $p$ {{C-H4.S-NCP}} and {{C-H4.BCCP}}).
+
+The secondary results repeated the trade-off seen on CTR23. SDLC covered {{cs.SDLC-LS.top1}} of the top 1%, against {{cs.S-NCP.top1}} for S-NCP, and its worst coverage over deciles of $\hat\sigma(x)$ was {{cs.SDLC-LS.sigma_decile_worst}}, against {{cs.S-NCP.sigma_decile_worst}}. The price of stratification relative to DLS was {{conf.price}}, close to that on CTR23.
+
+{{TABLE:confirmatory|Pre-registered confirmatory replication on {{conf.n_eval}} held-out datasets (5 seeds each, $\alpha=0.1$, five strata). Effects: Hodges–Lehmann difference of worst-stratum coverage (C-H1), geometric-mean size ratio with 95% bootstrap CI (C-H3), median difference (C-H4). Decisions follow the rules fixed before evaluation.}}
 
 ## Target shift (RQ4)
 

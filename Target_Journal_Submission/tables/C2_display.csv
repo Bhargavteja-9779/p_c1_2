@@ -1,0 +1,15 @@
+Hypothesis,Comparison,Effect,Wins/losses,Holm p,Decision
+C-H1 worst-stratum coverage (one-sided),SDLC vs SCP,HL difference +0.354,17/0,< 0.001,supported
+C-H1 worst-stratum coverage (one-sided),SDLC vs NCP,HL difference +0.288,16/1,< 0.001,supported
+C-H1 worst-stratum coverage (one-sided),SDLC vs CQR,HL difference +0.259,17/0,< 0.001,supported
+C-H1 worst-stratum coverage (one-sided),SDLC vs Mondrian-ŷ,HL difference +0.307,17/0,< 0.001,supported
+C-H1 worst-stratum coverage (one-sided),SDLC vs DCP,HL difference +0.188,16/1,< 0.001,supported
+C-H1 worst-stratum coverage (one-sided),SDLC vs HPD-split,HL difference +0.203,16/1,< 0.001,supported
+C-H1 worst-stratum coverage (one-sided),SDLC vs DLS,HL difference +0.270,17/0,< 0.001,supported
+C-H2 validity (datasets below null 5% quantile),SDLC,1 of 17 (critical value 3),,binomial 0.582,consistent
+C-H3 set size (two-sided),SDLC vs BCCP,"ratio 0.862 [0.785, 0.932]",14/3,0.001,favours SDLC
+C-H3 set size (two-sided),SDLC vs S-NCP,"ratio 0.977 [0.940, 1.028]",15/2,0.008,favours SDLC
+C-H3 set size (two-sided),SDLC vs S-CQR,"ratio 0.841 [0.730, 0.931]",15/2,< 0.001,favours SDLC
+C-H3 set size (two-sided),SDLC vs S-HPD,"ratio 0.984 [0.963, 1.014]",15/2,0.008,favours SDLC
+C-H4 equivalence of worst-stratum coverage (margin 0.02),SDLC vs S-NCP,median difference -0.0000,,TOST < 0.001,equivalent
+C-H4 equivalence of worst-stratum coverage (margin 0.02),SDLC vs BCCP,median difference -0.0015,,TOST < 0.001,equivalent

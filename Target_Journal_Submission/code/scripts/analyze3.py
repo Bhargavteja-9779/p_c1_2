@@ -377,7 +377,8 @@ def main():
 
 
 def aux_metrics(df, T1):
-    METRICS["forest_zero_frac"] = float(T1.set_index("dataset").loc["forest_fires", "zero_frac"])
+    if "forest_fires" in set(T1.dataset):
+        METRICS["forest_zero_frac"] = float(T1.set_index("dataset").loc["forest_fires", "zero_frac"])
     z = df.drop_duplicates(["did", "seed"])
     METRICS["z_sd_ratio_median"] = float(np.median(z.z_sd_cf / z.z_sd_insample))
     METRICS["z_sd_cf_median"] = float(np.median(z.z_sd_cf))
@@ -697,6 +698,29 @@ def display_tables():
                     r[f"{dgp}, γ={g:g}"] = "" if x.empty else f"{x.upper.iloc[0]:.3f}"
             rows.append(r)
         pd.DataFrame(rows).to_csv(TAB / "D12_synthetic_shift.csv", index=False)
+    cf = TOP / "results" / "confirmatory" / "statistics_confirmatory.json"
+    if cf.exists():
+        CF = json.loads(cf.read_text())
+        rows = []
+        for t in CF["C-H1"]["tests"]:
+            rows.append({"Hypothesis": "C-H1 worst-stratum coverage (one-sided)", "Comparison": t["comparison"].replace("yhat", "ŷ"),
+                         "Effect": f"HL difference {t['hl']:+.3f}", "Wins/losses": f"{t['wins']}/{t['losses']}",
+                         "Holm p": _p(t["p_holm"]), "Decision": "supported" if CF["C-H1"]["supported"] else "not supported"})
+        h2 = CF["C-H2"]
+        rows.append({"Hypothesis": "C-H2 validity (datasets below null 5% quantile)", "Comparison": "SDLC",
+                     "Effect": f"{h2['n_below_null_q05']} of {CF['n_datasets']} (critical value {h2['critical']})",
+                     "Wins/losses": "", "Holm p": f"binomial {_p(h2['binom_p_excess'])}",
+                     "Decision": "consistent" if h2["consistent_with_validity"] else "not consistent"})
+        for t in CF["C-H3"]["tests"]:
+            dec = "favours SDLC" if t["favours_SDLC"] else ("favours comparator" if t["favours_comparator"] else "no difference shown")
+            rows.append({"Hypothesis": "C-H3 set size (two-sided)", "Comparison": t["comparison"],
+                         "Effect": "ratio " + _ci(t["geo_ratio"], t["geo_lo"], t["geo_hi"]),
+                         "Wins/losses": f"{t['wins']}/{t['losses']}", "Holm p": _p(t["p_holm"]), "Decision": dec})
+        for t in CF["C-H4"]:
+            rows.append({"Hypothesis": "C-H4 equivalence of worst-stratum coverage (margin 0.02)", "Comparison": t["comparison"],
+                         "Effect": f"median difference {t['median_diff']:+.4f}", "Wins/losses": "",
+                         "Holm p": f"TOST {_p(t['p_tost'])}", "Decision": "equivalent" if t["p_tost"] < 0.05 else "not shown"})
+        pd.DataFrame(rows).to_csv(TAB / "C2_display.csv", index=False)
     for nm, src in (("D5_alpha", "T5_alpha_sensitivity"), ("D6_strata", "T6_strata_schemes"),
                     ("D7_calsize", "T7_calibration_size"), ("D2b_variants", "T2b_variants"),
                     ("D10_error", "T10_error_analysis")):
