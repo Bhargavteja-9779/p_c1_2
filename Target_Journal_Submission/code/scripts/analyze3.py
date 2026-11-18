@@ -363,8 +363,9 @@ def main():
     aux_metrics(df, T1)
     prop1_table()
     synthetic_study()
-    learner_studies(pdm)
+    learner_studies(pdm, a10)
     timing_study()
+    grouped_study(a10)
     # ---------------------------------------------------------------- figures
     figures(df, a10, pdm, S, T7, sd)
     display_tables()
@@ -458,7 +459,7 @@ def synthetic_study():
     METRICS["synthetic_shift"] = t.to_dict("records")
 
 
-def learner_studies(pdm_lgb):
+def learner_studies(pdm_lgb, a10=None):
     out = {}
     for tag, d in (("mlp", TOP / "results" / "raw_mlp_v3"), ("dw", TOP / "results" / "raw_denseweight")):
         files = sorted(d.glob("*.jsonl")) if d.exists() else []
@@ -490,7 +491,11 @@ def learner_studies(pdm_lgb):
         table(pd.DataFrame(summ), f"T9_{tag}_summary")
         table(pd.DataFrame(rows), f"T9_{tag}_tests", 4)
         if tag == "dw":   # does imbalance-aware training remove the under-coverage of marginal methods?
-            lg = pdm_lgb[pdm_lgb.method.isin(MARGINAL + STRAT)]
+            if a10 is not None:     # same seeds as the DenseWeight runs
+                lg = per_dataset(a10[a10.seed.isin(sorted(x.seed.unique()))], ["coverage", "nsize", "tail_hi"])
+            else:
+                lg = pdm_lgb
+            lg = lg[lg.method.isin(MARGINAL + STRAT)]
             cmp_ = []
             for m in ("SCP", "CQR", "NCP", "S-NCP", P):
                 a_ = pdx[pdx.method == m].set_index("did")
@@ -503,8 +508,6 @@ def learner_studies(pdm_lgb):
                              "size_ratio_dw_vs_lgb": float(np.exp(np.mean(np.log(a_.loc[common].nsize / b_.loc[common].nsize))))})
             out["dw_vs_lgb"] = cmp_
             table(pd.DataFrame(cmp_), "T9_dw_vs_lgb")
-            rm = x.drop_duplicates(["did", "seed"])[["did", "test_rmse", "test_rmse_upper"]].groupby("did").mean()
-            out["dw_rmse_upper_median"] = float(rm.test_rmse_upper.median())
     STATS["learners"] = out
 
 
@@ -524,6 +527,47 @@ def timing_study():
         table(tf, "T15b_timing_fit")
         num = tf.select_dtypes("number")
         METRICS["timing_fit_median"] = num.median().to_dict()
+
+
+def grouped_study(a10):
+    d = TOP / "results" / "raw_grouped"
+    files = sorted(d.glob("*.jsonl")) if d.exists() else []
+    if not files:
+        return
+    g = pd.concat([pd.read_json(f_, lines=True) for f_ in files], ignore_index=True)
+    g["nsize"] = g["size"] / g["y_train_sd"]
+    cc = [c for c in g.columns if c.startswith("cal_cov_") and c[8:].isdigit()]
+    rows = []
+    keep = ["SCP", "CQR", "HPD-split-LS", "S-Res", "S-NCP", "S-CQR", P]
+    for (did, ds, how), gg in g.groupby(["did", "dataset", "split"]):
+        rnd = a10[(a10.did == did) & a10.seed.isin(gg.seed.unique())]
+        rc = [c for c in rnd.columns if c.startswith("cal_cov_") and c[8:].isdigit()]
+        for m in keep:
+            a_, b_ = gg[gg.method == m], rnd[rnd.method == m]
+            if a_.empty or b_.empty:
+                continue
+            rows.append({"dataset": ds, "split": how, "method": NAME[m], "coverage_grouped": a_.coverage.mean(),
+                         "coverage_random": b_.coverage.mean(),
+                         "worst_grouped": float(a_[cc].mean().min()), "worst_random": float(b_[rc].mean().min()),
+                         "size_grouped": float(np.exp(np.log(a_.nsize).mean())),
+                         "size_random": float(np.exp(np.log(b_["size"] / b_["y_train_sd"]).mean())),
+                         "n_seeds": int(a_.seed.nunique())})
+    T = pd.DataFrame(rows)
+    table(T, "T16_grouped_splits")
+    out = {}
+    for ds, tt in T.groupby("dataset"):
+        t_ = tt.set_index("method")
+        out[ds] = {"sdlc_vs_sncp_grouped": float(t_.loc["SDLC", "size_grouped"] / t_.loc["S-NCP", "size_grouped"]),
+                   "sdlc_vs_bccp_grouped": float(t_.loc["SDLC", "size_grouped"] / t_.loc["BCCP", "size_grouped"]),
+                   "marg_worst_grouped_max": float(t_.loc[["SCP", "CQR", "HPD-split"], "worst_grouped"].max()),
+                   "strat_worst_grouped_min": float(t_.loc[["BCCP", "S-NCP", "S-CQR", "SDLC"], "worst_grouped"].min()),
+                   "sdlc_cov_grouped": float(t_.loc["SDLC", "coverage_grouped"])}
+    METRICS["grouped"] = out
+    d = T.copy()
+    for c_ in d.columns:
+        if pd.api.types.is_float_dtype(d[c_]):
+            d[c_] = d[c_].map(lambda v: f"{v:.3f}")
+    d.to_csv(TAB / "D16_grouped.csv", index=False)
 
 
 def alerts_study(a10, ratios=(1, 5, 10, 20)):

@@ -85,7 +85,9 @@ Which rule is preferable depends on the cost of a missed extreme outcome relativ
 
 *Base learner.* With a two-layer perceptron as point and scale model (same pipeline, {{mlp.n_seeds}} seeds), the coverage results were unchanged: marginal methods reached a worst-stratum coverage of {{T:T9_mlp_summary|method=SCP|worst_stratum|f3}}–{{T:T9_mlp_summary|method=DCP|worst_stratum|f3}}, stratified methods {{T:T9_mlp_summary|method=BCCP|worst_stratum|f3}}–{{T:T9_mlp_summary|method=SDLC|worst_stratum|f3}}. SDLC again gave the smallest stratified sets: smaller than BCCP on {{mlp.BCCP.wins}} of {{mlp.n_datasets}} datasets (ratio {{mlp.BCCP.geo}}, Holm $p$ = {{mlp.BCCP.p}}), than S-NCP on {{mlp.S-NCP.wins}} (ratio {{mlp.S-NCP.geo}}, $p$ {{mlp.S-NCP.p}}) and than S-HPD on {{mlp.S-HPD.wins}} (ratio {{mlp.S-HPD.geo}}, $p$ {{mlp.S-HPD.p}}). The gain over S-NCP was larger than with gradient boosting.
 
-<!-- DW_GROUPED_TIMING -->
+*Imbalance-aware training.* Does a base learner trained for imbalanced regression remove the need for stratified calibration? With DenseWeight sample weights [@steininger2021denseweight] (seeds 0–2), the marginal methods covered the tails better than with unweighted training on the same splits: SCP's worst-stratum coverage rose from {{T:T9_dw_vs_lgb|method=SCP|worst_lgb|f3}} to {{T:T9_dw_vs_lgb|method=SCP|worst_dw|f3}}, and CQR's from {{T:T9_dw_vs_lgb|method=CQR|worst_lgb|f3}} to {{T:T9_dw_vs_lgb|method=CQR|worst_dw|f3}}. The shortfall remained large, however, and the sets grew by factors of {{T:T9_dw_vs_lgb|method=SCP|size_ratio_dw_vs_lgb|f2}} (SCP) and {{T:T9_dw_vs_lgb|method=CQR|size_ratio_dw_vs_lgb|f2}} (CQR). Stratified calibration remained valid with the weighted learner ({{T:T9_dw_summary|method=SDLC|worst_stratum|f3}} for SDLC), and SDLC again gave the smallest stratified sets (ratios {{dw.BCCP.geo}}, {{dw.S-NCP.geo}}, {{dw.S-CQR.geo}} and {{dw.S-HPD.geo}} against BCCP, S-NCP, S-CQR and S-HPD; Holm $p$ {{dw.S-NCP.p}} or smaller). Imbalance-aware point learning and stratified calibration are thus complementary, and the former does not deliver the coverage guarantee.
+
+<!-- GROUPED_TIMING -->
 
 ## Error analysis {#sec:error}
 
