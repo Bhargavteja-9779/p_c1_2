@@ -83,7 +83,9 @@ Which rule is preferable depends on the cost of a missed extreme outcome relativ
 
 *Density estimator.* Among the density estimators, the symmetric location–scale density was as efficient as the two-piece variant and much more efficient than the histogram density (Table [-@tbl:size]); the defensive $t$ component and the cross-fitted standardisation are part of every result reported here.
 
-{{LEARNERS_SECTION}}
+*Base learner.* With a two-layer perceptron as point and scale model (same pipeline, {{mlp.n_seeds}} seeds), the coverage results were unchanged: marginal methods reached a worst-stratum coverage of {{T:T9_mlp_summary|method=SCP|worst_stratum|f3}}–{{T:T9_mlp_summary|method=DCP|worst_stratum|f3}}, stratified methods {{T:T9_mlp_summary|method=BCCP|worst_stratum|f3}}–{{T:T9_mlp_summary|method=SDLC|worst_stratum|f3}}. SDLC again gave the smallest stratified sets: smaller than BCCP on {{mlp.BCCP.wins}} of {{mlp.n_datasets}} datasets (ratio {{mlp.BCCP.geo}}, Holm $p$ = {{mlp.BCCP.p}}), than S-NCP on {{mlp.S-NCP.wins}} (ratio {{mlp.S-NCP.geo}}, $p$ {{mlp.S-NCP.p}}) and than S-HPD on {{mlp.S-HPD.wins}} (ratio {{mlp.S-HPD.geo}}, $p$ {{mlp.S-HPD.p}}). The gain over S-NCP was larger than with gradient boosting.
+
+<!-- DW_GROUPED_TIMING -->
 
 ## Error analysis {#sec:error}
 

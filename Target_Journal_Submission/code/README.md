@@ -1,7 +1,7 @@
-# Target-stratified conformal prediction for imbalanced regression
+# Covering the rare outcomes: stratified conformal prediction for imbalanced regression
 
 Code, configuration and raw results for the manuscript
-*"Target-stratified conformal prediction for imbalanced regression: finite-sample coverage for rare and extreme outcomes"*
+*"Covering the rare outcomes: stratified conformal prediction with size-optimal density scores for imbalanced regression"*
 (submitted to *Expert Systems with Applications*).
 
 The method (SDLC, stratified density-level conformal prediction) calibrates a separate conformal
@@ -9,7 +9,7 @@ threshold within each stratum of the **target** (e.g. lower tail / bulk / upper 
 value `y` is tested against the threshold of *its own* stratum, which yields finite-sample coverage
 *conditional on the target stratum* — i.e. guaranteed coverage of rare/extreme outcomes — and
 robustness to shifts of the target distribution. The conformity score is a conditional density
-estimate, which is the size-optimal choice (Theorem 2 of the paper).
+estimate, which is the size-optimal choice (Propositions 2 and 3 of the paper).
 
 ## 1. Installation
 
@@ -34,70 +34,82 @@ GPL ≥ 2, or non-commercial scholarly use for `socmob`).
 ## 3. Reproducing the study
 
 ```bash
-python run_all.py --mode quick   # ~2 min: unit tests + full pipeline on 3 development datasets, seed 0
-python run_all.py --mode full    # complete study (~4-5 h on 4 CPU cores)
+python run_all.py --mode quick   # a few minutes: unit tests + the full v3 pipeline on 3 development datasets, seed 0
+python run_all.py --mode full    # complete study (about 6-8 h on 4 CPU cores)
 ```
-The study is organised as **fit once, evaluate many**:
+The study is organised as **fit once, evaluate many** (final implementation = "v3"):
 
 | Step | Script | Output |
 |---|---|---|
-| unit tests (Monte-Carlo validity, partition nesting, supersets) | `tests/` | — |
-| data download | `src/data/openml_ctr23.py` | `../data/` |
-| fit all base models once per dataset × seed (31 × 10) and cache their outputs | `experiments/run_benchmark.py --mode fitonly` | `../results/raw/` (fit times), `../results/raw_contexts/*.npz` |
-| evaluate every conformal method from the cache (α ∈ {0.05, 0.1, 0.2}, strata schemes, calibration fractions) | `experiments/evaluate_from_cache.py` | `../results/raw_eval/*.jsonl` |
-| learner generality (MLP, 5 seeds) | `experiments/run_learner_generality.py` | `../results/raw_mlp/` |
-| Proposition 1 (analytic + Monte Carlo) | `experiments/prop1_gaussian.py` | `../results/prop1_gaussian.json` |
-| synthetic study with known density (Theorem 2) | `experiments/synthetic.py` | `../results/synthetic.jsonl` |
-| computational cost | `experiments/timing.py` | `../results/timing_methods.csv` |
+| unit tests (Monte-Carlo validity, exact geometry vs reference, interval rules) | `tests/` | — |
+| data download (CTR23 and confirmatory datasets) | `src/data/openml_ctr23.py` | `../data/` |
+| fit base models once per dataset × seed (31 × 10) | `experiments/run_benchmark.py --mode fitonly` | `../results/raw/`, `../results/raw_contexts/*.npz` |
+| cross-fitted scale models for the noise density | `experiments/refit_scales.py` | `../results/raw_contexts_v3/*.npz` |
+| evaluate every conformal method from the cache (α ∈ {0.05, 0.1, 0.2}, strata, calibration fractions, shifts, alerts) | `experiments/evaluate_from_cache3.py` | `../results/raw_eval_v3/*.jsonl` |
+| Proposition 1 (analytic, Monte Carlo, heavy-tailed/skewed extensions) | `experiments/prop1_gaussian.py`, `prop1_extension.py` | `../results/prop1_*.json` |
+| synthetic study (5 designs, small samples, genuine label shift) | `experiments/synthetic3.py` | `../results/synthetic_v3.jsonl` |
+| tail-alert decision study | `experiments/tail_alerts.py` | `../results/tail_alerts.jsonl` |
+| learner generality (MLP) and imbalance-aware training (DenseWeight) | `experiments/run_learner_generality3.py`, `run_denseweight.py` | `../results/raw_mlp_v3/`, `raw_denseweight/` |
+| grid convergence, grouped splits, timing | `experiments/grid_convergence.py`, `run_grouped.py`, `timing_fit.py`, `timing.py` | `../results/` |
 | leakage / duplicate audit | `scripts/leakage_audit.py` | `../tables/S2_leakage_audit.*` |
-| statistics, tables, figures | `scripts/analyze.py`, `scripts/analyze_extra.py`, `scripts/figures_extra.py` | `../results/*.json`, `../tables/`, `../figures/` |
-| manuscript, highlights, cover letter (DOCX) and PDF | `scripts/render_manuscript.py`, `scripts/build_pdf.py` | `../manuscript/` |
+| confirmatory replication (17 held-out datasets, pre-registered) | same scripts with `TSCP_CONFIG=confirmatory.json`; `scripts/analyze_confirmatory.py` | `../results/confirmatory/` |
+| statistics, tables, figures | `scripts/analyze3.py`, `scripts/figures_extra.py` | `../results/*_v3.json`, `../tables/`, `../figures/` |
+| manuscript, highlights, cover letter, supplementary material (DOCX + PDF) | `scripts/render_manuscript.py`, `build_pdf.py`, `build_supplement.py` | `../manuscript/` |
 
-The cached model outputs (`results/raw_contexts`, ~0.5 GB) are not stored in the repository; they are regenerated by
-the fitting step (deterministic, single-threaded LightGBM). The per-run evaluation results (`results/raw_eval`) are
-included, so all statistics, tables, figures and the manuscript can be regenerated without refitting:
+The cached model outputs (`results/raw_contexts*`) are not stored in the repository; they are regenerated by the
+fitting steps (deterministic, single-threaded LightGBM). The per-run evaluation results are included, so all
+statistics, tables, figures and documents can be regenerated without refitting:
 ```bash
-python scripts/analyze.py && python scripts/analyze_extra.py && python scripts/figures_extra.py
-python scripts/render_manuscript.py && python scripts/build_pdf.py
+python scripts/analyze_confirmatory.py && python scripts/analyze3.py && python scripts/figures_extra.py f0 f1
+python scripts/render_manuscript.py && python scripts/build_pdf.py && python scripts/build_supplement.py
 ```
 **Every number in the manuscript** is inserted by `scripts/render_manuscript.py` from `results/*.json` and
 `tables/*.csv` (placeholders `{{...}}` in `manuscript/src/*.md`); the build aborts if any placeholder, table,
 figure or cross-reference cannot be resolved. `manuscript/build/placeholder_values.json` lists the inserted values.
 
-**Pre-registered run.** The original pre-registered run (fixed 200-cell grid for density-based sets) is archived in
-`results/raw_v1_preregistered/` with its analysis in `supplementary/v1_preregistered_analysis/`;
-`python run_all.py --mode full --with-v1` re-runs it. `EXPERIMENT_LOG.md` documents every deviation.
+**Pre-registration.** The confirmatory analysis plan (`../PREREGISTRATION_confirmatory.md`) and its script
+(`scripts/analyze_confirmatory.py`) were committed before any confirmatory evaluation. Earlier implementations of the
+main benchmark are archived (`results/raw_v1_preregistered/`, `supplementary/v1_preregistered_analysis/`,
+`supplementary/v2_exact_insample_analysis/`); `EXPERIMENT_LOG.md` documents every change.
 
 ## 4. Repository layout
 
 ```
-config/benchmark.json        pre-registered configuration (datasets, seeds, splits, alphas, grids)
+config/benchmark.json        configuration of the main benchmark (datasets, seeds, splits, alphas, strata)
+config/confirmatory.json     held-out datasets of the confirmatory replication
 src/data/                    OpenML loader
-src/methods/strata.py        target strata and the evaluation grid (from training targets only)
+src/methods/strata.py        target strata and evaluation grid (from training targets only)
 src/methods/conformal.py     residual/quantile/histogram conformal procedures (marginal and stratified)
-src/methods/ls_exact.py      grid-free location-scale density sets (SDLC, DLS, HPD-split, DCP, S-HPD)
+src/methods/ls_exact3.py     exact location-scale density sets (SDLC, DLS, HPD-split, DCP, S-HPD, SDLC-N)
 src/models/learners.py       LightGBM base learners (identical for all methods)
-src/models/density.py        histogram and location-scale conditional densities, HPD, CDF
-src/evaluation/metrics.py    coverage, stratum coverage, size, components, worst-slab coverage
-src/statistics/tests.py      Wilcoxon/Holm/rank-biserial/bootstrap/Friedman/Nemenyi
-experiments/                 fitting, cache-based evaluation, learner generality, Prop. 1, synthetic, timing
-scripts/                     analysis, figures, leakage audit, manuscript rendering, PDF, review workflow
+src/models/density.py        RobustLSDensity (FFT-KDE + defensive t), histogram density
+src/evaluation/metrics.py    coverage, stratum coverage, size, pieces, alerts, shift-weighted coverage, WSC
+src/statistics/tests.py      Wilcoxon/Holm/Hodges-Lehmann/sign/TOST/bootstrap
+experiments/                 fitting, evaluation, synthetic, decision, learner, grouped-split and timing studies
+scripts/                     analysis, figures, leakage audit, rendering, PDF and supplement builders
 tests/                       unit and Monte-Carlo validity tests
 ```
 
 ## 5. Using the method on your own data
 
 ```python
+import numpy as np
 from src.methods.strata import make_partition
-from src.models import density as D
-from src.methods import conformal as C
-part = make_partition(y_train)                     # strata at training quantiles .1,.25,.75,.9
-lsd = D.LocationScaleDensity(part, z_oof)          # z_oof: OOF standardised residuals
-Fc, Ft = lsd.cells(mu_cal, sd_cal), lsd.cells(mu_test, sd_test)
-S = C.mask_method(-D.at(Fc, y_cal, part), Ft, alpha=0.1, part=part,
-                  strata_cal=part.stratum(y_cal))  # boolean mask over grid cells
+from src.models.density import RobustLSDensity
+from src.methods import ls_exact3 as L3
+from src.methods.conformal import conformal_quantile
+# mu_*, sg_*: point and scale predictions; z_cf: cross-fitted standardised training residuals
+part = make_partition(y_train, nonneg=bool((y_train >= 0).all()))   # strata at training quantiles .1,.25,.75,.9
+T = L3.LSTable3(RobustLSDensity(z_cf))
+s_cal = L3.scores("density", T, y_cal, mu_cal, sg_cal, sg_cal, part)
+st = part.stratum(y_cal)
+q = np.array([conformal_quantile(s_cal[st == k], 0.1) for k in range(part.K)])
+dummy = np.zeros(len(mu_test))      # test targets are unknown at prediction time; only coverage evaluation needs them
+geo, intervals = L3.build_sets("density", T, mu_test, sg_test, sg_test, q, part, dummy, dummy,
+                               return_intervals=True)
 ```
-See `experiments/run_benchmark.py::fit_context` for the complete fitting pipeline.
+`intervals[i]` is the list of disjoint pieces of the prediction set of test point `i`. See
+`experiments/run_benchmark.py::fit_context` and `experiments/refit_scales.py` for the fitting pipeline.
 
 ## 6. Determinism
 
