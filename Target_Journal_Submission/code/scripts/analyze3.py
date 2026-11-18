@@ -329,6 +329,8 @@ def main():
              ("alert_hi_recall", "alert_hi_rate", "alert_hi_precision", "alert_lo_recall", "alert_lo_rate", "alert_lo_precision")}}
             for m in MARGINAL + STRAT]
     table(pd.DataFrame(rows), "T13_tail_alerts")
+    # ---------------------------------------------------------------- decision study (tail alerts)
+    alerts_study(a10)
     # ---------------------------------------------------------------- error analysis
     sd = pdm[pdm.method == P].merge(T1[["did", "skew_y", "octile_skew", "rmse_over_sd", "n_cal", "zero_frac"]], on="did")
     price_r = (S[P] / S["DLS-M-LS"]).rename("price")
@@ -359,6 +361,79 @@ def main():
               "size_geo", "empty_rate", "sigma_decile_worst"]].round(3).to_string(index=False))
     print(T3[T3.family.str.startswith("H3") | T3.family.str.startswith("Decomp")][
         ["family", "comparison", "geo_ratio", "geo_lo", "geo_hi", "wins", "losses", "p", "p_holm"]].round(4).to_string(index=False))
+
+
+def alerts_study(a10, ratios=(1, 5, 10, 20)):
+    """Set-based tail alerts (from the evaluation) versus dedicated alert rules (experiments/tail_alerts.py).
+    Counts per dataset x seed; dataset-level means; expected cost per unit (FP cost 1, FN cost r)."""
+    f = TOP / "results" / "tail_alerts.jsonl"
+    if not f.exists():
+        return
+    ta = pd.read_json(f, lines=True)
+    rows = []
+    set_methods = ["SCP", "CQR", "HPD-split-LS", "S-Res", "S-NCP", "S-CQR", P, "SDLC-LS-floor"]
+    for side in ("hi", "lo"):
+        x = a10[a10.method.isin(set_methods)].copy()
+        kcol = [f"cal_n_{int(k) - 1}" if side == "hi" else "cal_n_0" for k in x.K]
+        x["positives"] = [r[c] for r, c in zip(x.to_dict("records"), kcol)]
+        x["alerts"] = x[f"alert_{side}_rate"] * x.n_test
+        x["tp"] = x[f"alert_{side}_recall"] * x.positives
+        x["rule"] = x.method.map(NAME)
+        x["n"] = x.n_test
+        x["side"] = side
+        rows.append(x[["did", "dataset", "seed", "side", "rule", "n", "positives", "alerts", "tp"]])
+    t2 = ta[["did", "dataset", "seed", "side", "rule", "n", "positives", "alerts", "tp"]]
+    al = pd.concat(rows + [t2], ignore_index=True)
+    al["fp"] = al.alerts - al.tp
+    al["fn"] = al.positives - al.tp
+    g = al.groupby(["did", "dataset", "side", "rule"])[["n", "positives", "alerts", "tp", "fp", "fn"]].sum().reset_index()
+    g["recall"] = g.tp / g.positives
+    g["rate"] = g.alerts / g.n
+    g["precision"] = g.tp / g.alerts.where(g.alerts > 0)
+    for r in ratios:
+        g[f"cost_r{r}"] = (g.fp + r * g.fn) / g.n
+    g.to_csv(RES / "tail_alerts_per_dataset.csv", index=False)
+    summ = g.groupby(["side", "rule"])[["recall", "rate", "precision"] + [f"cost_r{r}" for r in ratios]].mean().reset_index()
+    summ["n_ds_recall_ge_0.9"] = g.groupby(["side", "rule"]).recall.apply(lambda v: int((v >= 0.9 - 1e-12).sum())).values
+    table(summ, "T13_tail_alerts")
+    # paired comparisons of alert rate among rules that guarantee recall >= 0.9
+    cmp_ = []
+    for side in ("hi", "lo"):
+        pv = g[g.side == side].pivot(index="did", columns="rule", values="rate")
+        for other in ("TC-LS", "TC-H", "BCCP", "S-NCP", "S-CQR"):
+            if other in pv:
+                r_ = paired_summary(pv["SDLC"], pv[other], better="smaller", log=True)
+                cmp_.append({"side": side, "comparison": f"SDLC vs {other}", **r_})
+        pc = g[g.side == side].pivot(index="did", columns="rule", values="cost_r10")
+        for other in ("TC-LS", "CS-BH-0.2", "Point", "BCCP", "S-NCP"):
+            if other in pc:
+                r_ = paired_summary(pc["SDLC"], pc[other], better="smaller", log=False)
+                cmp_.append({"side": side, "comparison": f"cost r=10: SDLC vs {other}", **r_})
+    T = pd.DataFrame(cmp_)
+    table(T, "T13b_alert_tests", 4)
+    STATS["alerts"] = T.to_dict("records")
+    METRICS["alerts"] = {f"{r_['side']}|{r_['rule']}": {k: r_[k] for k in ("recall", "rate", "precision", "cost_r10")}
+                         for r_ in summ.to_dict("records")}
+    case = g[g.dataset.isin(["kings_county", "cps88wages", "miami_housing"]) & (g.side == "hi")]
+    table(case[["dataset", "rule", "recall", "rate", "precision", "cost_r1", "cost_r5", "cost_r10", "cost_r20"]],
+          "T14_case_study")
+    # cost curves for the case-study datasets
+    fig, axs = plt.subplots(1, 3, figsize=(7.4, 2.6), sharey=False)
+    rr = np.array([1, 2, 5, 10, 20, 50])
+    for ax, ds in zip(axs, ["kings_county", "cps88wages", "miami_housing"]):
+        cs = g[(g.dataset == ds) & (g.side == "hi")].set_index("rule")
+        for rule, c, ls in (("SCP", GRAY, "--"), ("CQR", ORANGE, "--"), ("Point", DARK, ":"), ("TC-LS", "#e87ba4", "-"),
+                            ("CS-BH-0.2", "#6250d6", "-."), ("S-NCP", AQUA, "-"), ("SDLC", BLUE, "-")):
+            if rule in cs.index:
+                v = cs.loc[rule]
+                ax.plot(rr, (v.fp + rr * v.fn) / v.n, color=c, ls=ls, marker="o", ms=2.5, label=rule)
+        ax.set_xscale("log")
+        ax.set_yscale("log")
+        ax.set_title(ds.replace("_", " "), fontsize=8)
+        ax.set_xlabel("Cost ratio c(FN)/c(FP)")
+    axs[0].set_ylabel("Expected cost per unit")
+    axs[2].legend(frameon=False, fontsize=6, loc="upper left")
+    save(fig, "F13_alert_costs")
 
 
 def figures(df, a10, pdm, S, T7, sd):

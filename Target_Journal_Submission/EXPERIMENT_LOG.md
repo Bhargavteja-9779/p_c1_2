@@ -38,3 +38,22 @@
    DECISION: all LS-family methods (baselines and proposed) use the exact implementation in the final analysis;
    evaluation is recomputed for all tasks from cached model outputs (experiments/evaluate_from_cache.py).
    The v1 grid-based results remain archived and are reported as the pre-registered implementation.
+11. REVIEW CYCLE 1 (10 reviewer agents; REVIEW/review_01.md, 46 issues). Decisions taken BEFORE any v3 result
+   was inspected: (a) cross-fitted standardisation of OOF residuals for g (refit_scales.py; z sd in-sample
+   shrinkage confirmed), (b) g = 0.99 FFT-KDE + 0.01 Student-t2 (no ad hoc floor), harmonised sigma floor
+   max(1e-3 sd(y), 0.05 median|r_oof|), (c) stratum-exact set geometry (ls_exact3.py), half-open stratum
+   pieces for interval methods, D ∩ [0,inf) for non-negative targets, (d) new comparators/ablations S-NCP-hull,
+   S-NCP-floor, BCCP-floor, SDLC-N (Gaussian g), (e) new metrics: top/bottom 1% and 5%, sigma-hat-decile
+   coverage, empty-set rate, stratum-wise tilted coverage, ESS of shift weights, positive-control shift,
+   (f) confirmatory replication on 17 held-out CTR23-excluded/OpenML datasets (config/confirmatory.json,
+   committed 1762ec0 before any confirmatory fit) — pre-registration document to be committed before evaluation.
+12. v3 evaluation started 2026-11-17; container restart killed it at 78/310 (outputs are atomic, resumable).
+13. PERFORMANCE (2026-11-18): profiling showed ~90% of evaluation time in ls_exact3.build_sets (cell-wise
+   O(G K) per test point). Replaced by an exact monotone-run algorithm (super-level set of the piecewise-linear
+   g on each monotone run is an interval; O(K R log G), R = 3–282 runs, median 25). Equivalence with the
+   cell-wise reference (_build_sets_ref, kept): 7 datasets x {LS, LS2, N} x {density, hpd} x 4 threshold
+   patterns incl. +inf: max relative size difference 7e-15, piece counts/alerts/coverage/hulls identical;
+   full task 44956_0 re-run: max |diff| 3.6e-15 over all 214 output fields. New unit test
+   tests/test_ls_exact3.py::test_run_geometry_equals_cellwise_reference. Speed-up 10–60x per call; the
+   evaluation was restarted with the new code at 84/310 (first 84 files computed with the reference code,
+   numerically identical). Timing results (Experiment 6) are measured with the final implementation.

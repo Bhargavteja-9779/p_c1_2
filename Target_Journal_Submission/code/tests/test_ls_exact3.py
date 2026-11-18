@@ -82,3 +82,28 @@ def test_stratum_validity_monte_carlo():
         cnt += np.bincount(stt, minlength=K)
     cv = cov / cnt
     assert np.all(cv >= 0.9 - 3 * np.sqrt(0.09 / cnt) - 0.005), cv
+
+
+def test_run_geometry_equals_cellwise_reference():
+    """build_sets (monotone-run algorithm) must reproduce the cell-wise reference implementation:
+    sizes, piece counts, hulls, stratum alerts and coverage, for density and HPD scores, symmetric and
+    two-piece scales, finite and infinite thresholds."""
+    for heavy in (False, True):
+        rng, part, T = _setup(3, heavy=heavy)
+        n = 300
+        mu = rng.normal(0, 1.5, n)
+        sm, sp = rng.uniform(0.2, 2.5, n), rng.uniform(0.2, 2.5, n)
+        yt = mu + sm * rng.standard_normal(n)
+        for two_piece in (False, True):
+            sp_ = sp if two_piece else sm
+            for kind in ("density", "hpd"):
+                sc = L3.scores(kind, T, yt, mu, sm, sp_, part)
+                for thr in (np.quantile(sc[np.isfinite(sc)], [0.3, 0.6, 0.8, 0.9, 0.95])[: part.K],
+                            np.r_[np.inf, np.quantile(sc[np.isfinite(sc)], [0.5] * (part.K - 1))]):
+                    A = L3._build_sets_ref(kind, T, mu, sm, sp_, thr, part, yt, sc)
+                    B = L3.build_sets(kind, T, mu, sm, sp_, thr, part, yt, sc)
+                    np.testing.assert_allclose(B[1], A[1], rtol=1e-10, atol=1e-12)
+                    assert np.array_equal(A[2], B[2]) and np.array_equal(A[5], B[5]) and np.array_equal(A[6], B[6])
+                    fin = np.isfinite(A[3])
+                    np.testing.assert_allclose(B[3][fin], A[3][fin], rtol=1e-10, atol=1e-12)
+                    np.testing.assert_allclose(B[4][fin], A[4][fin], rtol=1e-10, atol=1e-12)

@@ -49,6 +49,7 @@ class LSTable3:
         zs = np.unique(np.concatenate([core, *outer, [0.0], [grid[0], grid[-1]]]))
         self.zs = zs
         self.gs = dens.g_at(zs)
+        self._runs = None
 
     # ---------------------------------------------------------------- model functions
     def g_at(self, z):
@@ -103,8 +104,8 @@ def scores(kind, T: LSTable3, y, mu, sm, sp, part: Partition):
     return np.where(part.in_domain(y), sc, np.inf)
 
 
-def build_sets(kind, T: LSTable3, mu, sm, sp, thr, part: Partition, y_test, sc_test, chunk=512,
-               return_intervals=False):
+def _build_sets_ref(kind, T: LSTable3, mu, sm, sp, thr, part: Partition, y_test, sc_test, chunk=512,
+                    return_intervals=False):
     """Prediction sets {y in D : score(x,y) <= thr[stratum(y)]} (see module docstring).
     Sub-intervals are generated in increasing y order (cells in z order, strata increasing within a
     cell, analytic tails first/last), so pieces are counted without sorting."""
@@ -199,6 +200,125 @@ def build_sets(kind, T: LSTable3, mu, sm, sp, thr, part: Partition, y_test, sc_t
             for i in range(nc):
                 v = valid[i]
                 ivals.append(list(zip(Lm[i, v], Rm[i, v])))
+    k_t = part.stratum(y_test)
+    cov = (sc_test <= thr[np.clip(k_t, 0, K - 1)]) & part.in_domain(y_test)
+    S = ("geo", size, pieces, hlo, hhi, alerts, cov)
+    return (S, ivals) if return_intervals else S
+
+
+def _monotone_runs(T: LSTable3):
+    """Maximal runs of consecutive grid cells on which the interpolant of g is monotone (non-decreasing
+    or decreasing) and z has a constant sign; returned as (i0, i1, up, neg) with boundary indices i0 < i1."""
+    if getattr(T, "_runs", None) is None:
+        zs, gs = T.zs, T.gs
+        up = gs[1:] >= gs[:-1]
+        neg = zs[1:] <= 0
+        brk = np.flatnonzero((up[1:] != up[:-1]) | (neg[1:] != neg[:-1])) + 1
+        starts = np.concatenate([[0], brk])
+        ends = np.concatenate([brk, [len(up)]])
+        runs = []
+        for j0, j1 in zip(starts, ends):
+            i0, i1 = int(j0), int(j1)
+            zz, gg = zs[i0:i1 + 1], gs[i0:i1 + 1]
+            if up[j0]:
+                runs.append((i0, i1, True, bool(neg[j0]), gg, zz))
+            else:
+                runs.append((i0, i1, False, bool(neg[j0]), gg[::-1].copy(), zz[::-1].copy()))
+        T._runs = runs
+    return T._runs
+
+
+def build_sets(kind, T: LSTable3, mu, sm, sp, thr, part: Partition, y_test, sc_test, chunk=4096,
+               return_intervals=False):
+    """Prediction sets {y in D : score(x,y) <= thr[stratum(y)]} (see module docstring).
+
+    Exact geometry of the piecewise-linear interpolant of g, computed from its monotone runs: on a run
+    the super-level set {z: g(z) >= L} is an interval whose free end is found by linear interpolation in
+    the crossing cell. Each run interval is mapped to y = mu + s z and clipped to every stratum (and to
+    the domain), so the cost is O(K R log G) per test point for R runs instead of O(K G). Pieces are
+    generated in increasing y order (left analytic tails, strata in increasing order with runs in
+    increasing z inside each stratum, right analytic tails), so they are counted without sorting.
+    Numerically identical (up to rounding) to _build_sets_ref, see tests/test_ls_exact3.py."""
+    n, K = len(mu), part.K
+    E = part.strata_edges.astype(float).copy()
+    E[0], E[-1] = part.lo, part.hi
+    zs = T.zs
+    runs = _monotone_runs(T)
+    size = np.zeros(n)
+    pieces = np.zeros(n)
+    hlo = np.full(n, np.inf)
+    hhi = np.full(n, -np.inf)
+    alerts = np.zeros((n, K), bool)
+    ivals = [] if return_intervals else None
+    if kind == "density":
+        cvals = np.where(np.isfinite(thr), -thr, -np.inf)          # g(z)/s >= c
+    else:
+        cvals = np.array([-np.inf if not np.isfinite(t) else T.level_of_H(-t) for t in thr])
+    for a in range(0, n, chunk):
+        b = min(n, a + chunk)
+        nc = b - a
+        m_, sm_, sp_ = mu[a:b], sm[a:b], sp[a:b]
+        grid_L, grid_R = [], []
+        for k in range(K):
+            ck = cvals[k]
+            for (i0, i1, up, neg, gg, zz) in runs:
+                s = sm_ if neg else sp_
+                if not np.isfinite(ck):
+                    l, u = np.full(nc, zz[0] if up else zz[-1]), np.full(nc, zz[-1] if up else zz[0])
+                    good = np.ones(nc, bool)
+                else:
+                    L = ck * s if kind == "density" else np.full(nc, ck)
+                    if up:      # g non-decreasing on [zz[0], zz[-1]]: set = [z*, end]
+                        good = L <= gg[-1]
+                        l = np.where(L <= gg[0], zz[0], np.interp(L, gg, zz))
+                        u = np.full(nc, zz[-1])
+                    else:       # g decreasing in z; gg, zz stored reversed (gg increasing): set = [start, z*]
+                        good = L <= gg[-1]
+                        l = np.full(nc, zz[-1])
+                        u = np.where(L <= gg[0], zz[0], np.interp(L, gg, zz))
+                ylo = np.maximum(m_ + s * l, E[k])
+                yhi = np.minimum(m_ + s * u, E[k + 1])
+                good = good & (yhi > ylo)
+                grid_L.append(np.where(good, ylo, np.nan))
+                grid_R.append(np.where(good, yhi, np.nan))
+                alerts[a:b, k] |= good
+        # analytic t tails beyond the grid: left tail pieces first, right tail pieces last
+        lt_L, lt_R, rt_L, rt_R = [], [], [], []
+        for k_ in range(K):
+            for side in ("left", "right"):
+                sc_ = sm_ if side == "left" else sp_
+                z_end = zs[0] if side == "left" else zs[-1]
+                y_end = m_ + sc_ * z_end
+                if kind == "density":
+                    Lv = cvals[k_] * sc_ if np.isfinite(cvals[k_]) else np.full(nc, -np.inf)
+                else:
+                    Lv = np.full(nc, cvals[k_])
+                rr = T.tail_radius(Lv)
+                if side == "left":
+                    lo_y = np.maximum(m_ - sc_ * rr, max(E[k_], part.lo))
+                    hi_y = np.minimum(y_end, E[k_ + 1])
+                else:
+                    lo_y = np.maximum(y_end, E[k_])
+                    hi_y = np.minimum(m_ + sc_ * rr, min(E[k_ + 1], part.hi))
+                good = hi_y > lo_y
+                alerts[a:b, k_] |= good
+                (lt_L if side == "left" else rt_L).append(np.where(good, lo_y, np.nan))
+                (lt_R if side == "left" else rt_R).append(np.where(good, hi_y, np.nan))
+        Lm = np.stack(lt_L + grid_L + rt_L, 1)
+        Rm = np.stack(lt_R + grid_R + rt_R, 1)
+        valid = ~np.isnan(Lm)
+        size[a:b] = np.where(valid, Rm - Lm, 0.0).sum(1)
+        prevR = np.maximum.accumulate(np.where(valid, Rm, -np.inf), axis=1)
+        prevR = np.concatenate([np.full((nc, 1), -np.inf), prevR[:, :-1]], 1)
+        tol = 1e-9 * (np.abs(np.where(valid, Lm, 0.0)) + 1.0)
+        starts = valid & (Lm > prevR + tol)
+        pieces[a:b] = starts.sum(1)
+        hlo[a:b] = np.where(valid, Lm, np.inf).min(1)
+        hhi[a:b] = np.where(valid, Rm, -np.inf).max(1)
+        if return_intervals:
+            for i_ in range(nc):
+                v = valid[i_]
+                ivals.append(list(zip(Lm[i_, v], Rm[i_, v])))
     k_t = part.stratum(y_test)
     cov = (sc_test <= thr[np.clip(k_t, 0, K - 1)]) & part.in_domain(y_test)
     S = ("geo", size, pieces, hlo, hhi, alerts, cov)
