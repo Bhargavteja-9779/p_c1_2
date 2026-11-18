@@ -39,11 +39,17 @@ def main():
             t0 = time.perf_counter()
             S = L3.build_sets("density", T, ctx["mu_t"], ctx["sg_t"], ctx["sg_t"], q, part, yt,
                               L3.scores("density", T, yt, ctx["mu_t"], ctx["sg_t"], ctx["sg_t"], part))
-            res[(core, tail)] = (S[1].mean(), S[2].mean(), time.perf_counter() - t0)
+            res[(core, tail)] = (S[1].mean(), S[2].mean(), time.perf_counter() - t0, S[1].copy(), S[2].copy())
         ref = res[GRIDS[-1]]
-        for g, (sz, pc, tm) in res.items():
+        for g, (sz, pc, tm, szv, pcv) in res.items():
+            ok = ref[3] > 0
+            rel_pt = np.abs(szv[ok] - ref[3][ok]) / ref[3][ok]
             rows.append(dict(did=did, core=g[0], tail=g[1], mean_size=sz, mean_pieces=pc, seconds=tm,
-                             rel_size_diff_vs_finest=abs(sz - ref[0]) / ref[0], pieces_diff_vs_finest=pc - ref[1]))
+                             rel_size_diff_vs_finest=abs(sz - ref[0]) / ref[0], pieces_diff_vs_finest=pc - ref[1],
+                             max_rel_size_diff_per_point=float(rel_pt.max()) if ok.any() else 0.0,
+                             q99_rel_size_diff_per_point=float(np.quantile(rel_pt, 0.99)) if ok.any() else 0.0,
+                             frac_points_pieces_differ=float(np.mean(pcv != ref[4])),
+                             empty_mismatch=int(np.sum((szv > 0) != (ref[3] > 0)))))
         print(did, {k: (round(v[0], 4), round(v[1], 3), round(v[2], 1)) for k, v in res.items()}, flush=True)
     OUT.write_text(json.dumps(rows, indent=1))
 

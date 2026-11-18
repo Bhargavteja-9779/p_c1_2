@@ -18,8 +18,10 @@ import os
 import sys
 from pathlib import Path
 
+import warnings
 import matplotlib
 matplotlib.use("Agg")
+warnings.simplefilter("ignore", category=Warning)
 import matplotlib.pyplot as plt  # noqa: E402
 import numpy as np  # noqa: E402
 import pandas as pd  # noqa: E402
@@ -76,7 +78,7 @@ def table(df, name, nd=3):
 
 def load():
     files = sorted(glob.glob(str(RAW / "*.jsonl")))
-    df = pd.concat([pd.read_json(f, lines=True) for f in files], ignore_index=True)
+    df = pd.concat([pd.read_json(f, lines=True) for f in files], ignore_index=True).copy()
     df["nsize"] = df["size"] / df["y_train_sd"]
     cc = [c for c in df.columns if c.startswith("cal_cov_") and c[8:].isdigit()]
     df["tail_lo"] = df["cal_cov_0"]
@@ -126,7 +128,7 @@ def family(pd_, pairs, col, better, log, alternative, label, keep=None):
 
 def main():
     df = load()
-    df.to_csv(RES / "raw_results_v3.csv", index=False)
+    df.to_csv(RES / "raw_results_v3.csv.gz", index=False, compression="gzip")
     a10 = df[(df.alpha == 0.1) & (df.scheme == "S5") & (df.cal_frac == 1.0)]
     METRICS.update(n_datasets=int(a10.did.nunique()), n_seeds_min=int(a10.groupby("did").seed.nunique().min()),
                    n_runs=int(a10[["did", "seed"]].drop_duplicates().shape[0]))
@@ -137,7 +139,7 @@ def main():
     for did, g in first.groupby("did"):
         y = dload(int(did))[1]
         q = np.quantile(y, [0.125, 0.25, 0.5, 0.75, 0.875])
-        mass = np.array([m for m in g.train_stratum_mass])
+        mass = list(g.train_stratum_mass)
         rows.append(dict(did=did, dataset=g.dataset.iloc[0], n=int(g.n.iloc[0]), p=int(g.p.iloc[0]),
                          skew_y=float(stats.skew(y)),
                          octile_skew=float(((q[4] - q[2]) - (q[2] - q[0])) / (q[4] - q[0])) if q[4] > q[0] else 0.0,
@@ -163,6 +165,9 @@ def main():
             "shift_up1_upper", "shift_up2_upper", "shift_pc_upper", "shift_up1_cal_worst", "shift_up2_cal_worst",
             "shift_pc_cal_worst", "shift_down1_cal_worst", "shift_tails1_cal_worst", "n_strata_inf"]
     pdm = per_dataset(a10, cols)
+    for nm in ("pc", "up1", "up2", "down1", "tails1"):   # worst stratum under shift: min over strata of seed means
+        sp_ = stratum_profile(a10, prefix=f"shift_{nm}_cal_cov_").rename(columns={"worst_stratum": f"shift_{nm}_worst"})
+        pdm = pdm.merge(sp_, on=["did", "dataset", "method"], how="left")
     nul = null_worst_stratum(modal_k(a10[a10.method == P]))
     pdm["null_worst_mean"] = pdm.did.map(lambda d: nul[d][0])
     pdm["null_worst_q05"] = pdm.did.map(lambda d: nul[d][1])
@@ -317,7 +322,8 @@ def main():
     for m in MARGINAL + STRAT:
         x = pdm[pdm.method == m]
         xe = x[x.did.isin(ok_ess)]
-        rows.append({"method": NAME[m], "code": m, "pc_marginal": x.shift_pc_cov.mean(), "pc_worst": x.shift_pc_cal_worst.mean(),
+        rows.append({"method": NAME[m], "code": m, "pc_marginal": x.shift_pc_cov.mean(), "pc_worst": x.shift_pc_worst.mean(),
+                     "up2_worst": x.shift_up2_worst.mean(), "unshifted_worst": x.worst_stratum.mean(),
                      "up1_marginal": x.shift_up1_cov.mean(), "up1_upper": x.shift_up1_upper.mean(),
                      "up2_marginal": x.shift_up2_cov.mean(), "up2_upper": x.shift_up2_upper.mean(),
                      "up2_upper_ess50": xe.shift_up2_upper.mean(), "down1_marginal": x.shift_down1_cov.mean()})
@@ -353,6 +359,12 @@ def main():
     STATS["error_analysis"] = ea
     table(sd[["dataset", "n_cal", "skew_y", "zero_frac", "rmse_over_sd", "worst_stratum", "nsize", "price", "vs_sncp",
               "vs_bccp", "empty_rate"]].sort_values("price"), "T10_error_analysis")
+    # ---------------------------------------------------------------- auxiliary studies
+    aux_metrics(df, T1)
+    prop1_table()
+    synthetic_study()
+    learner_studies(pdm)
+    timing_study()
     # ---------------------------------------------------------------- figures
     figures(df, a10, pdm, S, T7, sd)
     json.dump(METRICS, open(RES / "metrics_v3.json", "w"), indent=1, default=float)
@@ -361,6 +373,145 @@ def main():
               "size_geo", "empty_rate", "sigma_decile_worst"]].round(3).to_string(index=False))
     print(T3[T3.family.str.startswith("H3") | T3.family.str.startswith("Decomp")][
         ["family", "comparison", "geo_ratio", "geo_lo", "geo_hi", "wins", "losses", "p", "p_holm"]].round(4).to_string(index=False))
+
+
+def aux_metrics(df, T1):
+    METRICS["forest_zero_frac"] = float(T1.set_index("dataset").loc["forest_fires", "zero_frac"])
+    z = df.drop_duplicates(["did", "seed"])
+    METRICS["z_sd_ratio_median"] = float(np.median(z.z_sd_cf / z.z_sd_insample))
+    METRICS["z_sd_cf_median"] = float(np.median(z.z_sd_cf))
+    METRICS["n_runs_any_inf"] = int((df[(df.alpha == 0.1) & (df.scheme == "S5") & (df.cal_frac == 1.0) &
+                                        (df.method == P)].n_strata_inf > 0).sum())
+    la = TOP / "tables" / "S2_leakage_audit.csv"
+    if la.exists():
+        L = pd.read_csv(la).set_index("dataset")
+        for ds in ("sarcos", "cps88wages", "health_insurance"):
+            if ds in L.index:
+                METRICS[f"dup_{ds.split('_')[0]}"] = float(L.loc[ds, "dup_rows_frac"])
+    gc = TOP / "results" / "grid_convergence.json"
+    if gc.exists():
+        G = pd.DataFrame(json.loads(gc.read_text()))
+        METRICS["grid_convergence"] = G.to_dict("records")
+        d = G[G.core == 1536]
+        METRICS["grid_max_rel_change"] = float(d.rel_size_diff_vs_finest.max())
+        if "max_rel_size_diff_per_point" in d:
+            METRICS["grid_max_rel_change_point"] = float(d.max_rel_size_diff_per_point.max())
+            METRICS["grid_q99_rel_change_point"] = float(d.q99_rel_size_diff_per_point.max())
+
+
+def prop1_table():
+    P1 = json.loads((TOP / "results" / "prop1_gaussian.json").read_text())["rows"]
+    rows = [{"model": "Gaussian signal, Gaussian noise (Prop. 1)", "R2": r["R2"], "bottom10": r["analytic_upper10"],
+             "central80": r["analytic_central80"], "top10": r["analytic_upper10"], "top1": r["analytic_upper1"],
+             "source": "analytic"} for r in P1 if r["R2"] in (0.5, 0.9)]
+    ext = TOP / "results" / "prop1_extension.json"
+    if ext.exists():
+        for r in json.loads(ext.read_text()):
+            rows.append({"model": r["model"], "R2": r["R2"], "bottom10": r["bottom10"], "central80": r["central80"],
+                         "top10": r["top10"], "top1": r["top1"], "source": "Monte Carlo"})
+    T = pd.DataFrame(rows).sort_values(["R2", "source"], kind="stable")
+    table(T, "T0_prop1")
+
+
+def synthetic_study():
+    f = TOP / "results" / "synthetic_v3.jsonl"
+    if not f.exists():
+        return
+    sy = pd.read_json(f, lines=True)
+    sy["upper"] = [r[f"cal_cov_{int(k) - 1}"] for k, r in zip(sy.K, sy.to_dict("records"))]
+    cc = [c for c in sy.columns if c.startswith("cal_cov_") and c[8:].isdigit()]
+    sy["worst"] = sy[cc].min(axis=1, skipna=True)
+    base = sy[sy.gamma == 0]
+    keep = ["O-HDR-X", "O-SDLC", "O-S-NCP", "O-S-Res", "SCP", "CQR", "HPD-split-LS", "S-Res", "S-NCP", "S-CQR",
+            "S-HPD-LS", "SDLC-N", "SDLC-LS"]
+    g = base[base.method.isin(keep)].groupby(["dgp", "n", "method"])[["coverage", "upper", "worst", "size", "empty_rate"]].mean().reset_index()
+    ref = g[g.method == "S-NCP"].set_index(["dgp", "n"])["size"]
+    g["size_vs_SNCP"] = [r["size"] / ref.loc[(r["dgp"], r["n"])] for r in g.to_dict("records")]
+    g["method"] = g.method.map(lambda m: NAME.get(m, m))
+    table(g, "T11_synthetic")
+    est = base[base.method.isin(["S-Res", "S-NCP", "S-CQR", "S-HPD-LS", "SDLC-N", P])]
+    wins = {}
+    for (dgp, n), gg in est.groupby(["dgp", "n"]):
+        pv = gg.pivot(index="seed", columns="method", values="size")
+        wins[f"{dgp}_{n}"] = {"sdlc_smallest": int((pv.idxmin(axis=1) == P).sum()), "n_seeds": int(len(pv)),
+                              "sdlc_lt_sncp": int((pv[P] < pv["S-NCP"]).sum()), "sdlc_lt_bccp": int((pv[P] < pv["S-Res"]).sum()),
+                              "ratio_sncp": float(np.exp(np.mean(np.log(pv[P] / pv["S-NCP"])))),
+                              "ratio_bccp": float(np.exp(np.mean(np.log(pv[P] / pv["S-Res"]))))}
+    METRICS["synthetic"] = wins
+    sh = sy[(sy.gamma > 0) | ((sy.gamma == 0) & sy.dgp.isin(["A", "B"]) & (sy.n == 5000))]
+    sh = sh[sh.method.isin(["SCP", "CQR", "HPD-split-LS", "S-Res", "S-NCP", "S-CQR", P, "O-SDLC", "O-HDR-X"])]
+    t = sh.groupby(["dgp", "gamma", "method"])[["coverage", "upper", "worst"]].mean().reset_index()
+    t["method"] = t.method.map(lambda m: NAME.get(m, m))
+    table(t, "T12_synthetic_label_shift")
+    METRICS["synthetic_shift"] = t.to_dict("records")
+
+
+def learner_studies(pdm_lgb):
+    out = {}
+    for tag, d in (("mlp", TOP / "results" / "raw_mlp_v3"), ("dw", TOP / "results" / "raw_denseweight")):
+        files = sorted(d.glob("*.jsonl")) if d.exists() else []
+        if not files:
+            continue
+        x = pd.concat([pd.read_json(f_, lines=True) for f_ in files], ignore_index=True)
+        x["nsize"] = x["size"] / x["y_train_sd"]
+        cc = [c for c in x.columns if c.startswith("cal_cov_") and c[8:].isdigit()]
+        x["tail_hi"] = [r[f"cal_cov_{int(k) - 1}"] for k, r in zip(x.K, x[cc].to_dict("records"))]
+        pdx = per_dataset(x, ["coverage", "nsize", "tail_hi", "empty_rate"])
+        pdx.to_csv(RES / f"per_dataset_{tag}.csv", index=False)
+        piv = pdx.pivot(index="did", columns="method", values="nsize")
+        rows = []
+        for m in H3_PRIMARY:
+            if m in piv:
+                rows.append({"learner": tag, "comparison": f"SDLC vs {NAME[m]}",
+                             **paired_summary(piv[P], piv[m], better="smaller", log=True)})
+        for r, p_ in zip(rows, holm([r["p"] for r in rows])):
+            r["p_holm"] = p_
+        summ = []
+        for m in MARGINAL + STRAT:
+            xm = pdx[pdx.method == m]
+            if len(xm):
+                summ.append({"learner": tag, "method": NAME[m], "coverage": xm.coverage.mean(),
+                             "upper_tail": xm.tail_hi.mean(), "worst_stratum": xm.worst_stratum.mean(),
+                             "size_geo": float(np.exp(np.log(xm.nsize).mean()))})
+        out[tag] = {"tests": rows, "summary": summ, "n_datasets": int(pdx.did.nunique()),
+                    "n_seeds": int(x.seed.nunique())}
+        table(pd.DataFrame(summ), f"T9_{tag}_summary")
+        table(pd.DataFrame(rows), f"T9_{tag}_tests", 4)
+        if tag == "dw":   # does imbalance-aware training remove the under-coverage of marginal methods?
+            lg = pdm_lgb[pdm_lgb.method.isin(MARGINAL + STRAT)]
+            cmp_ = []
+            for m in ("SCP", "CQR", "NCP", "S-NCP", P):
+                a_ = pdx[pdx.method == m].set_index("did")
+                b_ = lg[lg.method == m].set_index("did")
+                common = a_.index.intersection(b_.index)
+                cmp_.append({"method": NAME[m], "worst_dw": float(a_.loc[common].worst_stratum.mean()),
+                             "worst_lgb": float(b_.loc[common].worst_stratum.mean()),
+                             "upper_dw": float(a_.loc[common].tail_hi.mean()),
+                             "upper_lgb": float(b_.loc[common].tail_hi.mean()),
+                             "size_ratio_dw_vs_lgb": float(np.exp(np.mean(np.log(a_.loc[common].nsize / b_.loc[common].nsize))))})
+            out["dw_vs_lgb"] = cmp_
+            table(pd.DataFrame(cmp_), "T9_dw_vs_lgb")
+            rm = x.drop_duplicates(["did", "seed"])[["did", "test_rmse", "test_rmse_upper"]].groupby("did").mean()
+            out["dw_rmse_upper_median"] = float(rm.test_rmse_upper.median())
+    STATS["learners"] = out
+
+
+def timing_study():
+    f = TOP / "results" / "timing_methods_v3.csv"
+    if f.exists():
+        t = pd.read_csv(f)
+        t["us_per_point"] = 1e6 * t.seconds / t.n_test
+        med = t.groupby(["dataset", "method"]).us_per_point.median().reset_index()
+        summ = med.groupby("method").us_per_point.agg(["median", "max"]).reset_index()
+        summ["method"] = summ.method.map(lambda m: NAME.get(m, m))
+        table(summ, "T15_timing_methods")
+        METRICS["timing_us_per_point"] = {r["method"]: r["median"] for r in summ.to_dict("records")}
+    f = TOP / "results" / "timing_fit.csv"
+    if f.exists():
+        tf = pd.read_csv(f)
+        table(tf, "T15b_timing_fit")
+        num = tf.select_dtypes("number")
+        METRICS["timing_fit_median"] = num.median().to_dict()
 
 
 def alerts_study(a10, ratios=(1, 5, 10, 20)):

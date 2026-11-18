@@ -1,0 +1,11 @@
+model,R2,bottom10,central80,top10,top1,source
+"t3 signal, Gaussian noise",0.5,0.64568,0.963629375,0.64784,0.6254,Monte Carlo
+"t5 signal, Gaussian noise",0.5,0.68503,0.95391375,0.684005,0.5486,Monte Carlo
+"t30 signal, Gaussian noise",0.5,0.703655,0.949209375,0.701995,0.3957,Monte Carlo
+"Gaussian signal, Gamma(2) noise",0.5,0.98727,0.949093125,0.41766,0.0294,Monte Carlo
+"Gaussian signal, Gaussian noise (Prop. 1)",0.5,0.7052047377170799,0.9486988155724885,0.7052047377170799,0.37499942822256055,analytic
+"t3 signal, Gaussian noise",0.9,0.83932,0.914695625,0.837705,0.86905,Monte Carlo
+"t5 signal, Gaussian noise",0.9,0.854325,0.910915625,0.85543,0.86015,Monte Carlo
+"t30 signal, Gaussian noise",0.9,0.86041,0.909815,0.859535,0.8033,Monte Carlo
+"Gaussian signal, Gamma(2) noise",0.9,0.973135,0.91155625,0.732505,0.55405,Monte Carlo
+"Gaussian signal, Gaussian noise (Prop. 1)",0.9,0.8617233356957079,0.9095691660775876,0.8617233356957079,0.7953033604114175,analytic
