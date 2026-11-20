@@ -2,3 +2,38 @@
 /home/user/p_c1_2/Target_Journal_Submission/results/raw_grouped/44964_2.jsonl ok 110.0s
 /home/user/p_c1_2/Target_Journal_Submission/results/raw_grouped/44964_1.jsonl ok 113.6s
 /home/user/p_c1_2/Target_Journal_Submission/results/raw_grouped/44964_0.jsonl ok 124.9s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw_grouped/44964_0.jsonl skip
+/home/user/p_c1_2/Target_Journal_Submission/results/raw_grouped/44964_1.jsonl skip
+/home/user/p_c1_2/Target_Journal_Submission/results/raw_grouped/44964_3.jsonl skip
+/home/user/p_c1_2/Target_Journal_Submission/results/raw_grouped/44964_2.jsonl skip
+WARNING:openml.datasets.functions:Could not download file from https://data.openml.org/datasets/0004/44976/dataset_44976.pq: Bucket does not exist or is private.
+WARNING:openml.datasets.functions:Failed to download parquet, fallback on ARFF.
+WARNING:openml.datasets.functions:Could not download file from https://data.openml.org/datasets/0004/44976/dataset_44976.pq: Bucket does not exist or is private.
+WARNING:openml.datasets.functions:Failed to download parquet, fallback on ARFF.
+(44976, 0) FAILED BadDataFormat('-0.354379,-0.39786,0.036066,1.799286,0.420973,-0.201941,0.085623,0.078918,-0.302023,0.538108,0.692594,0.55973')ine 448, in _parse_data_from_arff
+    data = self._get_arff(self.format)
+  File "/usr/local/lib/python3.13/site-packages/openml/datasets/dataset.py", line 427, in _get_arff
+    return decode_arff(fh)
+  File "/usr/local/lib/python3.13/site-packages/openml/datasets/dataset.py", line 420, in decode_arff
+    return decoder.decode(fh, encode_nominal=True, return_type=return_type)  # type: ignore
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/arff.py", line 896, in decode
+    raise e
+  File "/usr/local/lib/python3.13/site-packages/arff.py", line 892, in decode
+    return self._decode(s, encode_nominal=encode_nominal,
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        matrix_type=return_type)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/arff.py", line 870, in _decode
+    obj['data'] = data.decode_rows(stream(), self._conversors)
+                  ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/arff.py", line 519, in decode_rows
+    return list(super(_DataListMixin, self).decode_rows(stream, conversors))
+  File "/usr/local/lib/python3.13/site-packages/arff.py", line 470, in decode_rows
+    raise BadDataFormat(row)
+arff.BadDataFormat: Bad @DATA instance format in line 46284: -0.354379,-0.39786,0.036066,1.799286,0.420973,-0.201941,0.085623,0.078918,-0.302023,0.538108,0.692594,0.55973
+
+WARNING:openml.datasets.functions:Could not download file from https://data.openml.org/datasets/0004/44976/dataset_44976.pq: Bucket does not exist or is private.
+WARNING:openml.datasets.functions:Failed to download parquet, fallback on ARFF.
+WARNING:openml.datasets.functions:Could not download file from https://data.openml.org/datasets/0004/44976/dataset_44976.pq: Bucket does not exist or is private.
+WARNING:openml.datasets.functions:Failed to download parquet, fallback on ARFF.
