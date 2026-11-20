@@ -9,6 +9,7 @@ SPEC = {
                   rename={"model": "Model", "R2": "R²", "bottom10": "Bottom 10%", "central80": "Central 80%",
                           "top10": "Top 10%", "top1": "Top 1%"},
                   fmt={"R2": P2, "bottom10": P3, "central80": P3, "top10": P3, "top1": P3}),
+    "positioning": dict(name="L1_positioning"),
     "datasets": dict(name="D1_datasets"),
     "main": dict(name="D2_main"),
     "size": dict(name="D3_size_tests", query="not (Family == 'Density estimator' and Comparison == 'SDLC vs SDLC-N')"),

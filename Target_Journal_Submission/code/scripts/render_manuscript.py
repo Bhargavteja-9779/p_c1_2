@@ -23,7 +23,7 @@ RES, TAB, FIG = TOP / "results", TOP / "tables", TOP / "figures"
 sys.path.insert(0, str(ROOT))
 
 ORDER = ["00_front.md", "01_intro.md", "015_related.md", "02_theory.md", "03_setup.md", "04_results.md",
-         "05_discussion.md", "06_conclusion.md", "07_declarations.md", "08_references.md", "09_appendix.md"]
+         "05_discussion.md", "06_conclusion.md", "09_appendix.md", "08_references.md", "07_declarations.md"]
 
 
 def pct(x, d=1):

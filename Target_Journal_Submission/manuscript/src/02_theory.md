@@ -1,4 +1,4 @@
-# Problem formulation {#sec:problem}
+# Preliminaries and problem formulation {#sec:problem}
 
 ## Target-conditional coverage
 
@@ -22,7 +22,7 @@ Integrating (2) over strata of $Y$ (Table [-@tbl:prop1]): for a predictor that e
 
 {{TABLE:prop1|Coverage of the oracle covariate-conditional set ($\alpha=0.1$) within strata of the target. Gaussian rows (Proposition 1): analytic values from Eq. (2) with a Monte Carlo check ($2\times10^6$ draws). Other rows: $Y=S+\varepsilon$ with signal $S$ (standardised Student-$t_\nu$ or Gaussian) and noise $\varepsilon$ (Gaussian or standardised Gamma(2)), scaled to the stated $R^2$; the oracle set is the shortest set with conditional coverage 0.9 given $S$; Monte Carlo with $2\times10^6$ draws. Strata are defined by quantiles of $Y$. Marginal coverage is 0.900 in every row.}}
 
-# Stratified calibration and the optimal score {#sec:method}
+# Proposed method: stratified density-level conformal prediction {#sec:method}
 
 ## Stratified (Mondrian) calibration
 
@@ -73,7 +73,7 @@ Four consequences guide the method.
 
 *Scope.* The optimality refers to size averaged over the covariate law $P_X$ of the calibration population; under a shifted $Q$, $C^\star$ remains valid in the sense of Corollary 1(i) but is no longer size-optimal. For targets with atoms (ties, zero inflation) Theorem 1 is unaffected, whereas Lebesgue size is degenerate at an atom and the size-optimal set contains every atom; on such data a smooth density score is valid but not size-optimal.
 
-## The proposed method: stratified density-level conformal prediction (SDLC)
+## The SDLC procedure
 
 Figure [-@fig:schematic] summarises the workflow: a density model and the target strata are learned on the proper training set, and a separate conformal threshold is calibrated within each stratum on the calibration set.
 
@@ -95,7 +95,22 @@ Three alternatives are evaluated as ablations. SDLC-N replaces $\hat g$ by the s
 
 *Set geometry.* Only the size, the number of pieces, the hull and the tail alerts of a set are computed numerically. For a test point, $\hat C(x)\cap B_k=\{\hat\mu(x)+\hat\sigma(x)u:\hat g(u)\ge-\hat q_k\hat\sigma(x)\}\cap B_k$. We tabulate $\hat g$ on a non-uniform standardised grid (dense over the bulk of the residuals, logarithmically spaced beyond, analytic $t$ tails outside), interpolate linearly within each cell, and split every cell exactly at the stratum boundaries and the bounds of $D$. The reported geometry is therefore that of the stratum-exact set for the piecewise-linear interpolant of $\hat g$. A grid-convergence check on six large or heavy-tailed datasets (Supplementary Section S3, Table S4) shows that a four times finer grid changes mean set sizes by at most {{J:metrics_v3.json|grid_max_rel_change|pct}} and individual set sizes by at most {{J:metrics_v3.json|grid_max_rel_change_point|pct}}. The same construction is used for every location–scale baseline (DLS, DCP, HPD-split, S-HPD, SDLC-N). Interval methods report half-open stratum pieces, so that a candidate on a boundary belongs to exactly one stratum, as in (4).
 
-> **Algorithm 1 (SDLC).** *Input:* $\mathcal{D}_{\mathrm{tr}}$, $\mathcal{D}_{\mathrm{cal}}$, levels $\alpha_k$, strata probabilities. (i) On $\mathcal{D}_{\mathrm{tr}}$: fit $\hat\mu$; compute three-fold out-of-fold residuals; fit $\tilde\sigma$ on all absolute out-of-fold residuals and three cross-fitted scale models; fit $\hat g$ by (9) to the cross-fitted standardised residuals; build the strata from training targets. (ii) For each calibration point compute $S_i=-\hat f(Y_i\mid X_i)$ (or $+\infty$ outside $D$) and its stratum $k(Y_i)$. (iii) Compute $\hat q_k$ by (3) within each stratum. (iv) For a test $x$, return $\{y\in D:\hat f(y\mid x)\ge-\hat q_{k(y)}\}$. *Cost:* fitting requires eight gradient-boosted regressions (one mean model, three out-of-fold mean models, one full-data and three cross-fitted scale models); the kernel estimate costs $O(N+G_g\log G_g)$ by linear binning and FFT convolution on $G_g$ grid points. Calibration is $O(n\log n)$. Prediction costs $O(G\log K)$ per test point for a grid of $G$ standardised points, and one fit serves every $\alpha$.
+**Algorithm 1.** Stratified density-level conformal prediction (SDLC).
+
+> *Input:* proper training set $\mathcal{D}_{\mathrm{tr}}$; calibration set $\mathcal{D}_{\mathrm{cal}}$; stratum levels $\alpha_1,\dots,\alpha_K$; stratum probabilities (e.g. $0.10,0.25,0.75,0.90$).
+> *Output:* prediction set $\hat C(x)$ for any test input $x$.
+>
+> 1. Fit the mean model $\hat\mu$ on $\mathcal{D}_{\mathrm{tr}}$ and compute three-fold out-of-fold residuals $Y-\hat\mu_{-j}(X)$.
+> 2. Fit the scale model $\tilde\sigma$ on all absolute out-of-fold residuals and three cross-fitted scale models; set $\hat\sigma=\max\{\tilde\sigma,\varsigma\}$.
+> 3. Standardise the out-of-fold residuals with the cross-fitted scales and fit the noise density $\hat g$ by Eq. (9); form $\hat f(y\mid x)$ by Eq. (8).
+> 4. Compute the cut points from the training targets and define the strata $B_1,\dots,B_K$ and the domain $D$.
+> 5. **for** each $(X_i,Y_i)\in\mathcal{D}_{\mathrm{cal}}$ **do** $S_i\leftarrow-\hat f(Y_i\mid X_i)$ if $Y_i\in D$, else $S_i\leftarrow+\infty$; assign $i$ to stratum $k(Y_i)$.
+> 6. **for** $k=1,\dots,K$ **do** $\hat q_k\leftarrow$ the $\lceil (n_k+1)(1-\alpha_k)\rceil$-th smallest score in stratum $k$ (Eq. 3; $+\infty$ if this rank exceeds $n_k$).
+> 7. **return** $\hat C(x)=\bigcup_{k}\{y\in B_k\cap D:\hat f(y\mid x)\ge-\hat q_k\}$, computed stratum-exactly on the standardised grid.
+
+## Computational complexity {#sec:complexity}
+
+Fitting (steps 1–3) requires eight gradient-boosted regressions: one mean model, three out-of-fold mean models, one full-data scale model and three cross-fitted scale models. The kernel density estimate costs $O(N+G_g\log G_g)$ by linear binning and FFT convolution on $G_g$ grid points, where $N$ is the number of residuals. Calibration (steps 5–6) costs $O(n\log n)$ for $n$ calibration points, dominated by sorting within strata. Prediction (step 7) costs $O(G\log K)$ per test point for a grid of $G$ standardised points, so the total prediction cost is linear in the number of test points, and one fit serves every miscoverage level $\alpha$. Measured wall-clock times of all methods are reported in Section [-@sec:robustness] and Supplementary Section S3.
 
 ## Two practical variants
 

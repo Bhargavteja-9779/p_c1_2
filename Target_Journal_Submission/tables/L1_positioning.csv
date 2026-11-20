@@ -1,0 +1,9 @@
+Approach,Coverage holds conditionally on,Finite-sample guarantee,Score,Size optimality,Label (target) shift
+"Split, normalised, CQR, DCP [@lei2018distribution; @romano2019conformalized; @chernozhukov2021distributional]",nothing (marginal),marginal,"residual, quantile or CDF",no,not addressed
+"Density-based sets: CD-split, HPD-split [@izbicki2020flexible; @izbicki2022cdsplit]",nothing (approx. X-conditional),marginal,conditional density,asymptotic (marginal / X-conditional),not addressed
+"Conditional calibration [@gibbs2025conformal]; length-optimal sets [@kiyani2024length]",a class of covariate groups or shifts,over the class,any / density with X-dependent level,length-optimal over the class ,covariate shift
+"Mondrian on X or ŷ [@bostrom2020mondrian; @sousa2024improving; @boruah2026distribution]",bins of covariates or predictions,per bin,any,no,not addressed
+"Class-conditional set-valued classification [@sadinle2019least]",class label (discrete Y),per class,class probabilities,yes (discrete Y),not addressed
+"BFQR, equal opportunity of coverage [@wang2023equal]",sensitive group and bin of Y,"per group–bin, levels traded across bins",conformalised quantiles,width-minimising bin levels,not addressed
+"BCCP [@randahl2026bin]",bins of Y,per bin,absolute residual (any score admissible),not analysed,not analysed
+"SDLC (this paper)",strata of Y,"per stratum (Mondrian, Theorem 1)",conditional density with per-stratum thresholds,"exact for the oracle (Prop. 2); asymptotic for the plug-in (Prop. 3)","exact under stratum re-weighting, quantified otherwise (Cor. 1)"

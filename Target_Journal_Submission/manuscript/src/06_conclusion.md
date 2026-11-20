@@ -1,4 +1,4 @@
-# Conclusion {#sec:conclusion}
+# Conclusion and future work {#sec:conclusion}
 
 Prediction intervals that are valid on average can fail exactly where imbalanced regression needs them: on the rare outcomes. Even the oracle interval with exact covariate-conditional coverage under-covers the tails of the target, and on {{n_datasets}} benchmark datasets marginal and covariate-adaptive conformal methods covered only {{marg.worst_stratum.min}}–{{marg.worst_stratum.max}} of the outcomes in their worst-covered stratum at a nominal 90%. Calibrating thresholds within strata of the target, an established Mondrian device, restores coverage of rare outcomes in finite samples for any score, holds exactly under shifts that re-weight whole strata, and buys more tail coverage per unit of size than lowering the miscoverage level.
 
