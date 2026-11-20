@@ -1,7 +1,7 @@
 # PROJECT_STATE (checkpoint file — updated after every major stage)
 
 ## Fixed decisions
-* Target journal: Expert Systems with Applications (Elsevier) — see journal_selection/. ≤100-day acceptance NOT verifiable for any suitable journal (disclosed).
+* Target journal (re-selected 2026-11-20): J. King Saud Univ. – Comput. Inf. Sci. (Springer Nature), JIF 6.4 (2025), measured median received→accepted 69 d (2026, n=988). ESWA archived (147–187 d too slow for ≤72-d ceiling).
 * Topic: stratified (target-conditional) conformal prediction for imbalanced regression; size-optimal score = conditional-density level sets per stratum (SDLC).
 * Data: OpenML-CTR23 (suite 353), 31 of 35 datasets (exclusion: <20 distinct target values). Confirmatory: 17 held-out datasets (OpenML suites 335/336, config/confirmatory.json).
 * Development datasets: airfoil (44957), concrete (44959), QSAR fish (44970); diagnostic datasets: 44978, 44969, 44994, 44960, 44962, 45012, 44983.
