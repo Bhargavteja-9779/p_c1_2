@@ -19,15 +19,32 @@
       "Statements and Declarations" AFTER References; Appendix before References; LLM use documented in §5.8 (required by journal);
       positioning table (tables/L1_positioning.csv, Table 1) at end of Related work; Algorithm 1 pseudocode; §4.5 Computational complexity;
       workflow figure F0 = Fig. 1; Conclusion and future work; cover letter re-addressed to JKSU-CIS; highlights archived (not required).
-- [ ] RUNNING/NEXT: `bash code/scripts/queue_cycle2.sh` (grouped splits → results/raw_grouped, need 15 files; then timing_fit.py → results/timing_fit.csv;
-      timing.py → results/timing_methods_v3.csv). Scripts skip finished grouped runs. Needs pip deps (see note below).
-- [ ] Then: `cd code && python scripts/analyze3.py` and write the paragraph at the `<!-- GROUPED_TIMING -->` marker in manuscript/src/04_results.md
-      (grouped-split robustness + measured runtimes; §4.5 already points to it). Every number via {{T:...}}/{{J:...}} placeholders only.
-- [ ] Review rounds 2–10 (REVIEW/review_02.md … review_10.md), each a DIFFERENT focus as in the original brief (R2 novelty/prior art,
-      R3 statistics/leakage, R4 ML method + code-vs-paper, R5 dataset validity/generalisation, R6 computation, R7 writing + JKSU-CIS guideline
-      compliance, R8 competing researcher, R9 JKSU-CIS associate editor (desk-reject test), R10 final adversarial). Fix + rerun after each.
-      USER PRIORITY: avoid desk/editor rejection for novelty or journal fit (reviewers there reject rather than ask for major revision).
-- [ ] Final: render (python code/scripts/render_manuscript.py; code/scripts/build_pdf.py; code/scripts/build_supplement.py), REVIEW/final_audit.md,
+- [x] Grouped splits (15/15) + timing integrated (04_results.md "Grouped splits", "Computational cost"; Supp. Tables S13, S15, S16).
+- [x] Review rounds 2-4 done: REVIEW/review_02.md (novelty: R2-01 FATAL "incremental"), review_03.md (statistics), review_04.md (method/code).
+- [~] Fixes for review 3+4 delegated to a helper (it writes REVIEW/response_03_04.md and commits). CHECK `git log` — if response_03_04.md
+      is missing, redo: fix every issue in review_03.md/review_04.md (scope: 02_theory, 03_setup, 04_results, 05_discussion, 09_appendix,
+      analysis scripts; new confirmatory post-hoc analyses in a NEW script, never edit analyze_confirmatory.py).
+- [~] NOVELTY FIX for R2-01 (user priority: no desk rejection): NEW METHOD RW-DLC (relevance-weighted density-level conformal prediction).
+      Pre-registered in PREREGISTRATION_relevance_weighted.md (commit a9f31d2, BEFORE evaluation). Code: code/experiments/run_rw.py,
+      test code/tests/test_rw_validity.py. Theory to add to 02_theory.md as a new subsection after "Two practical variants":
+        Prop. 4 (validity): weighted split conformal with known relevance phi gives E[Cov_phi] >= 1-alpha (weighted exchangeability,
+        Tibshirani et al. 2019; Podkopaev & Ramdas 2021); Cov_phi = E[phi(Y)1{covered}]/E[phi(Y)].
+        Prop. 5 (oracle optimality): smallest sets with Cov_phi >= 1-alpha are {y: phi(y) f(y|x) >= t} (Neyman-Pearson; discrete analogue
+        Bhattacharyya, Ding & Barber 2026). Score s = -phi(y) f_hat(y|x). q(y)=+inf iff phi(y) > alpha W/(1-alpha), W = sum of cal weights.
+      Runs: `cd code && python experiments/run_rw.py confirmatory 4` (85 tasks -> results/rw/confirmatory) and, after contexts exist,
+      `python experiments/run_rw.py ctr23 4` (310 tasks; needs results/raw_refit_contexts from
+      `OMP_NUM_THREADS=1 python experiments/run_benchmark.py --mode fitonly --out ../results/raw_refit` — bit-identical to stored seed-0
+      contexts; gitignored, ~2-3 h on 4 cores; skips nothing, so delete partial outputs only if corrupted). Both scripts skip finished outputs? run_rw yes.
+      Early held-out result (19/85 runs, descriptive): RW-DLC-U Cov_phiU 0.898, top-1% coverage 0.898 (SDLC 0.70), size +24% vs SDLC;
+      RW-DLC smaller than RW-DLS/RW-NCP. Then: write analysis script (tests exactly as pre-registered: RW-1 TOST margin 0.02, RW-2 Holm
+      one-sided vs SCP/NCP/CQR/DLS-M, RW-3 top-1% vs SDLC one-sided, RW-4 size vs RW-DLS & RW-NCP two-sided Holm + geo CI), tables, figure.
+- [ ] Manuscript restructure (my part, NOT done yet): new title (drop "size-optimal"), abstract/intro/contributions around TWO guarantees
+      (per-stratum SDLC + relevance-weighted RW-DLC), Table 1 already rewritten (tables/L1_positioning.csv, includes RW-DLC row),
+      cite new refs already in bib: ding2025longtailed, bhattacharyya2026macro, choi2026continuous, liu2025longtail, chzhen2021setvalued;
+      address R2-02..R2-15; cut main text to ~11-12k words (move synthetic/sensitivity/error details to supplement); conclusion; cover letter.
+- [ ] Review rounds 5-10 (R5 dataset validity/generalisation, R6 computation, R7 writing+JKSU-CIS guidelines, R8 competing researcher,
+      R9 JKSU-CIS associate editor desk-reject test, R10 final adversarial), fix after each; response files REVIEW/response_XX.md.
+- [ ] Final: render (python code/scripts/render_manuscript.py; build_supplement.py; build_pdf.py), REVIEW/final_audit.md,
       rejection-risk report, READY/NOT READY decision, file manifest, push.
 
 ## Environment note (fresh container)
