@@ -1,31 +1,17 @@
-<!-- End matter. Every heading carries {-} so that it stays unnumbered in any build (render_manuscript.py does not exempt "Ethics statement" by name). The generative AI declaration comes last so that it immediately precedes the References, as Elsevier's policy requires. Bracketed text marks placeholders for the authors. -->
+<!-- End matter in the form required by the journal ("Statements and Declarations"). Headings carry {-} so that they stay unnumbered. Bracketed text marks placeholders for the authors; identifying information is kept on the separate title page for double-blind review. -->
 
-# Declaration of competing interest {-}
+# Statements and Declarations {-}
 
-The authors declare that they have no known competing financial interests or personal relationships that could have appeared to influence the work reported in this paper. [Placeholder: to be confirmed by every author before submission.]
+**Competing interests.** The authors declare that they have no known competing financial interests or personal relationships that could have appeared to influence the work reported in this paper. [To be confirmed by every author before submission.]
 
-# CRediT authorship contribution statement {-}
+**Funding.** [Placeholder: funding sources and grant numbers; otherwise: "The authors did not receive support from any organization for the submitted work."]
 
-[Placeholder: to be completed by the authors using the CRediT taxonomy, for example:] **[Author 1]:** Conceptualization, Methodology, Software, Formal analysis, Investigation, Visualization, Writing – original draft. **[Author 2]:** Conceptualization, Validation, Supervision, Writing – review & editing.
+**Author contributions.** [Placeholder, given on the title page to preserve anonymity; for example: Author 1: conceptualization, methodology, software, formal analysis, investigation, visualization, writing – original draft. Author 2: conceptualization, validation, supervision, writing – review & editing.]
 
-# Data and code availability {-}
+**Data availability.** All datasets analysed in this study are publicly available on OpenML: study 353, the OpenML-CTR23 benchmark suite [@fischer2023openml], and, for the confirmatory replication, suites 335 and 336 [@grinsztajn2022tree]. They are downloaded programmatically through the OpenML API by the released scripts; the OpenML identifier and licence of each dataset are listed in Supplementary Tables S1 and S2.
 
-*Data.* All datasets analysed in this study are publicly available on OpenML: study 353, the OpenML-CTR23 benchmark suite [@fischer2023openml], and, for the confirmatory replication, suites 335 and 336 [@grinsztajn2022tree]. They were downloaded programmatically through the OpenML API by the scripts in the code package; the OpenML identifier and licence of each dataset are listed in Supplementary Tables S1 and S2.
+**Code availability.** All code, configuration files, raw per-run results, the pre-registered confirmatory analysis plan and the analysis scripts are provided as supplementary material for review (anonymised) and will be deposited in a public repository [repository URL] upon acceptance. A single command (`python run_all.py --mode full`) regenerates every table, figure and number of the manuscript from the raw data.
 
-*Code.* All code, the configuration files, the raw per-run results, the pre-registered confirmatory analysis plan and the analysis scripts are provided in the supplementary code package for review and will be deposited in a public repository [repository URL] upon acceptance. A single command (`python run_all.py --mode full`) regenerates every table, figure and number of the manuscript from the raw data.
+**Ethics approval and consent.** Not applicable. The study used only publicly available, de-identified benchmark data and involved no human participants, animals or personal data.
 
-# Funding {-}
-
-[Placeholder: funding sources, grant numbers and the role of each funder; if there was no funding: "This research did not receive any specific grant from funding agencies in the public, commercial, or not-for-profit sectors."]
-
-# Acknowledgements {-}
-
-[Placeholder: to be completed by the authors; delete this section if there is nothing to acknowledge.]
-
-# Ethics statement {-}
-
-This study used only publicly available, de-identified benchmark data. It involved no human participants and no animals, and no personal data were collected; ethical approval was therefore not required.
-
-# Declaration of generative AI and AI-assisted technologies in the manuscript preparation process {-}
-
-During the preparation of this work the authors used Claude (Anthropic), a generative AI system, in order to assist with literature search and verification, code development, orchestration of the computational experiments, simulated peer review of drafts, and drafting and editing of the manuscript. All numerical results were produced by the released code from public data, and every reference was checked against its publisher or index record. After using this tool, the authors reviewed and edited the content as needed and take full responsibility for the content of the publication.
+**Use of large language models.** The use of a large language model in this work is documented in Section [-@sec:llm], as required by the journal's policy.

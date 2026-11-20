@@ -75,6 +75,10 @@ Four consequences guide the method.
 
 ## The proposed method: stratified density-level conformal prediction (SDLC)
 
+Figure [-@fig:schematic] summarises the workflow: a density model and the target strata are learned on the proper training set, and a separate conformal threshold is calibrated within each stratum on the calibration set.
+
+{{FIG:schematic|F0_method_schematic.png|Workflow of stratified density-level conformal prediction (SDLC). Upper row: the location–scale density model $\hat f(y\mid x)$ and the target strata $B_1,\dots,B_K$ are fitted on the proper training set. Lower row: calibration scores are grouped by the stratum of the observed target and a conformal quantile $\hat q_k$ is computed in each stratum. The prediction set is the union over strata of the density level sets at the stratum's threshold, which guarantees coverage within every stratum in finite samples (Theorem 1).}}
+
 SDLC instantiates (3)–(4) with the plug-in score $s(x,y)=-\hat f(y\mid x)$, where $\hat f$ is estimated on $\mathcal{D}_{\mathrm{tr}}$. By Theorem 1 the guarantee (5) holds for any $\hat f$; Propositions 2 and 3 motivate the score. We use the semiparametric location–scale estimator
 $$\hat f(y\mid x)=\frac{1}{\hat\sigma(x)}\,\hat g\!\left(\frac{y-\hat\mu(x)}{\hat\sigma(x)}\right). \tag{8}$$
 Here $\hat\mu$ is a gradient-boosted regression of $Y$ on $X$, and $\hat\sigma(x)=\max\{\tilde\sigma(x),\varsigma\}$, where $\tilde\sigma$ is a gradient-boosted regression of the absolute *out-of-fold* residuals $|Y-\hat\mu_{-j}(X)|$ (three folds), the spread estimate of locally weighted conformal prediction [@lei2018distribution]. The floor $\varsigma=\max\{10^{-3}\mathrm{sd}(Y_{\mathrm{tr}}),\,0.05\,\mathrm{median}|Y-\hat\mu_{-j}(X)|\}$ is shared by every method that uses $\hat\sigma$. The noise density is a defensive mixture

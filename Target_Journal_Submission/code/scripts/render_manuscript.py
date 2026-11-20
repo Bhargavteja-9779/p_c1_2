@@ -1,6 +1,6 @@
 """Render the manuscript: fill every {{placeholder}} from machine-generated result files,
 insert tables generated from tables/*.csv, number sections/tables/figures, and build the
-DOCX with pandoc (+citeproc, Elsevier Harvard CSL) followed by python-docx post-processing.
+DOCX with pandoc (+citeproc, Springer Basic author-date CSL) followed by python-docx post-processing.
 
 Placeholders that cannot be resolved abort the build (no number is ever typed by hand).
 """
@@ -374,7 +374,7 @@ def build_docx():
     out = MS / "Final_Manuscript.docx"
     cmd = ["pandoc", str(md), "-o", str(out), "--citeproc",
            f"--bibliography={TOP / 'supplementary' / 'references_verified.bib'}",
-           f"--csl={BUILD / 'elsevier-harvard.csl'}", f"--reference-doc={ref}",
+           f"--csl={BUILD / 'springer-basic-author-date.csl'}", f"--reference-doc={ref}",
            "--resource-path", str(TOP), "-M", "link-citations=true"]
     subprocess.run(cmd, check=True)
     from scripts.docx_style import postprocess
@@ -383,7 +383,7 @@ def build_docx():
 
 
 if __name__ == "__main__":
-    render_aux("highlights.md", "highlights.docx", max_chars=85)
+    render_aux("title_page.md", "title_page.docx")
     if (SRC / "cover_letter.md").exists():
         render_aux("cover_letter.md", "cover_letter.docx")
     render()
