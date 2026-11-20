@@ -1,5 +1,5 @@
 """Build the Supplementary Material (manuscript/Supplementary_Material.docx and .pdf) from generated tables,
-figures and result files. Numbering: Sections S1-S6, Tables S1-S13, Figures S1-S3 (cited in the main text).
+figures and result files. Numbering: Sections S1-S6, Tables S1-S16, Figures S1-S3 (cited in the main text).
 No number is typed by hand."""
 from __future__ import annotations
 
@@ -122,6 +122,17 @@ def main():
         tm.columns = ["Method", "Median µs per test point", "Maximum over datasets"]
         out += ["**Table S13.** Calibration and prediction time per test point (median over datasets of the "
                 "per-dataset median of three repetitions after a discarded warm-up; one thread).", "", md(tm, 1), ""]
+    tfit = TAB / "T15b_timing_fit.csv"
+    if tfit.exists():
+        tf = pd.read_csv(tfit)
+        out += ["**Table S15.** Fitting and prediction time of the model components in seconds (seed 0, one CPU "
+                "thread; `experiments/timing_fit.py`). SDLC uses the mean model, the scale model with out-of-fold "
+                "residuals, the cross-fitted scale models and the kernel density.", "", md(tf, 3), ""]
+    d16 = TAB / "D16_grouped.csv"
+    if d16.exists():
+        out += ["**Table S16.** Grouped versus random splits on datasets with repeated units ($\\alpha=0.1$, 5 seeds; "
+                "size in units of the training-target standard deviation; random-split values from the same seeds of the "
+                "main benchmark).", "", pd.read_csv(d16, dtype=str).to_markdown(index=False, disable_numparse=True), ""]
     for i, (f, cap) in enumerate((("F4_upper_tail_per_dataset.png", "Coverage of the upper calibration stratum per dataset ($\\alpha=0.1$)."),
                                   ("F8_error_analysis.png", "Error analysis. Left: price of stratum-wise validity (SDLC/DLS size ratio) "
                                    "against relative RMSE. Right: worst-stratum coverage of SDLC minus its null mean "

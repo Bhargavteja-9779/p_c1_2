@@ -110,7 +110,7 @@ Three alternatives are evaluated as ablations. SDLC-N replaces $\hat g$ by the s
 
 ## Computational complexity {#sec:complexity}
 
-Fitting (steps 1–3) requires eight gradient-boosted regressions: one mean model, three out-of-fold mean models, one full-data scale model and three cross-fitted scale models. The kernel density estimate costs $O(N+G_g\log G_g)$ by linear binning and FFT convolution on $G_g$ grid points, where $N$ is the number of residuals. Calibration (steps 5–6) costs $O(n\log n)$ for $n$ calibration points, dominated by sorting within strata. Prediction (step 7) costs $O(G\log K)$ per test point for a grid of $G$ standardised points, so the total prediction cost is linear in the number of test points, and one fit serves every miscoverage level $\alpha$. Measured wall-clock times of all methods are reported in Section [-@sec:robustness] and Supplementary Section S3.
+Fitting (steps 1–3) requires eight gradient-boosted regressions: one mean model, three out-of-fold mean models, one full-data scale model and three cross-fitted scale models. The kernel density estimate costs $O(N+G_g\log G_g)$ by linear binning and FFT convolution on $G_g$ grid points, where $N$ is the number of residuals. Calibration (steps 5–6) costs $O(n\log n)$ for $n$ calibration points, dominated by sorting within strata. Prediction (step 7) costs $O(G\log K)$ per test point for a grid of $G$ standardised points, so the total prediction cost is linear in the number of test points, and one fit serves every miscoverage level $\alpha$. Measured wall-clock times of all methods are reported in Section [-@sec:robustness] and Supplementary Tables S13 and S15.
 
 ## Two practical variants
 
