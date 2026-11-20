@@ -1,6 +1,6 @@
 """Build manuscript/Final_Manuscript.pdf from the filled manuscript source.
 
-Route: pandoc (citeproc, Elsevier Harvard CSL, MathML) -> standalone HTML with embedded figures ->
+Route: pandoc (citeproc, Springer Basic author-date CSL, MathML) -> standalone HTML with embedded figures ->
 headless Chromium (Playwright) print to A4 PDF. MathML is rendered natively by Chromium, which avoids
 the equation-glyph limitations of converting the DOCX with LibreOffice. The DOCX remains the
 submission file; the PDF is a convenience copy with identical content.
@@ -53,7 +53,7 @@ def build(md, out_pdf, html):
     css.write_text(CSS)
     subprocess.run(["pandoc", str(md), "-s", "--citeproc", "--mathml", "--embed-resources",
                     f"--bibliography={TOP / 'supplementary' / 'references_verified.bib'}",
-                    f"--csl={BUILD / 'elsevier-harvard.csl'}", f"--css={css}", "--resource-path", str(TOP),
+                    f"--csl={BUILD / 'springer-basic-author-date.csl'}", f"--css={css}", "--resource-path", str(TOP),
                     "-M", "link-citations=true", "-o", str(html)], check=True)
     js = BUILD / "print_pdf.js"
     js.write_text("""
