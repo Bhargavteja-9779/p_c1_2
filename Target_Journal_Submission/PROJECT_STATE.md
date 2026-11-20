@@ -8,15 +8,32 @@
 * Primary method: SDLC-LS. Final implementation = v3 (cross-fitted standardisation, KDE+t2 noise density, harmonised floor, stratum-exact monotone-run geometry, half-open strata, D∩[0,∞)).
 * Framing: main benchmark NOT called pre-registered; CTR23 size comparisons exploratory; confirmatory replication pre-registered (PREREGISTRATION_confirmatory.md, commit ccba99b, pushed before evaluation).
 
-## Status (checkpoint 2026-11-18 ~10:45 UTC)
-- [x] Review cycle 1 (REVIEW/review_01.md, 46 issues) → response REVIEW/response_01.md
-- [x] v3 refit (raw_contexts_v3) + v3 evaluation 310/310 (results/raw_eval_v3), analysis scripts/analyze3.py → results/metrics_v3.json, statistics_v3.json, tables/T*, D*, figures/
-- [x] Synthetic v3 (results/synthetic_v3.jsonl), Prop1 extension, tail-alert decision study (results/tail_alerts.jsonl), grid convergence
-- [x] Confirmatory replication: fit 85/85, refit 85/85, eval 85/85; analyze_confirmatory.py (unchanged since pre-registration) → results/confirmatory/statistics_confirmatory.json. ALL hypotheses supported.
-- [x] Manuscript revised (all src/*.md), renderer v3 context, supplementary builder (scripts/build_supplement.py), bibliography verified (agent), CSL URL fallback
-- [ ] Queue scripts/queue_cycle1b.sh running: MLP v3 → DenseWeight → grid → grouped splits → timing_fit → timing (logs results/experiment_logs/)
-- [ ] After queue: rerun analyze3, write LEARNERS_SECTION in 04_results.md (MLP, DenseWeight, grouped splits, timing), render DOCX/PDF/supplement
-- [ ] Review cycles 2–10 (workflow), final comparison with strongest ESWA papers, final audit, rejection-risk report, READY/NOT READY decision, manifest
+## Status (checkpoint 2026-11-20, session 3)
+- [x] Review cycle 1 + v3 implementation + confirmatory replication (all pre-registered hypotheses supported)
+- [x] MLP v3 (155/155), DenseWeight (93/93), grid convergence — done and integrated
+- [x] JOURNAL RE-SELECTED (user ceiling: final acceptance ≤ 72 days, high IF, not MDPI): JKSU-CIS, Springer Nature.
+      Evidence: journal_selection/selected_journal.md, journal_comparison.md, journal_verification.md, measure/*.py
+      (Crossref census 2026: median 69 d, n=988). OUP JCDE measured 117.5 d (rejected). ESWA archived in journal_selection/archive_eswa/.
+- [x] Manuscript adapted to JKSU-CIS house style (profile of 6 accepted papers): anonymised (double-blind) + manuscript/src/title_page.md;
+      Springer author-year CSL (manuscript/build/springer-basic-author-date.csl); 6 keywords; abstract ≤250 words;
+      "Statements and Declarations" AFTER References; Appendix before References; LLM use documented in §5.8 (required by journal);
+      positioning table (tables/L1_positioning.csv, Table 1) at end of Related work; Algorithm 1 pseudocode; §4.5 Computational complexity;
+      workflow figure F0 = Fig. 1; Conclusion and future work; cover letter re-addressed to JKSU-CIS; highlights archived (not required).
+- [ ] RUNNING/NEXT: `bash code/scripts/queue_cycle2.sh` (grouped splits → results/raw_grouped, need 15 files; then timing_fit.py → results/timing_fit.csv;
+      timing.py → results/timing_methods_v3.csv). Scripts skip finished grouped runs. Needs pip deps (see note below).
+- [ ] Then: `cd code && python scripts/analyze3.py` and write the paragraph at the `<!-- GROUPED_TIMING -->` marker in manuscript/src/04_results.md
+      (grouped-split robustness + measured runtimes; §4.5 already points to it). Every number via {{T:...}}/{{J:...}} placeholders only.
+- [ ] Review rounds 2–10 (REVIEW/review_02.md … review_10.md), each a DIFFERENT focus as in the original brief (R2 novelty/prior art,
+      R3 statistics/leakage, R4 ML method + code-vs-paper, R5 dataset validity/generalisation, R6 computation, R7 writing + JKSU-CIS guideline
+      compliance, R8 competing researcher, R9 JKSU-CIS associate editor (desk-reject test), R10 final adversarial). Fix + rerun after each.
+      USER PRIORITY: avoid desk/editor rejection for novelty or journal fit (reviewers there reject rather than ask for major revision).
+- [ ] Final: render (python code/scripts/render_manuscript.py; code/scripts/build_pdf.py; code/scripts/build_supplement.py), REVIEW/final_audit.md,
+      rejection-risk report, READY/NOT READY decision, file manifest, push.
+
+## Environment note (fresh container)
+pip install -r code/requirements.txt fails on liac-arff (setuptools bug). Workaround: install the other requirements, then
+`pip install --no-deps openml==0.15.1 && pip install tqdm xmltodict minio requests python-dateutil`, and copy arff.py from the
+liac-arff sdist (`pip download --no-deps --no-binary :all: liac-arff`) into site-packages. OpenML data download via ARFF fallback works.
 
 ## Key results (machine-generated; see results/statistics_v3.json)
 RQ1: marginal worst-stratum 0.63–0.78 (26–31/31 below null); stratified ≈0.89 (≤2/31 below null).
@@ -26,4 +43,4 @@ Confirmatory (17 held-out): C-H1–C-H4 supported; size ratios BCCP 0.862, S-NCP
 RQ5: dedicated tail classifier (TC-LS) needs fewer alerts at the same recall guarantee; at cost ratio 10 no significant difference to SDLC.
 
 ## Resume instructions
-If the container restarted: check `ls results/raw_mlp_v3 | wc -l` (155), `results/raw_denseweight` (93), `results/raw_grouped` (15), `results/timing_*.csv`; re-launch `bash code/scripts/queue_cycle1b.sh` (all steps skip finished outputs except timing/grid, which are cheap).
+A new session should: read this file, `git log --oneline | head`, then check `ls results/raw_grouped | wc -l` (15 needed) and `ls results/timing_fit.csv results/timing_methods_v3.csv`; if incomplete, install deps (note above) and run `bash code/scripts/queue_cycle2.sh` in the background; then continue the unchecked items above in order.
