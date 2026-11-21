@@ -1,6 +1,6 @@
 # Title page {-}
 
-**Title:** Covering the rare outcomes: stratified conformal prediction with size-optimal density scores for imbalanced regression
+**Title:** Covering rare outcomes in imbalanced regression: stratified and relevance-weighted conformal prediction with density scores
 
 **Authors:** [Author 1]^1,\*^, [Author 2]^2^
 
@@ -12,7 +12,7 @@
 
 **Abstract:** identical to the abstract of the anonymised manuscript.
 
-**Keywords:** Conformal prediction; Imbalanced regression; Prediction intervals; Uncertainty quantification; Mondrian calibration; Extreme values
+**Keywords:** Conformal prediction; Imbalanced regression; Prediction intervals; Uncertainty quantification; Relevance function; Extreme values
 
 ## Statements and Declarations {-}
 
@@ -24,7 +24,7 @@
 
 **Acknowledgements.** [Placeholder; delete if not applicable.]
 
-**Data and code availability.** All data are public on OpenML (study 353; suites 335 and 336). Code, configuration, raw results and the pre-registered analysis plan: [repository URL].
+**Data and code availability.** All data are public on OpenML (study 353; suites 335 and 336). Code, configuration, raw results and the pre-specified analysis plan: [repository URL].
 
 **Use of large language models.** Documented in Section "Use of a large language model" of the manuscript.
 

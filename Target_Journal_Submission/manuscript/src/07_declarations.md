@@ -10,7 +10,7 @@
 
 **Data availability.** All datasets analysed in this study are publicly available on OpenML: study 353, the OpenML-CTR23 benchmark suite [@fischer2023openml], and, for the confirmatory replication, suites 335 and 336 [@grinsztajn2022tree]. They are downloaded programmatically through the OpenML API by the released scripts; the OpenML identifier and licence of each dataset are listed in Supplementary Tables S1 and S2.
 
-**Code availability.** All code, configuration files, raw per-run results, the pre-registered confirmatory analysis plan and the analysis scripts are provided as supplementary material for review (anonymised) and will be deposited in a public repository [repository URL] upon acceptance. A single command (`python run_all.py --mode full`) regenerates every table, figure and number of the manuscript from the raw data.
+**Code availability.** All code, configuration files, raw per-run results, the pre-specified confirmatory analysis plan and the analysis scripts are provided as supplementary material for review (anonymised) and will be deposited in a public repository [repository URL] upon acceptance. A single command (`python run_all.py --mode full`) regenerates every table, figure and number of the manuscript from the raw data.
 
 **Ethics approval and consent.** Not applicable. The study used only publicly available, de-identified benchmark data and involved no human participants, animals or personal data.
 

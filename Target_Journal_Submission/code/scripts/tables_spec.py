@@ -27,4 +27,6 @@ SPEC = {
     "synthshift": dict(name="D12_synthetic_shift"),
     "learners": dict(name="D9_learners"),
     "confirmatory": dict(name="C2_display"),
+    "rw_conf": dict(name="D17_rw_confirmatory"),
+    "rw_ctr23": dict(name="D17_rw_ctr23"),
 }

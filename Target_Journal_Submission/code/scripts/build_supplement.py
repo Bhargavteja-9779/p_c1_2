@@ -1,5 +1,5 @@
 """Build the Supplementary Material (manuscript/Supplementary_Material.docx and .pdf) from generated tables,
-figures and result files. Numbering: Sections S1-S6, Tables S1-S16, Figures S1-S3 (cited in the main text).
+figures and result files. Numbering: Sections S1-S7, Tables S1-S20, Figures S1-S3 (cited in the main text).
 No number is typed by hand."""
 from __future__ import annotations
 
@@ -128,6 +128,25 @@ def main():
         out += ["**Table S15.** Fitting and prediction time of the model components in seconds (seed 0, one CPU "
                 "thread; `experiments/timing_fit.py`). SDLC uses the mean model, the scale model with out-of-fold "
                 "residuals, the cross-fitted scale models and the kernel density.", "", md(tf, 3), ""]
+    t18 = TAB / "T18_secondary.csv"
+    if t18.exists():
+        s = pd.read_csv(t18)
+        s17 = s[~s.analysis.str.startswith("subgroup")]
+        out += ["**Table S17.** Pre-specified secondary analyses of the held-out replication (hull forms) and post hoc "
+                "equivalence tests (±5% on the log-size scale, TOST with two one-sided Wilcoxon tests), on CTR23 and the "
+                "held-out datasets (`scripts/analyze_secondary.py`).", "", md(s17, 3), ""]
+        sk = pd.read_csv(TAB / "T18b_confirmatory_skewness.csv")
+        out += ["**Table S18.** Held-out datasets: skewness and octile skewness of the training targets, and size "
+                "comparisons of SDLC by skewness subgroup (post hoc, descriptive).", "", md(sk, 3), "",
+                md(s[s.analysis.str.startswith("subgroup")], 3), ""]
+    d17 = TAB / "D17_rw_ctr23.csv"
+    if d17.exists():
+        out += ["**Table S19.** Relevance-weighted study on the OpenML-CTR23 datasets ($\\alpha=0.1$, 10 seeds; means "
+                "over datasets; columns as in the main-text table of the relevance-weighted study).", "",
+                pd.read_csv(d17, dtype=str).to_markdown(index=False, disable_numparse=True), ""]
+        t17 = TAB / "T17b_rw_tests.csv"
+        out += ["**Table S20.** Pre-specified hypothesis tests of the relevance-weighted study (both collections).", "",
+                md(pd.read_csv(t17), 4), ""]
     d16 = TAB / "D16_grouped.csv"
     if d16.exists():
         out += ["**Table S16.** Grouped versus random splits on datasets with repeated units ($\\alpha=0.1$, 5 seeds; "
@@ -182,6 +201,10 @@ def main():
     out += ["# S6. Pre-registered analysis plan of the confirmatory replication", "",
             "Reproduced verbatim from `PREREGISTRATION_confirmatory.md`, committed to the public repository "
             "before any confirmatory evaluation.", "", pre]
+    pre2 = (TOP / "PREREGISTRATION_relevance_weighted.md").read_text().split("\n", 1)[1].replace("\n## ", "\n### ")
+    out += ["# S7. Pre-specified analysis plan of the relevance-weighted study", "",
+            "Reproduced verbatim from `PREREGISTRATION_relevance_weighted.md`, committed to version control (commit "
+            "`a9f31d2`) before RW-DLC was evaluated on any dataset.", "", pre2]
     text = "\n".join(out)
     BUILD.mkdir(parents=True, exist_ok=True)
     src = BUILD / "supplementary_filled.md"

@@ -152,7 +152,7 @@
   }
  },
  "confirmatory.skew_groups": {
-  "|skew|>1": {
+  "skewed": {
    "BCCP": {
     "n": 7,
     "geo_ratio": 0.8286142273012386,
@@ -178,7 +178,7 @@
     "losses": 1
    }
   },
-  "|skew|<=1": {
+  "symmetric": {
    "BCCP": {
     "n": 10,
     "geo_ratio": 0.8818468958030579,

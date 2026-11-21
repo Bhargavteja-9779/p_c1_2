@@ -55,6 +55,12 @@ def analyse(suite):
     # summary table (means over datasets)
     summ = pdm.groupby("method")[COLS].mean().reindex(METHODS).reset_index()
     summ.to_csv(TAB / f"T17_rw_summary_{suite}.csv", index=False)
+    disp = summ[["method", "coverage", "cov_phiU", "macro_decile", "worst_decile", "top1_cov", "size"]].copy()
+    disp.columns = ["Method", "Marginal cov.", "Relevance-weighted cov. (φ_U)", "Mean decile cov.", "Worst decile cov.",
+                    "Top-1% cov.", "Size / sd(y)"]
+    for c_ in disp.columns[1:]:
+        disp[c_] = disp[c_].map(lambda v: f"{v:.3f}")
+    disp.to_csv(TAB / f"D17_rw_{suite}.csv", index=False)
     out["summary"] = summ.set_index("method").to_dict(orient="index")
     tests = []
     P = "RW-DLC-U"

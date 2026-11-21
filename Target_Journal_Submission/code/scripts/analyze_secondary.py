@@ -104,7 +104,7 @@ def main():
     sk.to_csv(TAB / "T18b_confirmatory_skewness.csv", index=False)
     P = per_ds(data["confirmatory"])
     grp = {}
-    for name, ids in (("|skew|>1", sk.did[sk["skew"].abs() > 1]), ("|skew|<=1", sk.did[sk["skew"].abs() <= 1])):
+    for name, ids in (("skewed", sk.did[sk["skew"].abs() > 1]), ("symmetric", sk.did[sk["skew"].abs() <= 1])):
         g = {}
         for b in ("BCCP", "S-NCP", "S-CQR", "S-HPD"):
             Q = P.loc[P.index.isin(ids)]
