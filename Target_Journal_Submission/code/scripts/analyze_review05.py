@@ -17,7 +17,9 @@ Rules fixed in this docstring before the analyses were run:
 Size comparisons: per-dataset geometric-mean normalised size over seeds, two-sided Wilcoxon signed-rank on log ratios,
 Holm over the four comparators within a subset (as in analyze_secondary.py).
 Writes results/statistics_review05.json and tables/T19_heldout_profile.csv, T19b_ctr23_profile.csv,
-T20_review05_sensitivity.csv, T21_grouped_seed_range.csv, T22_duplicate_targets.csv, T23_top1_unified.csv.
+T20_review05_sensitivity.csv, T21_grouped_seed_range.csv, T22_duplicate_targets.csv, T23_top1_unified.csv,
+T24_temporal_splits.csv (temporal/time-blocked splits, experiments/run_temporal.py, against the random splits of the
+same seeds).
 """
 from __future__ import annotations
 
@@ -154,6 +156,38 @@ def grouped_range():
     return pd.DataFrame(rows)
 
 
+def temporal(xc, xh):
+    files = sorted((RES / "raw_temporal").glob("*.jsonl"))
+    if not files:
+        return None, {}
+    g = pd.concat([pd.read_json(f, lines=True) for f in files], ignore_index=True)
+    g = g[g.method.isin(NAME)].copy()
+    g["m"] = g.method.map(NAME)
+    g["nsize"] = g["size"] / g["y_train_sd"]
+    cc = [c for c in g.columns if c.startswith("cal_cov_") and c[8:].isdigit()]
+    g["worst"] = g[cc].min(axis=1)
+    rows, out = [], {}
+    for (did, ds, how), gg in g.groupby(["did", "dataset", "split"]):
+        x = xc if did in CTR else xh
+        rnd = x[(x.did == did) & x.seed.isin(range(5))].copy()
+        rc = [c for c in rnd.columns if c.startswith("cal_cov_") and c[8:].isdigit()]
+        rnd["worst"] = rnd[rc].min(axis=1)
+        for m in ["SCP", "CQR", "HPD-split", "BCCP", "S-NCP", "S-CQR", "SDLC"]:
+            a_, b_ = gg[gg.m == m], rnd[rnd.m == m]
+            if a_.empty or b_.empty:
+                continue
+            rows.append(dict(dataset=ds, split=how, method=m, coverage=a_.coverage.mean(),
+                             coverage_min=a_.coverage.min(), coverage_max=a_.coverage.max(),
+                             worst=a_.worst.mean(), worst_min=a_.worst.min(), coverage_random=b_.coverage.mean(),
+                             worst_random=b_.worst.mean(), size=float(np.exp(np.log(a_.nsize).mean())),
+                             size_random=float(np.exp(np.log(b_.nsize).mean())), n_seeds=int(a_.seed.nunique())))
+    T = pd.DataFrame(rows)
+    for (ds, how), t in T.groupby(["dataset", "split"]):
+        t_ = t.set_index("method")
+        out[f"{ds}|{how}"] = {m: t_.loc[m].drop(["dataset", "split"]).to_dict() for m in t_.index}
+    return T, out
+
+
 def main():
     out, sens = {}, []
     prof = pd.DataFrame([target_profile(d) for d in CTR + HO])
@@ -221,6 +255,10 @@ def main():
     v = gr[gr.dataset == "video_transcoding"].set_index("method")
     out["grouped.video"] = {m: v.loc[m].drop("n_seeds").to_dict() for m in ("SDLC", "BCCP", "S-NCP", "S-CQR")
                             if m in v.index}
+    T24, tp = temporal(xc, xh)
+    if T24 is not None:
+        T24.to_csv(TAB / "T24_temporal_splits.csv", index=False)
+        out["temporal"] = tp
     (RES / "statistics_review05.json").write_text(json.dumps(out, indent=1, default=float))
     print(pd.DataFrame(sens).round(3).to_string())
     print(json.dumps({k: v for k, v in out.items() if not isinstance(v, dict) or k.startswith("rw3")}, indent=1,
