@@ -94,3 +94,10 @@ While it runs: analysis/writing items from the practical-sagan checkpoint above 
       Open from review 5: temporal splits Moneyball/Bike (C1-31(d)) not run; CTR23 RW arm pending (queue 3).
 - [ ] Queue 3 running (resume_queue3.sh): refit -> run_rw ctr23 -> timing_like -> timing_rw. Supplement S13 needs timing_like (D15c).
 - [ ] Then: analyze_timing.py, analyze_rw.py (CTR23), response_06.md, RW CTR23 sentence in §6.4; reviews 8-10 (ask user re: agent cost); final audit.
+
+### Progress (zen-pasteur, 2026-11-21 ~16:30 UTC)
+- [x] Review 5 incl. temporal splits (run_temporal.py); review 8 (eval_tail1.py: dedicated 1% strata match RW-DLC's top-1% coverage -> RW claims revised); review 9 (reframing, main text ~11.4k words, supplement S8 from manuscript/src/supp_extra.md, anonymised package code/scripts/build_anonymous_package.py -> submission_package/, docx path stripping, Fig. 1 fixes). Responses: REVIEW/response_05, _08, _09.
+- [ ] Queue 3 (refit 155/310 at 16:30) -> run_rw ctr23 -> timing_like -> timing_rw. Relaunch with `bash code/scripts/resume_queue3.sh` if it stopped (2-h background limit).
+- [ ] After queue: scripts/analyze_rw.py (CTR23 -> D17_rw_ctr23 = Table S19; one sentence in §6.4 "RQ4"), scripts/analyze_timing.py (D15c -> Table S13; rewrite "*Computational cost.*" paragraph in 04_results.md with timing_summary.json placeholders), REVIEW/response_06.md, rebuild all (render, supplement, pdf, anonymous package).
+- [ ] Review 10 (final adversarial, one agent), fix, final audit REVIEW/final_audit.md, READY/NOT READY, manifest.
+- Supplement numbering is fixed: S19 CTR23 RW, S20 earlier implementations, S21-S23 moved tables, Fig. S4 example.
