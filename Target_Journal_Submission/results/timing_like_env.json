@@ -1,0 +1,37 @@
+{
+ "python": "3.13.18",
+ "machine": "x86_64",
+ "processor": "x86_64",
+ "numpy": "2.5.3",
+ "pandas": "3.0.5",
+ "threadpools": [
+  {
+   "internal_api": "openblas",
+   "num_threads": 1
+  },
+  {
+   "internal_api": "openmp",
+   "num_threads": 1
+  },
+  {
+   "internal_api": "openmp",
+   "num_threads": 1
+  },
+  {
+   "internal_api": "openblas",
+   "num_threads": 1
+  }
+ ],
+ "cpu": "Intel(R) Xeon(R) Processor @ 2.10GHz",
+ "n_cpu": 4,
+ "loadavg_start": [
+  4.0,
+  3.99951171875,
+  4.0
+ ],
+ "loadavg_end": [
+  2.04638671875,
+  3.42431640625,
+  3.7998046875
+ ]
+}
