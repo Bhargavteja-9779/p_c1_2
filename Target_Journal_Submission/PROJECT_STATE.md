@@ -101,3 +101,24 @@ While it runs: analysis/writing items from the practical-sagan checkpoint above 
 - [ ] After queue: scripts/analyze_rw.py (CTR23 -> D17_rw_ctr23 = Table S19; one sentence in §6.4 "RQ4"), scripts/analyze_timing.py (D15c -> Table S13; rewrite "*Computational cost.*" paragraph in 04_results.md with timing_summary.json placeholders), REVIEW/response_06.md, rebuild all (render, supplement, pdf, anonymous package).
 - [ ] Review 10 (final adversarial, one agent), fix, final audit REVIEW/final_audit.md, READY/NOT READY, manifest.
 - Supplement numbering is fixed: S19 CTR23 RW, S20 earlier implementations, S21-S23 moved tables, Fig. S4 example.
+
+
+## >>> RESUME HERE (checkpoint 2026-11-21 ~17:45 UTC, branch claude/zen-pasteur-413mhs) <<<
+When the user says "start"/"continue": work on branch claude/zen-pasteur-413mhs (it contains everything; other branches are older).
+DONE: all compute (queue 3, CTR23 RW 310 runs, timing, temporal splits, dedicated 1% strata on held-out + CTR23);
+reviews 1-9 answered (REVIEW/response_01, 02_04, 05, 06, 07, 08, 09 — no "pending" items left); manuscript, supplement, PDFs rebuilt.
+REMAINING (about 1 hour):
+1. Review 10 (final adversarial, ONE agent). If REVIEW/review_10.md does not exist, re-run it: one general-purpose agent with the
+   brief "final adversarial reviewer for JKSU-CIS: check internal consistency of all numbers (abstract, intro, conclusion,
+   cover letter vs body and results/*.json), broken text/cross-references after restructuring (moved material in
+   manuscript/src/supp_extra.md = Supplement S8, equations renumbered), errors in post hoc scripts (analyze_review05.py,
+   analyze_review08.py, eval_tail1.py, run_temporal.py), overclaiming; write REVIEW/review_10.md; do not edit other files".
+2. Fix review 10 issues; write REVIEW/response_10.md.
+3. Rebuild: cd code && /root/venv/bin/python scripts/render_manuscript.py && /root/venv/bin/python scripts/build_supplement.py
+   && /root/venv/bin/python scripts/build_pdf.py && /root/venv/bin/python scripts/build_anonymous_package.py
+   (supplement build re-downloads datasets into data/ if missing: needs OpenML hosts allowed; ~30 min in a fresh container).
+4. Final audit REVIEW/final_audit.md (numbers spot-check, abstract <=250 words, placeholders, anonymisation of DOCX/PDF,
+   cross-reference check passes), READY/NOT READY decision with rejection-risk notes, file manifest; commit + push.
+ENV for a fresh container: python3 -m venv /root/venv && /root/venv/bin/pip install -r Target_Journal_Submission/code/requirements.txt
+(system pip fails on liac-arff). OpenML hosts (openml.org, www/api/data.openml.org) needed only if data/ must be re-downloaded.
+USER ACTION (cannot be done by Claude): fill author names/affiliations/funding/acknowledgements in manuscript/src/title_page.md and cover_letter.md.
