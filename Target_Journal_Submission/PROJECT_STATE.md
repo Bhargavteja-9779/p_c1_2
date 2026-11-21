@@ -16,7 +16,19 @@
 - [x] Manuscript revised (all src/*.md), renderer v3 context, supplementary builder (scripts/build_supplement.py), bibliography verified (agent), CSL URL fallback
 - [x] Queue scripts/queue_cycle1b.sh complete: MLP v3 155/155, DenseWeight 93/93, grid, grouped splits 15/15 (resumed after container restart 2026-11-21), timing_fit, timing v3
 - [x] analyze3 rerun; 04_results.md: MLP, DenseWeight, repeated units (grouped splits), computational cost; discussion limitation updated; supplement Tables S14 (grouped), S15 (fit times), earlier implementations now S16; DOCX/PDF/supplement rendered
-- [ ] Review cycles 2–10 (workflow), final comparison with strongest ESWA papers, final audit, rejection-risk report, READY/NOT READY decision, manifest
+- [x] ESWA comparison refreshed (REVIEW/final_comparison_eswa.md, 2026-11-21)
+- [ ] Review cycle 2 = FINAL pre-submission cycle (user decision 2026-11-21: one full cycle, then submit). Running as workflow
+      (code/scripts/review_cycle_workflow.js, args {cycle: 2, notes: final pre-submission focus}). Progress auto-synced every
+      4 min to REVIEW/cycle02_progress/ (STATUS.md, <reviewer>.json = finished review, .partial.md = interrupted).
+- [ ] Then: consolidate → REVIEW/review_02.md; implement fixes; REVIEW/response_02.md; REVIEW_HISTORY.md; re-render
+      (code/scripts/render_manuscript.py, build_supplement.py, build_pdf.py); submit/not-submit verdict to the user.
+
+### RESUME IN A NEW SESSION/ACCOUNT (review cycle 2)
+1. Setup: `pip install --no-build-isolation -r code/requirements.txt` (data re-download needed only for build_supplement.py).
+2. Read REVIEW/cycle02_progress/STATUS.md. Reviewers with a `.json` file are done — do NOT rerun them.
+3. If REVIEW/review_02.md does not exist: run the workflow script with REVIEWERS reduced to the missing ones, then a
+   consolidation agent over ALL JSON reviews in REVIEW/cycle02_progress/ (same prompt as in the script) → REVIEW/review_02.md.
+4. If review_02.md exists: check REVIEW/response_02.md for the issues already handled and continue with the rest.
 
 ## Key results (machine-generated; see results/statistics_v3.json)
 RQ1: marginal worst-stratum 0.63–0.78 (26–31/31 below null); stratified ≈0.89 (≤2/31 below null).
