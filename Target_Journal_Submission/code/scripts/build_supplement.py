@@ -1,5 +1,5 @@
 """Build the Supplementary Material (manuscript/Supplementary_Material.docx and .pdf) from generated tables,
-figures and result files. Numbering: Sections S1-S6, Tables S1-S13, Figures S1-S3 (cited in the main text).
+figures and result files. Numbering: Sections S1-S6, Tables S1-S16, Figures S1-S3 (cited in the main text).
 No number is typed by hand."""
 from __future__ import annotations
 
@@ -122,6 +122,29 @@ def main():
         tm.columns = ["Method", "Median µs per test point", "Maximum over datasets"]
         out += ["**Table S13.** Calibration and prediction time per test point (median over datasets of the "
                 "per-dataset median of three repetitions after a discarded warm-up; one thread).", "", md(tm, 1), ""]
+    t15b = TAB / "T15b_timing_fit.csv"
+    if t15b.exists():
+        tf = pd.read_csv(t15b)
+        cols = {"dataset": "Dataset", "n_train": "n train", "fit_mean": "Mean model",
+                "fit_scale_with_oof": "Scale model + OOF", "fit_scale_crossfit": "Cross-fitted scales",
+                "fit_kde": "KDE", "build_table": "Table", "fit_quantile_pair": "Quantile pair (CQR)",
+                "fit_histogram_classifier": "Histogram classifier"}
+        tf = tf[list(cols)].rename(columns=cols).sort_values("n train")
+        out += ["**Table S14.** Fit time in seconds of each model component (seed 0, one thread, fitting only; "
+                "*Scale model + OOF* includes the out-of-fold mean predictions, *Cross-fitted scales* the three "
+                "refits of the scale model used to standardise the residuals for the noise density). "
+                "SDLC needs the mean model, the scale model with its out-of-fold residuals, the cross-fitted "
+                "scales, the KDE and the table; S-NCP needs the first two.", "", md(tf, 2), ""]
+    d16 = TAB / "D16_grouped.csv"
+    if d16.exists():
+        g16 = csv("D16_grouped")
+        g16.columns = ["Dataset", "Split", "Method", "Coverage (grouped)", "Coverage (random)",
+                       "Worst stratum (grouped)", "Worst stratum (random)", "Size (grouped)", "Size (random)", "Seeds"]
+        out += ["**Table S15.** Splits that keep repeated units together ($\\alpha=0.1$, seeds 0–4): sarcos "
+                "after removing exact duplicate rows, video transcoding grouped by input video, superconductivity "
+                "grouped by identical feature vector; the random-split columns repeat the main benchmark for the "
+                "same seeds. Size: geometric mean over seeds of the normalised mean set size.", "",
+                g16.to_markdown(index=False, disable_numparse=True), ""]
     for i, (f, cap) in enumerate((("F4_upper_tail_per_dataset.png", "Coverage of the upper calibration stratum per dataset ($\\alpha=0.1$)."),
                                   ("F8_error_analysis.png", "Error analysis. Left: price of stratum-wise validity (SDLC/DLS size ratio) "
                                    "against relative RMSE. Right: worst-stratum coverage of SDLC minus its null mean "
@@ -158,11 +181,11 @@ def main():
             "marginal training-target distribution. The second (v2) used an exact implementation but standardised "
             "residuals with an in-sample scale model and used a density floor. Their complete analyses are archived "
             "in `supplementary/v1_preregistered_analysis/` and `supplementary/v2_exact_insample_analysis/`. The "
-            "coverage results were the same in all versions. Table S14 shows how the size comparisons changed; this "
+            "coverage results were the same in all versions. Table S16 shows how the size comparisons changed; this "
             "dependence on the implementation is why the comparisons on CTR23 are labelled exploratory and were "
             "replicated on held-out data (v1 reported medians of log ratios; v2 also geometric means; the final "
             "version reports the Hodges–Lehmann estimate).", "",
-            "**Table S14.** Size comparisons of SDLC with the stratified comparators in the three implementations "
+            "**Table S16.** Size comparisons of SDLC with the stratified comparators in the three implementations "
             "($\\alpha=0.1$, 31 datasets; negative log ratios favour SDLC).", "",
             pd.DataFrame(rows).to_markdown(index=False, disable_numparse=True), ""]
     # S6 pre-registration -------------------------------------------------------------------------------------
