@@ -82,3 +82,9 @@ RQ5: dedicated tail classifier (TC-LS) needs fewer alerts at the same recall gua
 
 ## Resume instructions
 A new session should: read this file, `git log --oneline | head`, then check `ls results/raw_grouped | wc -l` (15 needed) and `ls results/timing_fit.csv results/timing_methods_v3.csv`; if incomplete, install deps (note above) and run `bash code/scripts/queue_cycle2.sh` in the background; then continue the unchecked items above in order.
+
+## CHECKPOINT 2026-11-21 ~15:45 UTC (session zen-pasteur took over; branch claude/zen-pasteur-413mhs = practical-sagan + merge)
+User asked THIS branch/session to lead; other sessions should be stopped. Compute: `bash code/scripts/resume_queue3.sh`
+(from Target_Journal_Submission/; idempotent; markers REFIT_DONE, QUEUE3_DONE, QUEUE3B_DONE, QUEUE3C_DONE in
+results/experiment_logs/queue_cycle3.log; refit skips finished tasks). Python: /root/venv/bin/python (cloud env "p_c1_2").
+While it runs: analysis/writing items from the practical-sagan checkpoint above (response_05, response_06, reviews 8-10).
