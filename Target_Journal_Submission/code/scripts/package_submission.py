@@ -7,7 +7,7 @@ from docx import Document
 
 TOP = Path(__file__).resolve().parents[2]
 MS, FIG, OUT = TOP / "manuscript", TOP / "figures", TOP / "SUBMISSION"
-AUTHOR = "P N Bhargav Teja"
+AUTHOR = "Bhargav Teja P. N."
 TITLE = ("Covering the rare outcomes: stratified conformal prediction with size-optimal density scores "
          "for imbalanced regression")
 FILES = {"Final_Manuscript.docx": "1_Manuscript.docx", "Final_Manuscript.pdf": "1_Manuscript.pdf",

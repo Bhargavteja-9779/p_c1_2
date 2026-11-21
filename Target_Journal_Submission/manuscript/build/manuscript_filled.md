@@ -1,9 +1,9 @@
 ---
 title: "Covering the rare outcomes: stratified conformal prediction with size-optimal density scores for imbalanced regression"
 author:
-  - "P N Bhargav Teja^a^, Rajay Vedharaj I S^a,\\*^"
+  - "Bhargav Teja P. N.^a^, Rajay Vedaraj I.S.^a,\\*^"
   - "^a^ Vellore Institute of Technology (VIT), India"
-  - "^\\*^ Corresponding author: Rajay Vedharaj I S, rajay@vit.ac.in"
+  - "^\\*^ Corresponding author: Rajay Vedaraj I.S., rajay@vit.ac.in"
 abstract: |
   Expert systems that value, insure or inspect are judged by rare, extreme outcomes, yet their prediction intervals hold only on average. In a house-valuation benchmark, standard 90% conformal intervals covered only 50.9% of the most expensive tenth of sales. We study stratum-wise coverage: the probability that a set contains the outcome given that the outcome lies in a target stratum, such as the upper tail. Even the oracle interval with exact covariate-conditional coverage under-covers the tails: in a Gaussian model with half of the variance explained it covers 70.5% of the top decile. Calibrating conformal thresholds within target strata guarantees it for any score, so the score determines only efficiency. We show that conditional-density level sets with stratum-specific thresholds are the smallest stratum-valid sets, that their plug-in conformal version is asymptotically optimal, and that the gain over a normalised residual comes from reallocating coverage across inputs. The resulting stratified density-level conformal prediction (SDLC) was evaluated among 13 procedures on 31 OpenML-CTR23 datasets. At a nominal 90%, marginal and covariate-adaptive methods covered only 63.0%–78.3% of their worst-covered stratum, whereas stratified methods were consistent with exact validity. SDLC gave the smallest stratum-valid sets on average, smaller than bin-conditional conformal prediction on 24 of 31 datasets, and a pre-registered replication on 17 held-out datasets confirmed the ordering. Gains over the closest competitors were small (ratios up to 0.984, intervals including one) and cost coverage of the noisiest inputs. A decision study shows when dedicated tail classifiers are preferable for alerts.
 ---
@@ -515,7 +515,7 @@ The authors declare that they have no known competing financial interests or per
 
 # CRediT authorship contribution statement
 
-**P N Bhargav Teja:** Conceptualization, Methodology, Software, Validation, Formal analysis, Investigation, Data curation, Visualization, Writing – original draft, Writing – review & editing. **Rajay Vedharaj I S:** Supervision, Writing – review & editing.
+**Bhargav Teja P. N.:** Conceptualization, Methodology, Software, Validation, Formal analysis, Investigation, Data curation, Visualization, Writing – original draft, Writing – review & editing. **Rajay Vedaraj I.S.:** Supervision, Writing – review & editing.
 
 # Data and code availability
 

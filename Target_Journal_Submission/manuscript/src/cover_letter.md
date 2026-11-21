@@ -1,4 +1,4 @@
-Rajay Vedharaj I S
+Rajay Vedaraj I.S.
 Vellore Institute of Technology (VIT), India
 rajay@vit.ac.in
 
@@ -35,4 +35,4 @@ Thank you for considering our manuscript. We look forward to hearing from you.
 
 Yours sincerely,
 
-Rajay Vedharaj I S, on behalf of all authors
+Rajay Vedaraj I.S., on behalf of all authors

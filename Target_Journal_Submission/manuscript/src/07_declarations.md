@@ -4,7 +4,7 @@ The authors declare that they have no known competing financial interests or per
 
 # CRediT authorship contribution statement {-}
 
-**P N Bhargav Teja:** Conceptualization, Methodology, Software, Validation, Formal analysis, Investigation, Data curation, Visualization, Writing – original draft, Writing – review & editing. **Rajay Vedharaj I S:** Supervision, Writing – review & editing.
+**Bhargav Teja P. N.:** Conceptualization, Methodology, Software, Validation, Formal analysis, Investigation, Data curation, Visualization, Writing – original draft, Writing – review & editing. **Rajay Vedaraj I.S.:** Supervision, Writing – review & editing.
 
 # Data and code availability {-}
 
