@@ -1,6 +1,6 @@
 Rajay Vedharaj I S
-[Affiliation, full postal address]
-[E-mail address]
+Vellore Institute of Technology (VIT), India
+rajay@vit.ac.in
 
 [Date]
 
