@@ -39,3 +39,19 @@ arff.BadDataFormat: Bad @DATA instance format in line 34028: -0.328538,-0.291169
 
 WARNING:openml.datasets.functions:Could not download file from https://data.openml.org/datasets/0004/44976/dataset_44976.pq: Bucket does not exist or is private.
 WARNING:openml.datasets.functions:Failed to download parquet, fallback on ARFF.
+/home/user/p_c1_2/Target_Journal_Submission/results/raw_grouped/44964_4.jsonl ok 104.1s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw_grouped/44976_3.jsonl ok 170.7s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw_grouped/44976_1.jsonl ok 182.5s
+WARNING:openml.datasets.functions:Could not download file from https://data.openml.org/datasets/0004/44974/dataset_44974.pq: Bucket does not exist or is private.
+WARNING:openml.datasets.functions:Failed to download parquet, fallback on ARFF.
+WARNING:openml.datasets.functions:Could not download file from https://data.openml.org/datasets/0004/44974/dataset_44974.pq: Bucket does not exist or is private.
+WARNING:openml.datasets.functions:Failed to download parquet, fallback on ARFF.
+/home/user/p_c1_2/Target_Journal_Submission/results/raw_grouped/44976_0.jsonl ok 187.9s
+WARNING:openml.datasets.functions:Could not download file from https://data.openml.org/datasets/0004/44974/dataset_44974.pq: Bucket does not exist or is private.
+WARNING:openml.datasets.functions:Failed to download parquet, fallback on ARFF.
+/home/user/p_c1_2/Target_Journal_Submission/results/raw_grouped/44976_4.jsonl ok 179.8s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw_grouped/44974_2.jsonl ok 327.7s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw_grouped/44974_1.jsonl ok 338.3s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw_grouped/44974_0.jsonl ok 341.7s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw_grouped/44974_3.jsonl ok 312.8s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw_grouped/44974_4.jsonl ok 322.2s
