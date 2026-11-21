@@ -57,3 +57,6 @@
    tests/test_ls_exact3.py::test_run_geometry_equals_cellwise_reference. Speed-up 10–60x per call; the
    evaluation was restarted with the new code at 84/310 (first 84 files computed with the reference code,
    numerically identical). Timing results (Experiment 6) are measured with the final implementation.
+14. 2026-11-21: container restart during grouped-split study (4/15 done). Dependencies reinstalled, queue resumed
+   (finished outputs skipped). 44976_2 was silently missing after the resumed pool run (no traceback logged) and was
+   re-run alone. Grouped splits 15/15, timing_fit and timing v3 complete; analyze3 rerun.

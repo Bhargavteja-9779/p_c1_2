@@ -377,6 +377,103 @@ Exact duplicate rows (features and target), duplicate feature vectors, the share
 | TC-H       | 0.905    | 0.272  | 0.537       | 0.156     | 0.210     | 0.277      | 0.410      | 21                   |
 | TC-LS      | 0.906    | 0.284  | 0.538       | 0.169     | 0.224     | 0.292      | 0.427      | 16                   |
 
+**Table S13.** Calibration and prediction time per test point (median over datasets of the per-dataset median of three repetitions after a discarded warm-up; one thread).
+
+| Method          | Median µs per test point   | Maximum over datasets   |
+|:----------------|:---------------------------|:------------------------|
+| CQR             | 0.0                        | 0.1                     |
+| DCP-hist        | 4.1                        | 8.7                     |
+| DCP             | 0.3                        | 2.7                     |
+| DCP-2p          | 0.3                        | 2.0                     |
+| DCP-N           | 0.3                        | 2.2                     |
+| DLS-hist        | 0.5                        | 1.4                     |
+| DLS             | 15.8                       | 99.1                    |
+| DLS-2p          | 19.9                       | 54.7                    |
+| DLS-N           | 4.9                        | 38.9                    |
+| HPD-split-hist  | 13.8                       | 25.1                    |
+| HPD-split       | 14.7                       | 103.8                   |
+| HPD-split-LS2   | 19.8                       | 56.9                    |
+| HPD-split-N     | 4.5                        | 44.5                    |
+| Mondrian-ŷ      | 0.2                        | 1.4                     |
+| NCP             | 0.0                        | 0.1                     |
+| S-CQR           | 0.1                        | 0.3                     |
+| S-HPD-hist      | 15.7                       | 27.4                    |
+| S-HPD           | 14.1                       | 93.7                    |
+| S-HPD-LS2       | 19.3                       | 61.5                    |
+| S-HPD-N         | 4.6                        | 37.5                    |
+| S-NCP           | 0.1                        | 0.6                     |
+| BCCP            | 0.1                        | 0.3                     |
+| BCCP-hull       | 0.1                        | 0.2                     |
+| SCP             | 0.0                        | 0.1                     |
+| SDLC-hist       | 0.4                        | 0.5                     |
+| SDLC-hist-floor | 0.4                        | 0.8                     |
+| SDLC-hist-hull  | 0.4                        | 0.7                     |
+| SDLC            | 14.5                       | 111.7                   |
+| SDLC-2p         | 19.6                       | 55.5                    |
+| SDLC-N          | 4.7                        | 39.3                    |
+
+**Table S14.** Splits that keep repeated units together (seeds 0–4, $\alpha=0.1$, primary strata) against random row splits on the same seeds: sarcos without exact duplicates (dedup), video transcoding grouped by input video (by_video), superconductivity grouped by identical feature vectors (by_features). Size in standard deviations of $y$ (geometric mean).
+
+| Dataset           | Split       | Method    | Coverage (grouped)   | Coverage (random)   | Worst stratum (grouped)   | Worst stratum (random)   | Size (grouped)   | Size (random)   |
+|:------------------|:------------|:----------|:---------------------|:--------------------|:--------------------------|:-------------------------|:-----------------|:----------------|
+| superconductivity | by_features | SCP       | 0.901                | 0.897               | 0.819                     | 0.803                    | 0.785            | 0.754           |
+| superconductivity | by_features | CQR       | 0.897                | 0.900               | 0.777                     | 0.751                    | 1.015            | 1.006           |
+| superconductivity | by_features | HPD-split | 0.897                | 0.900               | 0.876                     | 0.881                    | 0.768            | 0.720           |
+| superconductivity | by_features | BCCP      | 0.903                | 0.898               | 0.891                     | 0.889                    | 0.852            | 0.831           |
+| superconductivity | by_features | S-NCP     | 0.897                | 0.903               | 0.879                     | 0.889                    | 0.767            | 0.730           |
+| superconductivity | by_features | S-CQR     | 0.897                | 0.901               | 0.890                     | 0.882                    | 1.025            | 1.010           |
+| superconductivity | by_features | SDLC      | 0.899                | 0.900               | 0.890                     | 0.894                    | 0.701            | 0.674           |
+| video_transcoding | by_video    | SCP       | 0.896                | 0.901               | 0.431                     | 0.466                    | 0.503            | 0.126           |
+| video_transcoding | by_video    | CQR       | 0.892                | 0.900               | 0.700                     | 0.857                    | 0.466            | 0.253           |
+| video_transcoding | by_video    | HPD-split | 0.920                | 0.900               | 0.766                     | 0.897                    | 0.726            | 0.130           |
+| video_transcoding | by_video    | BCCP      | 0.875                | 0.900               | 0.852                     | 0.895                    | 0.643            | 0.123           |
+| video_transcoding | by_video    | S-NCP     | 0.917                | 0.901               | 0.904                     | 0.893                    | 0.878            | 0.127           |
+| video_transcoding | by_video    | S-CQR     | 0.873                | 0.899               | 0.855                     | 0.895                    | 0.516            | 0.259           |
+| video_transcoding | by_video    | SDLC      | 0.900                | 0.900               | 0.873                     | 0.897                    | 0.775            | 0.113           |
+| sarcos            | dedup       | SCP       | 0.898                | 0.900               | 0.787                     | 0.796                    | 0.414            | 0.395           |
+| sarcos            | dedup       | CQR       | 0.902                | 0.901               | 0.821                     | 0.834                    | 0.582            | 0.556           |
+| sarcos            | dedup       | HPD-split | 0.898                | 0.901               | 0.889                     | 0.891                    | 0.385            | 0.382           |
+| sarcos            | dedup       | BCCP      | 0.900                | 0.901               | 0.895                     | 0.899                    | 0.419            | 0.398           |
+| sarcos            | dedup       | S-NCP     | 0.898                | 0.902               | 0.889                     | 0.895                    | 0.386            | 0.384           |
+| sarcos            | dedup       | S-CQR     | 0.904                | 0.900               | 0.900                     | 0.898                    | 0.586            | 0.559           |
+| sarcos            | dedup       | SDLC      | 0.898                | 0.901               | 0.891                     | 0.897                    | 0.373            | 0.356           |
+
+**Table S15.** Fitting time in seconds (seed 0, one thread).
+
+| Dataset                       | Training rows   | Mean model   | Scale model (incl. out-of-fold residuals)   | Cross-fitted standardisation   | Noise density (KDE)   | Quantile pair (CQR)   | Histogram classifier   |
+|:------------------------------|:----------------|:-------------|:--------------------------------------------|:-------------------------------|:----------------------|:----------------------|:-----------------------|
+| Moneyball                     | 616             | 0.069        | 0.140                                       | 0.035                          | 0.069                 | 0.067                 | 0.364                  |
+| abalone                       | 2088            | 0.045        | 0.144                                       | 0.092                          | 0.002                 | 0.100                 | 0.318                  |
+| airfoil_self_noise            | 752             | 0.151        | 0.290                                       | 0.075                          | 0.002                 | 0.122                 | 0.231                  |
+| auction_verification          | 1022            | 0.514        | 0.233                                       | 0.289                          | 0.046                 | 0.310                 | 0.740                  |
+| concrete_compressive_strength | 515             | 0.141        | 0.172                                       | 0.055                          | 0.002                 | 0.135                 | 0.304                  |
+| energy_efficiency             | 384             | 0.200        | 0.194                                       | 0.045                          | 0.040                 | 0.235                 | 0.347                  |
+| forest_fires                  | 258             | 0.006        | 0.025                                       | 0.018                          | 0.001                 | 0.011                 | 0.061                  |
+| physiochemical_protein        | 22865           | 2.390        | 7.288                                       | 4.026                          | 0.045                 | 2.892                 | 18.739                 |
+| superconductivity             | 10632           | 4.514        | 9.788                                       | 3.407                          | 0.039                 | 12.376                | 25.831                 |
+| geographical_origin_of_music  | 530             | 0.197        | 0.825                                       | 0.345                          | 0.002                 | 0.383                 | 6.484                  |
+| naval_propulsion_plant        | 5967            | 1.970        | 5.164                                       | 0.327                          | 0.003                 | 3.669                 | 5.818                  |
+| QSAR_fish_toxicity            | 454             | 0.022        | 0.051                                       | 0.024                          | 0.002                 | 0.028                 | 0.161                  |
+| grid_stability                | 5000            | 0.952        | 2.946                                       | 0.365                          | 0.002                 | 3.897                 | 4.276                  |
+| video_transcoding             | 34392           | 4.468        | 18.029                                      | 2.339                          | 0.051                 | 12.581                | 52.860                 |
+| wave_energy                   | 36000           | 9.571        | 32.710                                      | 3.335                          | 0.005                 | 9.481                 | 62.597                 |
+| sarcos                        | 24466           | 5.419        | 20.543                                      | 2.458                          | 0.004                 | 9.020                 | 38.197                 |
+| california_housing            | 10320           | 0.284        | 1.279                                       | 0.541                          | 0.005                 | 0.826                 | 5.254                  |
+| cpu_activity                  | 4096            | 0.453        | 0.973                                       | 0.551                          | 0.039                 | 0.896                 | 3.888                  |
+| diamonds                      | 26970           | 0.585        | 2.054                                       | 0.593                          | 0.004                 | 3.552                 | 19.265                 |
+| kin8nm                        | 4096            | 0.714        | 2.042                                       | 0.316                          | 0.002                 | 0.317                 | 3.178                  |
+| pumadyn32nh                   | 4096            | 0.330        | 1.013                                       | 0.416                          | 0.002                 | 0.755                 | 5.947                  |
+| miami_housing                 | 6966            | 0.502        | 2.798                                       | 0.285                          | 0.002                 | 1.516                 | 5.614                  |
+| cps88wages                    | 14078           | 0.113        | 0.438                                       | 0.251                          | 0.003                 | 0.309                 | 3.841                  |
+| socmob                        | 578             | 0.079        | 0.074                                       | 0.068                          | 0.034                 | 0.087                 | 0.270                  |
+| kings_county                  | 10806           | 0.780        | 1.545                                       | 0.432                          | 0.003                 | 1.102                 | 8.194                  |
+| brazilian_houses              | 5346            | 0.052        | 1.781                                       | 1.750                          | 0.036                 | 0.257                 | 2.726                  |
+| fps_benchmark                 | 12312           | 2.798        | 11.306                                      | 2.658                          | 0.041                 | 7.619                 | 15.323                 |
+| health_insurance              | 11136           | 0.147        | 0.616                                       | 0.542                          | 0.004                 | 0.569                 | 1.299                  |
+| cars                          | 402             | 0.017        | 0.148                                       | 0.161                          | 0.041                 | 0.085                 | 0.187                  |
+| fifa                          | 9589            | 0.358        | 0.933                                       | 0.397                          | 0.003                 | 0.840                 | 4.799                  |
+| space_ga                      | 1554            | 0.084        | 0.379                                       | 0.147                          | 0.002                 | 0.181                 | 0.702                  |
+
 ![**Fig. S1.** Coverage of the upper calibration stratum per dataset ($\alpha=0.1$).](/home/user/p_c1_2/Target_Journal_Submission/figures/F4_upper_tail_per_dataset.png){width=100%}
 
 ![**Fig. S2.** Error analysis. Left: price of stratum-wise validity (SDLC/DLS size ratio) against relative RMSE. Right: worst-stratum coverage of SDLC minus its null mean against calibration-set size, with the 5% null band.](/home/user/p_c1_2/Target_Journal_Submission/figures/F8_error_analysis.png){width=100%}
@@ -385,9 +482,9 @@ Exact duplicate rows (features and target), duplicate feature vectors, the share
 
 # S5. Earlier implementations
 
-The first run (v1) evaluated all density-based sets on a fixed grid of 200 equal-mass cells of the marginal training-target distribution. The second (v2) used an exact implementation but standardised residuals with an in-sample scale model and used a density floor. Their complete analyses are archived in `supplementary/v1_preregistered_analysis/` and `supplementary/v2_exact_insample_analysis/`. The coverage results were the same in all versions. Table S14 shows how the size comparisons changed; this dependence on the implementation is why the comparisons on CTR23 are labelled exploratory and were replicated on held-out data (v1 reported medians of log ratios; v2 also geometric means; the final version reports the Hodges–Lehmann estimate).
+The first run (v1) evaluated all density-based sets on a fixed grid of 200 equal-mass cells of the marginal training-target distribution. The second (v2) used an exact implementation but standardised residuals with an in-sample scale model and used a density floor. Their complete analyses are archived in `supplementary/v1_preregistered_analysis/` and `supplementary/v2_exact_insample_analysis/`. The coverage results were the same in all versions. Table S16 shows how the size comparisons changed; this dependence on the implementation is why the comparisons on CTR23 are labelled exploratory and were replicated on held-out data (v1 reported medians of log ratios; v2 also geometric means; the final version reports the Hodges–Lehmann estimate).
 
-**Table S14.** Size comparisons of SDLC with the stratified comparators in the three implementations ($\alpha=0.1$, 31 datasets; negative log ratios favour SDLC).
+**Table S16.** Size comparisons of SDLC with the stratified comparators in the three implementations ($\alpha=0.1$, 31 datasets; negative log ratios favour SDLC).
 
 | Version                     | Comparison    | Median log size ratio   | Geometric-mean ratio   | SDLC smaller on   | Holm p   |
 |:----------------------------|:--------------|:------------------------|:-----------------------|:------------------|:---------|
