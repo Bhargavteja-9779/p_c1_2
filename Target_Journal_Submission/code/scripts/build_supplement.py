@@ -208,6 +208,13 @@ def main():
             out += ["Table S15 (continued). Grouped splits: range over the five seeds of marginal and worst-stratum "
                     "coverage (each seed is one calibration set; the guarantees hold on average over calibration sets).",
                     "", md(g21, 3), ""]
+        t24 = TAB / "T24_temporal_splits.csv"
+        if t24.exists():
+            out += ["Table S15 (continued). Splits by time (post hoc; experiments/run_temporal.py). Moneyball "
+                    "\"forward\": earliest seasons for training (50% of rows), next for calibration (25%), latest for "
+                    "test; \"blocked\": whole seasons assigned at random. Bike_Sharing_Demand \"blocked\": whole months "
+                    "assigned at random (the curated data contain no year or day). Random-split values from the same "
+                    "seeds of the main benchmark.", "", md(pd.read_csv(t24), 3), ""]
     t18 = TAB / "T18_secondary.csv"
     if t18.exists():
         s = pd.read_csv(t18)
