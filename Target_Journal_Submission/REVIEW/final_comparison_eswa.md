@@ -15,7 +15,7 @@ content could not be read are not used for comparison. Values for this manuscrip
 | Ye et al. (2024), TSVQR | quantile regression | PP | 17 | MC-CV | Friedman + Nemenyi | no | yes (model) | yes | no |
 | Shahbazi et al. (2026) | imbalanced regression | FT | 16 | 10-fold CV | none found | phase-wise | no | not stated | no |
 | Sousa et al. (2024) | Mondrian-on-X CQR | PP | 3 | NN refit 100× | none found | no | no | not stated | no |
-| **This manuscript** | stratified conformal regression | — | **31 (CTR23) + 17 held-out** | **10 predefined splits (+5 on held-out)** | **Wilcoxon + Holm, Hodges–Lehmann, sign test, TOST, bootstrap CIs, null reference** | **score decomposition, density estimators, strata, α, calibration size, learners** | **Props 1–3, Thm 1, Cor 1 with proofs** | **yes (one-command reproduction)** | **yes, pre-registered** |
+| **This manuscript** | stratified conformal regression | — | **31 (CTR23) + 17 held-out** | **10 predefined splits (+5 on held-out)** | **Wilcoxon + Holm, Hodges–Lehmann, sign test, TOST, bootstrap CIs, null reference** | **score decomposition, density estimators, strata, α, calibration size, two learner families, imbalance-aware training (DenseWeight), grouped splits, timing** | **Props 1–3, Thm 1, Cor 1 with proofs** | **yes (one-command reproduction)** | **yes, pre-registered** |
 
 ## 2. Where the manuscript is stronger
 
@@ -30,6 +30,11 @@ content could not be read are not used for comparison. Values for this manuscrip
 * **Honesty of reporting.** Small gains over the strongest stratified baseline, the coverage cost, and the cases where
   dedicated alert rules or simpler scores are preferable are reported in the abstract and conclusion.
 * **Decision orientation.** The tail-alert study with expected-cost curves matches ESWA's applications emphasis.
+* **Robustness breadth (updated 2026-11-21).** The size advantage holds with a second learner family (MLP: SDLC
+  smaller than S-NCP on 27/31 datasets, geometric-mean ratio 0.94) and with DenseWeight-trained LightGBM; the
+  coverage conclusions hold when repeated units are kept together (sarcos, superconductivity). Computational cost
+  is reported (14.5 µs per test point for calibration and prediction; the density estimate costs milliseconds).
+  None of the compared ESWA papers reports learner generality, grouped splits and timing together.
 
 ## 3. Where the manuscript is weaker or at risk
 
@@ -40,7 +45,10 @@ content could not be read are not used for comparison. Values for this manuscrip
   the asymptotic result, the analysis of the trade-off and the evidence base.
 * **No application-specific deployment.** The decision study uses public valuation data rather than a deployed
   expert system.
-* **Length** (≈ 37 pages including appendix) is above the typical ESWA article, though within its limits.
+* **Length** (37 pages, ≈ 17,000 words including appendix) is above the typical ESWA article, though within its limits.
+* **Repeated units.** With splits grouped by video (video transcoding), all sets grow about sixfold, coverage per
+  split becomes variable (0.79–0.94 for SDLC) and SDLC is larger than BCCP (ratio 1.20). The paper reports this and
+  recommends unit-level calibration, but a reviewer may ask for a grouped-calibration variant.
 
 ## 4. Verdict
 
