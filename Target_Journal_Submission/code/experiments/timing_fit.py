@@ -31,8 +31,11 @@ def tm(fn):
 
 
 def main():
-    rows = []
+    rows = pd.read_csv(OUT).to_dict("records") if OUT.exists() else []   # resumable after a restart
+    done = {int(r["did"]) for r in rows}
     for did in CFG["datasets"]:
+        if did in done:
+            continue
         X, y, meta = load(did)
         tr, ca, te = split(len(y), 0)
         Xtr, ytr, Xct = X[tr], y[tr], X[np.concatenate([ca, te])]

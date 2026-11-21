@@ -1,0 +1,38 @@
+WARNING:openml.datasets.functions:Could not download file from https://data.openml.org/datasets/0004/41021/dataset_41021.pq: Bucket does not exist or is private.
+WARNING:openml.datasets.functions:Failed to download parquet, fallback on ARFF.
+Moneyball done
+WARNING:openml.datasets.functions:Could not download file from https://data.openml.org/datasets/0004/44956/dataset_44956.pq: Bucket does not exist or is private.
+WARNING:openml.datasets.functions:Failed to download parquet, fallback on ARFF.
+abalone done
+airfoil_self_noise done
+WARNING:openml.datasets.functions:Could not download file from https://data.openml.org/datasets/0004/44958/dataset_44958.pq: Bucket does not exist or is private.
+WARNING:openml.datasets.functions:Failed to download parquet, fallback on ARFF.
+auction_verification done
+WARNING:openml.datasets.functions:Could not download file from https://data.openml.org/datasets/0004/44959/dataset_44959.pq: Bucket does not exist or is private.
+WARNING:openml.datasets.functions:Failed to download parquet, fallback on ARFF.
+concrete_compressive_strength done
+WARNING:openml.datasets.functions:Could not download file from https://data.openml.org/datasets/0004/44960/dataset_44960.pq: Bucket does not exist or is private.
+WARNING:openml.datasets.functions:Failed to download parquet, fallback on ARFF.
+energy_efficiency done
+WARNING:openml.datasets.functions:Could not download file from https://data.openml.org/datasets/0004/44962/dataset_44962.pq: Bucket does not exist or is private.
+WARNING:openml.datasets.functions:Failed to download parquet, fallback on ARFF.
+forest_fires done
+WARNING:openml.datasets.functions:Could not download file from https://data.openml.org/datasets/0004/44963/dataset_44963.pq: Bucket does not exist or is private.
+WARNING:openml.datasets.functions:Failed to download parquet, fallback on ARFF.
+physiochemical_protein done
+superconductivity done
+WARNING:openml.datasets.functions:Could not download file from https://data.openml.org/datasets/0004/44965/dataset_44965.pq: Bucket does not exist or is private.
+WARNING:openml.datasets.functions:Failed to download parquet, fallback on ARFF.
+geographical_origin_of_music done
+WARNING:openml.datasets.functions:Could not download file from https://data.openml.org/datasets/0004/44969/dataset_44969.pq: Bucket does not exist or is private.
+WARNING:openml.datasets.functions:Failed to download parquet, fallback on ARFF.
+naval_propulsion_plant done
+WARNING:openml.datasets.functions:Could not download file from https://data.openml.org/datasets/0004/44970/dataset_44970.pq: Bucket does not exist or is private.
+WARNING:openml.datasets.functions:Failed to download parquet, fallback on ARFF.
+QSAR_fish_toxicity done
+WARNING:openml.datasets.functions:Could not download file from https://data.openml.org/datasets/0004/44973/dataset_44973.pq: Bucket does not exist or is private.
+WARNING:openml.datasets.functions:Failed to download parquet, fallback on ARFF.
+grid_stability done
+video_transcoding done
+WARNING:openml.datasets.functions:Could not download file from https://data.openml.org/datasets/0004/44975/dataset_44975.pq: Bucket does not exist or is private.
+WARNING:openml.datasets.functions:Failed to download parquet, fallback on ARFF.
