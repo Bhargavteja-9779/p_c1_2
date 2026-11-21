@@ -12,11 +12,11 @@
 
 **Abstract:** identical to the abstract of the anonymised manuscript.
 
-**Keywords:** Conformal prediction; Imbalanced regression; Prediction intervals; Uncertainty quantification; Relevance function; Extreme values
+**Keywords:** Conformal prediction; Imbalanced regression; Prediction intervals; Uncertainty quantification; Relevance function; Rare outcomes
 
 ## Statements and Declarations {-}
 
-**Competing interests.** The authors declare that they have no known competing financial interests or personal relationships that could have appeared to influence the work reported in this paper. [To be confirmed by every author.]
+**Competing interests.** The authors have no relevant financial or non-financial interests to disclose.
 
 **Funding.** [Placeholder.]
 
@@ -24,7 +24,7 @@
 
 **Acknowledgements.** [Placeholder; delete if not applicable.]
 
-**Data and code availability.** All data are public on OpenML (study 353; suites 335 and 336). Code, configuration, raw results and the pre-specified analysis plan: [repository URL].
+**Data availability and code availability.** As stated in the Statements and Declarations of the anonymised manuscript (identical wording).
 
 **Use of large language models.** Documented in Section "Use of a large language model" of the manuscript.
 

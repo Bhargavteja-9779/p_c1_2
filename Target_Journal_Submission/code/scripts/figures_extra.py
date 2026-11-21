@@ -45,30 +45,105 @@ def f1():
 
 
 def f0():
-    fig, ax = plt.subplots(figsize=(7.2, 2.6))
-    ax.set_axis_off()
-    ax.set_xlim(0, 100)
-    ax.set_ylim(0, 36)
-    boxes = [
-        (1, 20, 17, 12, "Proper training set\n(50%)", "#dce9f8"),
-        (22, 20, 19, 12, "Fit $\\hat\\mu(x)$, $\\hat\\sigma(x)$ (OOF),\nKDE $\\hat g$ of standardised\nresiduals $\\rightarrow \\hat f(y\\mid x)$", "#dce9f8"),
-        (45, 20, 17, 12, "Target strata $B_1,\\ldots,B_K$\nfrom training\nquantiles of $Y$", "#dce9f8"),
-        (1, 3, 17, 12, "Calibration set\n(25%)", "#fde3d8"),
-        (22, 3, 19, 12, "Scores $s_i=-\\hat f(y_i\\mid x_i)$\ngrouped by stratum\nof $y_i$", "#fde3d8"),
-        (45, 3, 17, 12, "Per-stratum conformal\nquantile $\\hat q_k$\n(level $1-\\alpha_k$)", "#fde3d8"),
-        (67, 11, 31, 14, "Prediction set for a new $x$:\n$C(x)=\\bigcup_k\\{y\\in B_k:\\hat f(y\\mid x)\\geq -\\hat q_k\\}$\n"
-                         "$P(Y\\in C(X)\\mid Y\\in B_k)\\geq 1-\\alpha_k$ (finite sample)", "#d9f2e9"),
-    ]
-    for x, y, w, h, t, c in boxes:
-        ax.add_patch(FancyBboxPatch((x, y), w, h, boxstyle="round,pad=0.4,rounding_size=1.2",
-                                    fc=c, ec="#8a8984", lw=0.6))
-        ax.text(x + w / 2, y + h / 2, t, ha="center", va="center", fontsize=6.6)
-    for (x1, y1, x2, y2) in [(18.5, 26, 21.5, 26), (41.5, 26, 44.5, 26), (18.5, 9, 21.5, 9),
-                             (41.5, 9, 44.5, 9), (31.5, 19.5, 31.5, 15.5), (53.5, 19.5, 53.5, 15.5),
-                             (62.5, 9, 66.5, 15), (62.5, 26, 66.5, 21)]:
-        ax.add_patch(FancyArrowPatch((x1, y1), (x2, y2), arrowstyle="-|>", mutation_scale=7,
-                                     color=DARK, lw=0.8))
-    save(fig, "F0_method_schematic")
+    """Fig. 1: (a) illustration of an SDLC set for one input (synthetic density, not data); (b) workflow of SDLC
+    and RW-DLC with the training / calibration / test split."""
+    from scipy import stats as st
+    fig = plt.figure(figsize=(7.4, 6.9))
+    # ---------------------------------------------------------------- (a) stratified density level set
+    ax = fig.add_axes([0.07, 0.645, 0.90, 0.31])
+    y = np.linspace(0, 10, 2001)
+    f = st.gamma(a=3.0, scale=1.0).pdf(y)
+    e = [0.9, 1.6, 3.8, 5.6]                                  # cut points e_1..e_4 (illustrative)
+    thr = [0.060, 0.090, 0.150, 0.110, 0.012]               # -q_k per stratum (illustrative)
+    lo_, hi_ = [0.0] + e, e + [10.0]
+    ax.plot(y, f, color="#0b0b0b", lw=1.3)
+    ax.text(2.2, f.max() * 1.02, r"$\hat f(y\mid x)$", fontsize=8, ha="left", va="bottom")
+    for k in range(5):
+        m = (y >= lo_[k]) & (y <= hi_[k])
+        ax.hlines(thr[k], lo_[k], hi_[k], color="#d62728", lw=1.2)
+        inside = m & (f >= thr[k])
+        ax.fill_between(y, 0, f, where=inside, color=BLUE, alpha=0.22, lw=0)
+        ax.text((lo_[k] + hi_[k]) / 2, f.max() * 1.18, f"$B_{k + 1}$", ha="center", fontsize=8)
+        ax.text(lo_[k] + 0.05 if k < 4 else 9.9, thr[k] + 0.006, rf"$-\hat q_{k + 1}$",
+                ha="left" if k < 4 else "right", va="bottom", fontsize=7, color="#d62728")
+    for c_ in e:
+        ax.axvline(c_, color="#8a8984", lw=0.7, ls="--")
+    # the resulting set: union of pieces, drawn below the axis
+    ins = np.zeros_like(y, bool)
+    for k in range(5):
+        ins |= (y >= lo_[k]) & (y < hi_[k]) & (f >= thr[k])
+    d = np.diff(ins.astype(int))
+    starts, ends = list(y[1:][d == 1]), list(y[1:][d == -1])
+    if ins[0]:
+        starts = [y[0]] + starts
+    if ins[-1]:
+        ends = ends + [y[-1]]
+    for s_, e_ in zip(starts, ends):
+        ax.plot([s_, e_], [-0.035, -0.035], color=BLUE, lw=4, solid_capstyle="butt")
+    ax.text(10.0, -0.035, r"$\hat C(x)$", color=BLUE, fontsize=8, va="center", ha="right")
+    ax.set_ylim(-0.06, f.max() * 1.32)
+    ax.set_xlim(0, 10)
+    ax.set_xlabel("Candidate target value y")
+    ax.set_ylabel("Estimated density")
+    ax.set_yticks([])
+    ax.spines[["top", "right"]].set_visible(False)
+    ax.grid(False)
+    ax.set_title("(a) SDLC set for one input x: one threshold per target stratum gives a union of pieces",
+                 fontsize=8.5, loc="left")
+    # ---------------------------------------------------------------- (b) workflow
+    bx = fig.add_axes([0.0, 0.075, 1.0, 0.52])
+    bx.set_axis_off()
+    bx.set_xlim(0, 100)
+    bx.set_ylim(0, 62)
+    bx.text(1, 60, "(b) Workflow", fontsize=8.5, va="top")
+    TR, CA, TE, OUT = "#dce9f8", "#fde3d8", "#ececec", "#d9f2e9"
+
+    def box(x, y_, w, h, txt, c, fs=6.8):
+        bx.add_patch(FancyBboxPatch((x, y_), w, h, boxstyle="round,pad=0.3,rounding_size=1.0", fc=c, ec="#8a8984",
+                                    lw=0.6))
+        bx.text(x + w / 2, y_ + h / 2, txt, ha="center", va="center", fontsize=fs, linespacing=1.35)
+
+    def arrow(x1, y1, x2, y2):
+        bx.add_patch(FancyArrowPatch((x1, y1), (x2, y2), arrowstyle="-|>", mutation_scale=7, color=DARK, lw=0.8))
+    # training row
+    box(1, 44, 15, 10, "Proper training\nset (50%)", TR)
+    box(20, 44, 25, 10, "Density model: mean $\\hat\\mu(x)$, scale $\\hat\\sigma(x)$,\nnoise density $\\hat g$"
+        " $\\rightarrow$ $\\hat f(y\\mid x)$ (Eq. 8)", TR)
+    box(49, 44, 21, 10, "Target strata $B_1,\\ldots,B_K$\nfrom training quantiles", TR)
+    box(74, 44, 25, 10, "Relevance $\\phi(y)$ from the\ntraining targets (RW-DLC only)", TR)
+    arrow(16.5, 49, 19.5, 49)
+    # calibration rows
+    box(1, 22, 15, 10, "Calibration\nset (25%)", CA)
+    box(20, 22, 25, 10, "Scores at the observed targets\nSDLC: $S_i=-\\hat f(Y_i\\mid X_i)$\n"
+        "RW-DLC: $S_i=-\\phi(Y_i)\\hat f(Y_i\\mid X_i)$", CA)
+    box(49, 28, 21, 9, "SDLC: group by stratum of $Y_i$;\nthreshold $\\hat q_k$ per stratum", CA)
+    box(49, 16, 21, 9, "RW-DLC: weight by $\\phi(Y_i)$;\nweighted threshold $q(y)$", CA)
+    box(74, 28, 25, 9, "$\\hat C(x)=\\cup_k\\{y\\in B_k:\\ \\hat f(y\\mid x)\\geq{-\\hat q_k}\\}$\n"
+        "coverage $\\geq 1-\\alpha_k$ in every stratum", OUT, 6.6)
+    box(74, 16, 25, 9, "$\\hat C_\\phi(x)=\\{y:\\ \\phi(y)\\hat f(y\\mid x)\\geq{-q(y)}\\}$\n"
+        "relevance-weighted coverage $\\geq 1-\\alpha$", OUT, 6.6)
+    arrow(16.5, 27, 19.5, 27)
+    arrow(45.5, 28.5, 48.5, 32)
+    arrow(45.5, 25.5, 48.5, 20.5)
+    arrow(70.5, 32.5, 73.5, 32.5)
+    arrow(70.5, 20.5, 73.5, 20.5)
+    arrow(32.5, 43.5, 32.5, 32.5)        # density model -> scores
+    arrow(59.5, 43.5, 59.5, 37.5)        # strata -> SDLC
+    arrow(75.5, 43.5, 70.5, 24.0)        # relevance -> RW-DLC
+    # test row
+    box(1, 3, 15, 9, "Test set (25%)", TE)
+    box(20, 3, 79, 9, "Evaluation only: coverage (marginal, per stratum, relevance-weighted, top 1%), "
+        "set size and tail alerts of both sets", TE)
+    arrow(16.5, 7.5, 19.5, 7.5)
+    fig.text(0.01, 0.008, "Abbreviations: SDLC, stratified density-level conformal prediction; RW-DLC, relevance-weighted "
+             "density-level conformal prediction;\n$\\hat q_k$, conformal threshold of stratum $k$ (Eq. 3); $q(y)$, "
+             "relevance-weighted threshold (Eq. 11). The scale model $\\hat\\sigma$ is fitted to three-fold out-of-fold "
+             "residuals of $\\hat\\mu$,\nand $\\hat g$ is a kernel density estimate of the cross-fitted standardised "
+             "residuals. Panel (a) is an illustration, not data.",
+             fontsize=6.4, va="bottom", linespacing=1.5)
+    fig.savefig(FIG / "F0_method_schematic.png", dpi=300)
+    fig.savefig(FIG / "F0_method_schematic.pdf")
+    plt.close(fig)
 
 
 def f9(did=44977, seed=0, n_show=70):
@@ -101,8 +176,10 @@ def f9(did=44977, seed=0, n_show=70):
     idx = idx[np.argsort(yt[idx])]
     fig, axs = plt.subplots(1, 4, figsize=(7.4, 3.0), sharey=True)
     scale = 1e3
+    from scripts.analyze3 import mcolor
     names = {"CQR": "CQR", "S-Res": "BCCP", "S-NCP": "S-NCP", "SDLC-LS": "SDLC"}
-    for ax, m, col in zip(axs, ["CQR", "S-Res", "S-NCP", "SDLC-LS"], [ORANGE, GRAY, AQUA, BLUE]):
+    for ax, m in zip(axs, ["CQR", "S-Res", "S-NCP", "SDLC-LS"]):
+        col = mcolor(names[m])
         if m == "SDLC-LS":
             pieces = [iv[i] for i in idx]
             cv = S_sdlc[6][idx]
@@ -121,7 +198,8 @@ def f9(did=44977, seed=0, n_show=70):
         ax.set_title(f"{names[m]}: {int((~cv).sum())} of {len(idx)} missed", fontsize=7.5)
         ax.set_xlabel("Test points (sorted by y)", fontsize=7)
         ax.set_xticks([])
-    axs[0].set_ylabel(f"{meta['target']} (thousands)")
+    label = {"medianHouseValue": "Median house value (thousand USD)"}
+    axs[0].set_ylabel(label.get(meta["target"], f"{meta['target']} (thousands)"))
     save(fig, "F9_example_sets_california")
 
 
@@ -140,6 +218,33 @@ def f10():
     t["size_sd"] = g["size"].std()
     t = t.reset_index().sort_values(["scores", "size"])
     table(t, "T11_synthetic_oracle", 4)
+
+
+def light(with_raw=True):
+    """Redraw the benchmark figures from the saved per-dataset files (no re-analysis): F2, F4, F6, F7, F11, F13 and,
+    if with_raw, F3 and F12 (which need decile coverages from the raw evaluation files; read column-wise)."""
+    from scripts import analyze3 as A
+    root = TOP / "results"
+    pdm = pd.read_csv(root / "per_dataset_main_v3.csv")
+    A.fig_tradeoff(pdm)
+    A.fig_upper(pdm)
+    A.fig_shift(pdm)
+    A.fig_decomp(pdm)
+    A.fig_calsize(pd.read_csv(TOP / "tables" / "T7_calibration_size.csv"))
+    A.fig_costs(pd.read_csv(root / "tail_alerts_per_dataset.csv"))
+    if with_raw:
+        import glob
+        keep = [f"dec_cov_{k}" for k in range(10)] + [f"sig_cov_{k}" for k in range(10)]
+        rows = []
+        for fn in sorted(glob.glob(str(root / "raw_eval_v3" / "*.jsonl"))):
+            with open(fn) as fh:
+                for line in fh:
+                    r = json.loads(line)
+                    if r.get("alpha") == 0.1 and r.get("scheme") == "S5" and r.get("cal_frac") == 1.0:
+                        rows.append({"did": r["did"], "method": r["method"], **{k: r.get(k) for k in keep}})
+        a10 = pd.DataFrame(rows)
+        A.fig_deciles(a10.groupby(["did", "method"])[keep[:10]].mean().reset_index())
+        A.fig_sigma(a10.groupby(["did", "method"])[keep[10:]].mean().reset_index())
 
 
 if __name__ == "__main__":

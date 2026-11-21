@@ -56,8 +56,10 @@ def analyse(suite):
     summ = pdm.groupby("method")[COLS].mean().reindex(METHODS).reset_index()
     summ.to_csv(TAB / f"T17_rw_summary_{suite}.csv", index=False)
     disp = summ[["method", "coverage", "cov_phiU", "macro_decile", "worst_decile", "top1_cov", "size"]].copy()
+    geo = pdm.groupby("method")["size"].apply(lambda v: float(np.exp(np.log(v).mean()))).reindex(METHODS)
+    disp["size_geo"] = geo.values
     disp.columns = ["Method", "Marginal cov.", "Relevance-weighted cov. (φ_U)", "Mean decile cov.", "Worst decile cov.",
-                    "Top-1% cov.", "Size / sd(y)"]
+                    "Top-1% cov.", "Normalised size (arith. mean)", "Normalised size (geo. mean)"]
     for c_ in disp.columns[1:]:
         disp[c_] = disp[c_].map(lambda v: f"{v:.3f}")
     disp.to_csv(TAB / f"D17_rw_{suite}.csv", index=False)
@@ -125,25 +127,35 @@ def figure(pdms):
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
-    show = ["SCP", "CQR", "DLS-M", "S-NCP", "SDLC", "RW-DLC-H", "RW-DLC-U"]
-    col = {"SCP": "#9e9e9e", "CQR": "#757575", "DLS-M": "#616161", "S-NCP": "#66bb6a", "SDLC": "#1e88e5",
-           "RW-DLC-H": "#fb8c00", "RW-DLC-U": "#d81b60"}
-    fig, axes = plt.subplots(1, len(pdms), figsize=(5.2 * len(pdms), 3.8), squeeze=False)
+    from adjustText import adjust_text
+    from scripts.analyze3 import mcolor, mmarker
+    show = ["SCP", "NCP", "CQR", "DLS-M", "S-NCP", "SDLC", "RW-NCP-U", "RW-DLS-U", "RW-DLC-H", "RW-DLC-U"]
+    label = {"DLS-M": "DLS"}
+    fig, axes = plt.subplots(1, len(pdms), figsize=(3.7 * len(pdms), 3.3), squeeze=False)
     for ax, (suite, pdm) in zip(axes[0], pdms.items()):
         dec = pdm[pdm.method.isin(show)]
+        texts, xs, ys = [], [], []
         for m in show:
             x = dec[dec.method == m]
-            ax.scatter(np.exp(np.log(x["size"]).mean()), x["top1_cov"].mean(), s=50, color=col[m], zorder=3)
-            ax.annotate(m, (np.exp(np.log(x["size"]).mean()), x["top1_cov"].mean()), fontsize=8,
-                        xytext=(4, 3), textcoords="offset points")
+            nm = label.get(m, m)
+            xv, yv = np.exp(np.log(x["size"]).mean()), x["top1_cov"].mean()
+            ax.scatter(xv, yv, s=30, color=mcolor(nm), marker=mmarker(nm), zorder=3, edgecolor="white", lw=0.5)
+            xs.append(xv)
+            ys.append(yv)
+            texts.append(ax.text(xv, yv, nm, fontsize=6.3, color="#3a3936"))
         ax.axhline(0.9, color="k", lw=0.8, ls="--")
-        ax.set_xlabel("set size (geometric mean over datasets, units of sd(y))")
-        ax.set_ylabel("coverage of the top 1% of outcomes")
-        ax.set_title({"ctr23": "OpenML-CTR23 (exploratory)", "confirmatory": "Held-out datasets"}[suite], fontsize=10)
+        ax.set_xlim(min(xs) * 0.93, max(xs) * 1.12)
+        ax.set_ylim(min(ys) - 0.05, 0.97)
+        ax.set_xlabel("Normalised set size (geometric mean)", fontsize=7.5)
+        ax.set_ylabel("Coverage of the top 1% of outcomes", fontsize=7.5)
+        ax.tick_params(labelsize=7)
+        ax.set_title({"ctr23": "OpenML-CTR23 (exploratory)", "confirmatory": "Held-out datasets"}[suite], fontsize=8)
         ax.grid(alpha=0.3)
+        adjust_text(texts, x=xs, y=ys, ax=ax, arrowprops=dict(arrowstyle="-", color="#a3a29c", lw=0.5),
+                    expand=(1.3, 1.6), ensure_inside_axes=True)
     fig.tight_layout()
-    fig.savefig(FIG / "F14_rw_top1_vs_size.png", dpi=200)
-    fig.savefig(FIG / "F14_rw_top1_vs_size.pdf")
+    fig.savefig(FIG / "F14_rw_top1_vs_size.png", dpi=300, bbox_inches="tight")
+    fig.savefig(FIG / "F14_rw_top1_vs_size.pdf", bbox_inches="tight")
 
 
 def main():

@@ -198,6 +198,34 @@ def context():
 TABLES = {}
 
 
+# Display-only harmonisation of generated tables (no values are changed): paper names for internal method codes,
+# notation of the text (cost ratio c), typographic minus signs and no negative zero.
+DISPLAY_RENAME = {
+    "D2_main": {"Lower tail": "Lowest stratum", "Upper tail": "Highest stratum", "Size": "Normalised size",
+                "Empty %": "Empty (% of test points)"},
+    "D13_alerts": {"Cost r=1": "Cost c=1", "Cost r=10": "Cost c=10", "Cost r=20": "Cost c=20"},
+    "C2_display": {"Holm p": "p (Holm-adjusted Wilcoxon unless stated)"},
+}
+CELL_RENAME = {"O-S-Res": "O-BCCP", "DLS-M": "DLS"}
+
+
+def display_cell(v):
+    s = str(v)
+    if s in CELL_RENAME:
+        return CELL_RENAME[s]
+    s = re.sub(r"^t(\d+) signal", r"Student-$t_{\1}$ signal", s)
+    s = re.sub(r"(?<![\w.\d])-(0\.0+)(?![\d])", r"\1", s)          # no negative zero
+    s = re.sub(r"(?<![\w.\d)])-(?=\d)", "\u2212", s)              # typographic minus
+    return s
+
+
+def display_df(df, name):
+    df = df.rename(columns=DISPLAY_RENAME.get(name, {}))
+    for col in df.columns:
+        df[col] = df[col].map(display_cell)
+    return df
+
+
 def md_table(name, cols=None, rename=None, fmt=None, query=None, sort=None):
     df = pd.read_csv(TAB / f"{name}.csv", dtype=str if name.startswith(("D", "C")) else None, keep_default_na=False)
     if query:
@@ -213,6 +241,7 @@ def md_table(name, cols=None, rename=None, fmt=None, query=None, sort=None):
             df[col] = df[col].map(lambda v: "" if pd.isna(v) else f"{v:.3f}")
     if rename:
         df = df.rename(columns=rename)
+    df = display_df(df, name)
     return df.to_markdown(index=False, disable_numparse=True)
 
 
@@ -333,6 +362,8 @@ def render():
             raise SystemExit(f"Undefined {kind} labels: {missing}")
         text = re.sub(r"\[-@" + kind + r":([\w-]+)\]", lambda mo: str(table[mo.group(1)]), text)
     text = re.sub(r"\\tag\{(\w+)\}", r"\\qquad (\1)", text)
+    # "p <= < 0.001" produced by "$p\le$ {{...}}" when the value is below 0.001
+    text = text.replace("$p\\le$ < 0.001", "$p<0.001$")
     # notation that renders identically in Word (OMML) and LibreOffice
     text = text.replace("\\mid", "\\,|\\,")
     for op in ("Var", "Cov", "sd", "TV"):

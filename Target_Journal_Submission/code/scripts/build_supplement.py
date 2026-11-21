@@ -1,9 +1,15 @@
 """Build the Supplementary Material (manuscript/Supplementary_Material.docx and .pdf) from generated tables,
-figures and result files. Numbering: Sections S1-S7, Tables S1-S20, Figures S1-S3 (cited in the main text).
-No number is typed by hand."""
+figures and result files. Numbering: Sections S1-S7, Tables S1-S17 fixed and later tables in order of appearance, Figures S1-S3.
+No number is typed by hand. After the build, every "Supplementary Table/Section Sn" cited in the filled manuscript
+(manuscript/build/manuscript_filled.md) is checked against the supplement.
+
+Run time: the first run downloads any held-out dataset missing from the local data cache (OpenML; several minutes for
+the large ARFF files); later runs read the cache and take about a minute, most of it the PDF print."""
 from __future__ import annotations
 
 import json
+import os
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -25,6 +31,12 @@ def md(df, nd=3):
     return df.to_markdown(index=False, disable_numparse=True)
 
 
+def disp(df, name=""):
+    """Markdown with the display harmonisation of the main text (paper names, minus signs; values unchanged)."""
+    from scripts.render_manuscript import display_df
+    return display_df(df, name).to_markdown(index=False, disable_numparse=True)
+
+
 def csv(name, **kw):
     return pd.read_csv(TAB / f"{name}.csv", dtype=str, keep_default_na=False, **kw)
 
@@ -34,8 +46,8 @@ def main():
     CFG = json.loads((ROOT / "config" / "benchmark.json").read_text())
     CC = json.loads((ROOT / "config" / "confirmatory.json").read_text())
     M = json.loads((RES / "metrics_v3.json").read_text())
-    out = ["---", 'title: "Supplementary Material: Covering the rare outcomes: stratified conformal prediction with '
-           'size-optimal density scores for imbalanced regression"', "---", ""]
+    title = re.search(r'^title: "(.*)"$', (MS / "src" / "00_front.md").read_text(), re.M).group(1)
+    out = ["---", f'title: "Supplementary Material: {title}"', "---", ""]
     # S1 datasets ---------------------------------------------------------------------------------------
     out += ["# S1. Datasets", "",
             "**Table S1.** The OpenML-CTR23 datasets used in the main benchmark: size, number of features after "
@@ -50,6 +62,7 @@ def main():
     d1["Licence"] = d1.Dataset.map(lambda n: lic.get(n, ""))
     out += [d1.to_markdown(index=False, disable_numparse=True), ""]
     rows = []
+    os.environ["TSCP_NMAX"] = str(CC.get("n_max", 0))      # the pre-specified subsample used in the replication
     for did in CC["datasets"]:
         X, y, m = load(did)
         rows.append({"OpenML ID": str(did), "Dataset": m["name"], "n (used)": f"{len(y):,}", "p": str(X.shape[1]),
@@ -59,6 +72,7 @@ def main():
             "Excluded by content overlap: " + "; ".join(CC["excluded_by_content_overlap_with_CTR23"]) +
             ". Excluded by the distinct-value rule: " + "; ".join(CC["excluded_by_rule_after_download"]) + ".", "",
             pd.DataFrame(rows).to_markdown(index=False, disable_numparse=True), ""]
+    os.environ.pop("TSCP_NMAX", None)
     # S2 leakage ---------------------------------------------------------------------------------------
     la = pd.read_csv(TAB / "S2_leakage_audit.csv")
     la = la[["dataset", "n", "dup_rows_frac", "dup_X_frac", "test_X_in_train_frac_seed0", "missing_frac"]]
@@ -96,23 +110,23 @@ def main():
             "of SDLC to each comparator with 95% bootstrap CI, wins/losses of SDLC, Holm-adjusted two-sided Wilcoxon "
             "$p$ within each analysis). Development datasets: airfoil, concrete, QSAR fish; diagnostic datasets: "
             "cpu activity, naval propulsion, cars, energy efficiency, forest fires, fifa, Miami housing.", "",
-            csv("D3s_sensitivity").to_markdown(index=False, disable_numparse=True), "",
+            disp(csv("D3s_sensitivity"), "D3s_sensitivity"), "",
             "**Table S6.** Miscoverage level: marginal coverage, worst-stratum coverage, upper-tail coverage and "
-            "geometric-mean size (means over datasets).", "", csv("D5_alpha").to_markdown(index=False, disable_numparse=True), "",
+            "geometric-mean size (means over datasets).", "", disp(csv("D5_alpha"), "D5_alpha"), "",
             "**Table S7.** Strata: three (S3), five (S5) and ten (S10, deciles) strata from training quantiles; "
             "worst-stratum and worst-decile coverage, geometric-mean size and number of runs with an infinite "
-            "stratum threshold.", "", csv("D6_strata").to_markdown(index=False, disable_numparse=True), "",
+            "stratum threshold.", "", disp(csv("D6_strata"), "D6_strata"), "",
             "**Table S8.** Calibration-set size (fraction of the calibration split used; runs with an infinite "
-            "threshold refer to the stratified methods).", "", csv("D7_calsize").to_markdown(index=False, disable_numparse=True), "",
+            "threshold refer to the stratified methods).", "", disp(csv("D7_calsize"), "D7_calsize"), "",
             "**Table S9.** Density estimators and variants ($\\alpha=0.1$).", "",
-            csv("D2b_variants").to_markdown(index=False, disable_numparse=True), "",
+            disp(csv("D2b_variants"), "D2b_variants"), "",
             "**Table S10.** Synthetic study: coverage of the upper stratum under a genuine label shift (test points "
             "drawn with acceptance probability proportional to $\\exp\\{\\gamma\\Phi^{-1}(F_Y(y))\\}$, so that $X\\mid Y$ "
             "is unchanged); designs A and B, 10 seeds.", "",
-            csv("D12_synthetic_shift").to_markdown(index=False, disable_numparse=True), "",
+            disp(csv("D12_synthetic_shift"), "D12_synthetic_shift"), "",
             "**Table S11.** Per-dataset error analysis for SDLC ($\\alpha=0.1$): calibration size, target skewness, "
             "share of zero targets, relative RMSE, worst-stratum coverage, size, and size ratios to DLS (price), "
-            "S-NCP and BCCP.", "", csv("D10_error").to_markdown(index=False, disable_numparse=True), ""]
+            "S-NCP and BCCP.", "", disp(csv("D10_error"), "D10_error"), ""]
     T13 = pd.read_csv(TAB / "T13_tail_alerts.csv")
     lo = T13[T13.side == "lo"].drop(columns=["side"])
     out += ["**Table S12.** Lower-tail alerts (means over datasets).", "", md(lo), ""]
@@ -125,33 +139,37 @@ def main():
     tfit = TAB / "T15b_timing_fit.csv"
     if tfit.exists():
         tf = pd.read_csv(tfit)
-        out += ["**Table S15.** Fitting and prediction time of the model components in seconds (seed 0, one CPU "
-                "thread; `experiments/timing_fit.py`). SDLC uses the mean model, the scale model with out-of-fold "
-                "residuals, the cross-fitted scale models and the kernel density.", "", md(tf, 3), ""]
+        out += ["**Table S14.** Fitting and prediction time of the model components in seconds (seed 0, one CPU "
+                "thread). SDLC uses the mean model, the scale model with out-of-fold residuals, the cross-fitted scale "
+                "models and the kernel density.", "", md(tf, 3), ""]
+    d16 = TAB / "D16_grouped.csv"
+    if d16.exists():
+        out += ["**Table S15.** Grouped versus random splits on datasets with repeated units ($\\alpha=0.1$, 5 seeds; "
+                "normalised size; random-split values from the same seeds of the main benchmark).", "",
+                disp(pd.read_csv(d16, dtype=str)), ""]
     t18 = TAB / "T18_secondary.csv"
     if t18.exists():
         s = pd.read_csv(t18)
         s17 = s[~s.analysis.str.startswith("subgroup")]
-        out += ["**Table S17.** Pre-specified secondary analyses of the held-out replication (hull forms) and post hoc "
+        out += ["**Table S16.** Pre-specified secondary analyses of the held-out replication (hull forms) and post hoc "
                 "equivalence tests (±5% on the log-size scale, TOST with two one-sided Wilcoxon tests), on CTR23 and the "
-                "held-out datasets (`scripts/analyze_secondary.py`).", "", md(s17, 3), ""]
+                "held-out datasets.", "", md(s17, 3), ""]
         sk = pd.read_csv(TAB / "T18b_confirmatory_skewness.csv")
-        out += ["**Table S18.** Held-out datasets: skewness and octile skewness of the training targets, and size "
+        out += ["**Table S17.** Held-out datasets: skewness and octile skewness of the training targets, and size "
                 "comparisons of SDLC by skewness subgroup (post hoc, descriptive).", "", md(sk, 3), "",
                 md(s[s.analysis.str.startswith("subgroup")], 3), ""]
+    nxt = 18                                  # tables after S17 are numbered in order of appearance
+    t17 = TAB / "T17b_rw_tests.csv"
+    if t17.exists():
+        out += [f"**Table S{nxt}.** Pre-specified hypothesis tests RW-1 to RW-4 of the relevance-weighted study "
+                "(column suite: collection of datasets).", "", md(pd.read_csv(t17), 4), ""]
+        nxt += 1
     d17 = TAB / "D17_rw_ctr23.csv"
     if d17.exists():
-        out += ["**Table S19.** Relevance-weighted study on the OpenML-CTR23 datasets ($\\alpha=0.1$, 10 seeds; means "
+        out += [f"**Table S{nxt}.** Relevance-weighted study on the OpenML-CTR23 datasets ($\\alpha=0.1$, 10 seeds; means "
                 "over datasets; columns as in the main-text table of the relevance-weighted study).", "",
-                pd.read_csv(d17, dtype=str).to_markdown(index=False, disable_numparse=True), ""]
-        t17 = TAB / "T17b_rw_tests.csv"
-        out += ["**Table S20.** Pre-specified hypothesis tests of the relevance-weighted study (both collections).", "",
-                md(pd.read_csv(t17), 4), ""]
-    d16 = TAB / "D16_grouped.csv"
-    if d16.exists():
-        out += ["**Table S16.** Grouped versus random splits on datasets with repeated units ($\\alpha=0.1$, 5 seeds; "
-                "size in units of the training-target standard deviation; random-split values from the same seeds of the "
-                "main benchmark).", "", pd.read_csv(d16, dtype=str).to_markdown(index=False, disable_numparse=True), ""]
+                disp(pd.read_csv(d17, dtype=str), "D17_rw_ctr23"), ""]
+        nxt += 1
     for i, (f, cap) in enumerate((("F4_upper_tail_per_dataset.png", "Coverage of the upper calibration stratum per dataset ($\\alpha=0.1$)."),
                                   ("F8_error_analysis.png", "Error analysis. Left: price of stratum-wise validity (SDLC/DLS size ratio) "
                                    "against relative RMSE. Right: worst-stratum coverage of SDLC minus its null mean "
@@ -187,24 +205,34 @@ def main():
             "The first run (v1) evaluated all density-based sets on a fixed grid of 200 equal-mass cells of the "
             "marginal training-target distribution. The second (v2) used an exact implementation but standardised "
             "residuals with an in-sample scale model and used a density floor. Their complete analyses are archived "
-            "in `supplementary/v1_preregistered_analysis/` and `supplementary/v2_exact_insample_analysis/`. The "
-            "coverage results were the same in all versions. Table S14 shows how the size comparisons changed; this "
+            "in the anonymised code package provided as supplementary material. The "
+            f"coverage results were the same in all versions. Table S{nxt} shows how the size comparisons changed; this "
             "dependence on the implementation is why the comparisons on CTR23 are labelled exploratory and were "
             "replicated on held-out data (v1 reported medians of log ratios; v2 also geometric means; the final "
             "version reports the Hodges–Lehmann estimate).", "",
-            "**Table S14.** Size comparisons of SDLC with the stratified comparators in the three implementations "
+            f"**Table S{nxt}.** Size comparisons of SDLC with the stratified comparators in the three implementations "
             "($\\alpha=0.1$, 31 datasets; negative log ratios favour SDLC).", "",
             pd.DataFrame(rows).to_markdown(index=False, disable_numparse=True), ""]
-    # S6 pre-registration -------------------------------------------------------------------------------------
+    os.environ.pop("TSCP_NMAX", None)
+    # S6/S7 analysis plans (verbatim apart from the marked redactions for double-blind review) -------------------
     pre = (TOP / "PREREGISTRATION_confirmatory.md").read_text().split("\n", 1)[1]
+    pre = re.sub(r"\(branch `[^`]*`\)", "[branch name redacted for double-blind review]", pre)
     pre = pre.replace("\n## ", "\n### ")
-    out += ["# S6. Pre-registered analysis plan of the confirmatory replication", "",
-            "Reproduced verbatim from `PREREGISTRATION_confirmatory.md`, committed to the public repository "
-            "before any confirmatory evaluation.", "", pre]
-    pre2 = (TOP / "PREREGISTRATION_relevance_weighted.md").read_text().split("\n", 1)[1].replace("\n## ", "\n### ")
-    out += ["# S7. Pre-specified analysis plan of the relevance-weighted study", "",
-            "Reproduced verbatim from `PREREGISTRATION_relevance_weighted.md`, committed to version control (commit "
-            "`a9f31d2`) before RW-DLC was evaluated on any dataset.", "", pre2]
+    note = ("The plan was written before we adopted the term *pre-specified*; its original wording (\"pre-registered\", "
+            "\"public repository\") is kept. As stated in the manuscript, the plan was committed to the authors' "
+            "version-controlled repository, not registered with a third party, and the repository will be made public "
+            "upon acceptance; the anonymised code package provided as supplementary material contains the version "
+            "history with the commit identifiers.")
+    out += ["# S6. Pre-specified analysis plan of the confirmatory replication (verbatim)", "",
+            "Reproduced from the analysis-plan file of the code package, committed (identifier `ccba99b`) before any "
+            "confirmatory evaluation. " + note, "", pre]
+    pre2 = (TOP / "PREREGISTRATION_relevance_weighted.md").read_text().split("\n", 1)[1]
+    pre2 = re.sub(r" Motivation: review.*?This study adds one\.", " [Motivation paragraph referring to internal project "
+                  "documents redacted for double-blind review.]", pre2, flags=re.S)
+    pre2 = pre2.replace("\n## ", "\n### ")
+    out += ["# S7. Pre-specified analysis plan of the relevance-weighted study (verbatim)", "",
+            "Reproduced from the analysis-plan file of the code package, committed (identifier `a9f31d2`) before RW-DLC "
+            "was evaluated on any dataset. The same note on wording as for Section S6 applies.", "", pre2]
     text = "\n".join(out)
     BUILD.mkdir(parents=True, exist_ok=True)
     src = BUILD / "supplementary_filled.md"
@@ -215,6 +243,25 @@ def main():
     from scripts.build_pdf import build
     build(src, MS / "Supplementary_Material.pdf", BUILD / "supplementary.html")
     print("written", MS / "Supplementary_Material.docx")
+    check_crossrefs(text)
+
+
+def check_crossrefs(text):
+    """Every supplementary item cited in the filled manuscript must exist in the supplement."""
+    ms = BUILD / "manuscript_filled.md"
+    if not ms.exists():
+        return
+    cited = set()
+    for kind, a, b in re.findall(r"Supplementary (Tables?|Sections?|Fig\.?) S(\d+)(?: and S(\d+))?", ms.read_text()):
+        for n in (a, b):
+            if n:
+                cited.add(("Table" if kind.startswith("Table") else "Section" if kind.startswith("Section") else "Fig.", n))
+    have = {("Table", n) for n in re.findall(r"\*\*Table S(\d+)\.\*\*", text)}
+    have |= {("Section", n) for n in re.findall(r"^# S(\d+)\.", text, re.M)}
+    have |= {("Fig.", n) for n in re.findall(r"\*\*Fig\. S(\d+)\.\*\*", text)}
+    missing = sorted(cited - have, key=lambda x: (x[0], int(x[1])))
+    print("cross-reference check:", "all cited supplementary items exist" if not missing else
+          "MISSING " + ", ".join(f"{k} S{n}" for k, n in missing))
 
 
 if __name__ == "__main__":
