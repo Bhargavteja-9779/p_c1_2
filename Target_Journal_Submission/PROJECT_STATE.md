@@ -16,7 +16,8 @@
 - [x] Manuscript revised (all src/*.md), renderer v3 context, supplementary builder (scripts/build_supplement.py), bibliography verified (agent), CSL URL fallback
 - [x] Queue complete (2026-11-21): MLP v3 155, DenseWeight 93, grid, grouped 15/15, timing_fit, timing_methods_v3
 - [x] analyze3 rerun; MLP/DenseWeight/grouped/timing paragraphs in 04_results.md; supplement Tables S13b (grouped), S13c (fit timing)
-- [ ] Render: manuscript DOCX done; check supplement DOCX/PDF + Final_Manuscript.pdf (code/scripts/build_pdf.py) built and committed
+- [x] Rendered 2026-11-21: Final_Manuscript.docx/.pdf, Supplementary_Material.docx/.pdf (supplement build re-downloads all datasets into data/, ~30 min in a fresh container)
+- [ ] NEXT: discussion line on video_transcoding grouped result (SDLC > BCCP, 1.20) — then review cycles 2–10
 - [ ] Review cycles 2–10 (workflow), final comparison with strongest ESWA papers, final audit, rejection-risk report, READY/NOT READY decision, manifest
 
 ## Key results (machine-generated; see results/statistics_v3.json)
