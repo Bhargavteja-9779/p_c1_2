@@ -8,3 +8,8 @@ Finished reviews are `<label>.json`; `.partial.md` = reviewer still running or i
 * cycle2:R4-statistics: result
 * cycle2:R5-data-leakage: started
 * cycle2:R6-robustness: started
+* cycle2:R7-efficiency: started
+* cycle2:R8-literature: started
+* cycle2:R9-associate-editor: started
+* cycle2:R10-hostile-competitor: started
+* cycle2:consolidate: started
