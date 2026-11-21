@@ -1,0 +1,94 @@
+Dataset,Method,n cal,n test,K,Calibration (ms),Batch prediction (µs/point),Single query p50 (µs),Single query p99 (µs)
+Moneyball,SDLC,308,308,5,0.05,20,5704,16141
+Moneyball,S-NCP,308,308,5,0.02,0.08,6.42,20
+Moneyball,BCCP,308,308,5,0.02,0.07,5.76,14
+abalone,SDLC,1044,1045,5,0.23,13,5967,19795
+abalone,S-NCP,1044,1045,5,0.05,0.09,6.61,92
+abalone,BCCP,1044,1045,5,0.07,0.07,5.87,90
+airfoil self noise,SDLC,376,375,5,0.05,21,6184,9621
+airfoil self noise,S-NCP,376,375,5,0.02,0.08,6.37,9.15
+airfoil self noise,BCCP,376,375,5,0.02,0.07,5.76,12
+auction verification,SDLC,511,510,5,0.18,33,9645,14428
+auction verification,S-NCP,511,510,5,0.03,0.06,5.31,12
+auction verification,BCCP,511,510,5,0.02,0.07,4.75,11
+concrete compressive strength,SDLC,258,257,5,0.13,25,6509,14297
+concrete compressive strength,S-NCP,258,257,5,0.02,0.08,5.27,14
+concrete compressive strength,BCCP,258,257,5,0.01,0.06,4.81,9.38
+energy efficiency,SDLC,192,192,5,0.03,42,6471,16741
+energy efficiency,S-NCP,192,192,5,0.02,0.11,6.35,15
+energy efficiency,BCCP,192,192,5,0.02,0.09,5.74,23
+forest fires,SDLC,129,130,3,0.12,36,3826,7770
+forest fires,S-NCP,129,130,3,0.01,0.10,5.61,9.42
+forest fires,BCCP,129,130,3,0.01,0.09,5.05,6.66
+physiochemical protein,SDLC,11432,11433,5,1.00,34,11185,17421
+physiochemical protein,S-NCP,11432,11433,5,0.30,0.07,6.57,26
+physiochemical protein,BCCP,11432,11433,5,0.29,0.06,5.87,18
+superconductivity,SDLC,5316,5315,5,0.48,10,7186,20047
+superconductivity,S-NCP,5316,5315,5,0.14,0.06,5.82,12
+superconductivity,BCCP,5316,5315,5,0.12,0.05,5.08,14
+geographical origin of music,SDLC,265,264,5,0.20,28,6264,10083
+geographical origin of music,S-NCP,265,264,5,0.02,0.08,5.65,11
+geographical origin of music,BCCP,265,264,5,0.02,0.07,5.18,10
+naval propulsion plant,SDLC,2984,2983,5,0.20,6.88,5884,12802
+naval propulsion plant,S-NCP,2984,2983,5,0.08,0.05,5.13,9.41
+naval propulsion plant,BCCP,2984,2983,5,0.07,0.04,4.50,8.57
+QSAR fish toxicity,SDLC,227,227,5,0.03,27,5707,12598
+QSAR fish toxicity,S-NCP,227,227,5,0.02,0.09,5.74,8.85
+QSAR fish toxicity,BCCP,227,227,5,0.01,0.07,5.18,12
+grid stability,SDLC,2500,2500,5,0.23,5.57,5686,13092
+grid stability,S-NCP,2500,2500,5,0.09,0.06,6.53,36
+grid stability,BCCP,2500,2500,5,0.08,0.06,5.81,23
+video transcoding,SDLC,17196,17196,5,1.54,29,12346,23221
+video transcoding,S-NCP,17196,17196,5,0.45,0.07,6.60,12
+video transcoding,BCCP,17196,17196,5,0.43,0.05,5.81,23
+wave energy,SDLC,18000,18000,5,1.49,6.67,6527,12332
+wave energy,S-NCP,18000,18000,5,0.49,0.07,6.53,12
+wave energy,BCCP,18000,18000,5,0.43,0.06,5.88,23
+sarcos,SDLC,12233,12234,5,1.16,6.86,6245,11387
+sarcos,S-NCP,12233,12234,5,0.24,0.06,5.51,13
+sarcos,BCCP,12233,12234,5,0.27,0.05,5.16,10
+california housing,SDLC,5160,5160,5,0.34,8.13,7161,14387
+california housing,S-NCP,5160,5160,5,0.12,0.05,5.24,10
+california housing,BCCP,5160,5160,5,0.11,0.04,4.52,8.00
+cpu activity,SDLC,2048,2048,5,0.15,7.09,5270,9013
+cpu activity,S-NCP,2048,2048,5,0.06,0.05,5.17,18
+cpu activity,BCCP,2048,2048,5,0.05,0.04,4.58,13
+diamonds,SDLC,13485,13485,5,1.15,11,7443,16097
+diamonds,S-NCP,13485,13485,5,0.35,0.07,6.66,11
+diamonds,BCCP,13485,13485,5,0.33,0.05,5.81,11
+kin8nm,SDLC,2048,2048,5,0.19,4.62,5325,10128
+kin8nm,S-NCP,2048,2048,5,0.07,0.06,6.40,11
+kin8nm,BCCP,2048,2048,5,0.06,0.05,5.74,26
+pumadyn32nh,SDLC,2048,2048,5,0.14,3.60,5230,9417
+pumadyn32nh,S-NCP,2048,2048,5,0.05,0.05,5.12,12
+pumadyn32nh,BCCP,2048,2048,5,0.05,0.04,4.64,37
+miami housing,SDLC,3483,3483,5,0.30,7.45,6702,12989
+miami housing,S-NCP,3483,3483,5,0.11,0.07,6.41,24
+miami housing,BCCP,3483,3483,5,0.11,0.05,5.64,11
+cps88wages,SDLC,7039,7038,5,0.63,13,8916,14871
+cps88wages,S-NCP,7039,7038,5,0.18,0.06,6.15,11
+cps88wages,BCCP,7039,7038,5,0.17,0.04,5.35,8.43
+socmob,SDLC,289,289,4,0.17,24,5673,14907
+socmob,S-NCP,289,289,4,0.01,0.08,5.68,38
+socmob,BCCP,289,289,4,0.01,0.08,5.09,40
+kings county,SDLC,5403,5404,5,1.53,9.43,7110,17212
+kings county,S-NCP,5403,5404,5,0.16,0.07,6.56,16
+kings county,BCCP,5403,5404,5,0.15,0.05,5.81,14
+brazilian houses,SDLC,2673,2673,5,0.26,98,23194,41209
+brazilian houses,S-NCP,2673,2673,5,0.10,0.06,6.47,15
+brazilian houses,BCCP,2673,2673,5,0.08,0.05,5.75,14
+fps benchmark,SDLC,6156,6156,5,0.69,16,8403,15454
+fps benchmark,S-NCP,6156,6156,5,0.17,0.06,6.50,16
+fps benchmark,BCCP,6156,6156,5,0.17,0.05,5.74,16
+health insurance,SDLC,5568,5568,3,0.44,9.04,5151,11891
+health insurance,S-NCP,5568,5568,3,0.14,0.05,6.44,14
+health insurance,BCCP,5568,5568,3,0.12,0.04,5.80,19
+cars,SDLC,201,201,5,0.03,41,7302,14725
+cars,S-NCP,201,201,5,0.01,0.09,5.25,16
+cars,BCCP,201,201,5,0.01,0.07,4.67,9.85
+fifa,SDLC,4794,4795,4,0.61,9.05,5475,9923
+fifa,S-NCP,4794,4795,4,0.13,0.05,6.51,13
+fifa,BCCP,4794,4795,4,0.13,0.04,5.65,13
+space ga,SDLC,777,776,5,0.26,14,6375,11274
+space ga,S-NCP,777,776,5,0.03,0.07,6.40,16
+space ga,BCCP,777,776,5,0.03,0.06,5.69,11

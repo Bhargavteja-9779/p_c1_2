@@ -37,13 +37,12 @@ def top1(x, col="ext1_cov_2", ncol="ext1_n_2"):
     return x.groupby(["did", "m"])[col].mean().unstack()
 
 
-def main():
-    out, rows = {}, []
-    # (a) S7 versus RW-DLC
-    t7 = jl(RES / "raw_tail1")
+def tail_vs_rw(suite, tdir):
+    o_, r_ = {}, []
+    t7 = jl(RES / tdir)
     t7["m"] = t7.method.map(NAME) + "-S7"
     t7["nsize"] = t7["size"] / t7["y_train_sd"]
-    rw = pd.DataFrame([r for f in sorted((RES / "rw" / "confirmatory").glob("*.json")) for r in json.loads(f.read_text())])
+    rw = pd.DataFrame([r for f in sorted((RES / "rw" / suite).glob("*.json")) for r in json.loads(f.read_text())])
     rw = rw[rw.method.isin(["RW-DLC-U", "SDLC", "S-NCP"])].copy()
     rw["m"] = rw.method + "-RWgrid"
     T1 = pd.concat([top1(t7), top1(rw.rename(columns={}), "top1h_cov", "n_top1h")], axis=1)
@@ -62,19 +61,36 @@ def main():
     ph = holm([r[1]["p"] for r in res] + [r[2]["p"] for r in res])
     for i, (m, r1, r2) in enumerate(res):
         d1 = (T1[P] - T1[m]).dropna()
-        out[f"vs {m}"] = dict(top1_rw=float(T1[P][d1.index].mean()), top1_comp=float(T1[m][d1.index].mean()),
+        o_[f"vs {m}"] = dict(top1_rw=float(T1[P][d1.index].mean()), top1_comp=float(T1[m][d1.index].mean()),
                               top1_diff=float(d1.mean()), top1_wins=int((d1 > 0).sum()), top1_losses=int((d1 < 0).sum()),
                               top1_n=int(len(d1)), top1_p_holm=float(ph[i]),
                               cov_rw=float(cov[P].mean()), cov_comp=float(cov[m].mean()),
                               size_geo=r2["geo_ratio"], size_hl=r2["hl_ratio"], size_wins=r2["wins"],
                               size_losses=r2["losses"], size_p_holm=float(ph[len(res) + i]))
-        rows.append(dict(comparison=f"RW-DLC vs {m.replace('-S7', ' (1% tail strata)')}", **out[f"vs {m}"]))
-    out["S7.top1_mean"] = {m: float(T1[m].mean()) for m in comps}
-    out["S7.top1_min"] = {m: float(T1[m].min()) for m in comps}
-    out["S7.cov_mean"] = {m: float(cov[m].mean()) for m in comps}
-    out["S7.datasets_with_inf_threshold"] = int((inf7["SDLC-S7"] > 0).sum())
-    out["n_datasets"] = int(T1[P].notna().sum())
+        r_.append(dict(comparison=f"RW-DLC vs {m.replace('-S7', ' (1% tail strata)')}", **o_[f"vs {m}"]))
+    o_["S7.top1_mean"] = {m: float(T1[m].mean()) for m in comps}
+    o_["S7.top1_min"] = {m: float(T1[m].min()) for m in comps}
+    o_["S7.cov_mean"] = {m: float(cov[m].mean()) for m in comps}
+    o_["S7.datasets_with_inf_threshold"] = int((inf7["SDLC-S7"] > 0).sum())
+    o_["n_datasets"] = int(T1[P].notna().sum())
+    return o_, r_, sz
+
+
+def main():
+    out, rows = {}, []
+    # (a) S7 versus RW-DLC, held-out (keys without prefix) and CTR23 (prefix "ctr23.")
+    for suite, tdir, pre in (("confirmatory", "raw_tail1", ""), ("ctr23", "raw_tail1_ctr23", "ctr23.")):
+        if not (RES / tdir).exists():
+            continue
+        o_, r_, sz_ = tail_vs_rw(suite, tdir)
+        for k, v in o_.items():
+            out[pre + k] = v
+        for r__ in r_:
+            rows.append(dict(suite=suite, **r__))
+        if suite == "confirmatory":
+            sz = sz_
     pd.DataFrame(rows).to_csv(TAB / "T25_tail1_vs_rw.csv", index=False)
+    P = "RW-DLC-U-RWgrid"
     # (b) RW-DLC vs SDLC size (same grid pipeline)
     r = paired_summary(sz[P], sz["SDLC-RWgrid"], better="smaller", log=True)
     out["rw_vs_sdlc_size"] = dict(geo=r["geo_ratio"], hl=r["hl_ratio"], median=float(np.median(sz[P] / sz["SDLC-RWgrid"])),

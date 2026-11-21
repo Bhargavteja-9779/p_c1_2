@@ -3,5 +3,69 @@
  "infer_us_max": 261.0244411108671,
  "fit_ratio_sdlc_sncp_median": 1.3370548093084906,
  "fit_sdlc_s_max": 45.92376741000021,
- "fit_sdlc_s_max_dataset": "wave energy"
+ "fit_sdlc_s_max_dataset": "wave energy",
+ "like": {
+  "SDLC": {
+   "pred_us_median": 13.313539215670414,
+   "pred_us_max": 98.2879420128991,
+   "single_p50_us_median": 6375.399500029744,
+   "single_p99_us_max": 41209.46507981888,
+   "cal_ms_median": 0.2306480000697,
+   "cal_ms_max": 1.5374800004792
+  },
+  "S-NCP": {
+   "pred_us_median": 0.0674938821196428,
+   "pred_us_max": 0.1062031221484479,
+   "single_p50_us_median": 6.366000434354646,
+   "single_p99_us_max": 92.38831015863931,
+   "cal_ms_median": 0.0777710001784726,
+   "cal_ms_max": 0.4887850000159
+  },
+  "BCCP": {
+   "pred_us_median": 0.0547516499754351,
+   "pred_us_max": 0.0911406251210185,
+   "single_p50_us_median": 5.646500085276784,
+   "single_p99_us_max": 90.43214084158517,
+   "cal_ms_median": 0.07142799950088374,
+   "cal_ms_max": 0.4338680000728
+  },
+  "ratio_pred_sdlc_sncp": {
+   "median": 206.51114433408662,
+   "min": 75.13617566290002,
+   "max": 1636.2449460665366
+  },
+  "ratio_e2e_sdlc_sncp": {
+   "median": 1.323356288018789,
+   "max": 77.17224600552248
+  }
+ },
+ "rw": {
+  "RW-DLC": {
+   "us_median": 143.16032478640537,
+   "us_max": 374.7427243999846
+  },
+  "RW-NCP": {
+   "us_median": 12.53351368002768,
+   "us_max": 18.85050439595068
+  },
+  "SDLC": {
+   "us_median": 150.44849002887636,
+   "us_max": 411.1027996295703
+  },
+  "S-NCP": {
+   "us_median": 13.04695344786993,
+   "us_max": 15.750963905684422
+  },
+  "ratio_rwdlc_sdlc_grid_median": 1.0096226588756436,
+  "ratio_rwdlc_rwncp_median": 10.512880064248016,
+  "relevance_fit_s_max": 4.940413264000199,
+  "relevance_fit_s_max_ntrain": 25000,
+  "calibration_s_max": 2.423015072000453,
+  "mean_size_change_max": 0.0002641394735943,
+  "point_change_median_max": 0.0155750476078763,
+  "point_change_max": 0.3335833958487265,
+  "point_change_max_did": 44069,
+  "n_datasets": 17,
+  "ratio_rwdlc_exact_sdlc_median": 10.752987801913829
+ }
 }

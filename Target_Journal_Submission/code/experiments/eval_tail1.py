@@ -30,7 +30,7 @@ from src.data.openml_ctr23 import load  # noqa: E402
 from src.evaluation.metrics import evaluate  # noqa: E402
 from src.methods.strata import make_partition  # noqa: E402
 
-OUT = ROOT.parent / "results" / "raw_tail1"
+OUT = Path(os.environ.get("TSCP_TAIL1_DIR", ROOT.parent / "results" / "raw_tail1"))
 S7 = (0.01, 0.1, 0.25, 0.75, 0.9, 0.99)
 ONLY = {"S-Res", "S-NCP", "S-HPD-LS", "SDLC-LS"}
 
