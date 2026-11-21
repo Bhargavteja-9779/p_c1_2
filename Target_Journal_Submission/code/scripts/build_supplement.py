@@ -1,5 +1,5 @@
 """Build the Supplementary Material (manuscript/Supplementary_Material.docx and .pdf) from generated tables,
-figures and result files. Numbering: Sections S1-S6, Tables S1-S13, Figures S1-S3 (cited in the main text).
+figures and result files. Numbering: Sections S1-S6, Tables S1-S14 (incl. S13b, S13c), Figures S1-S3 (cited in the main text).
 No number is typed by hand."""
 from __future__ import annotations
 
@@ -122,6 +122,18 @@ def main():
         tm.columns = ["Method", "Median µs per test point", "Maximum over datasets"]
         out += ["**Table S13.** Calibration and prediction time per test point (median over datasets of the "
                 "per-dataset median of three repetitions after a discarded warm-up; one thread).", "", md(tm, 1), ""]
+    tf = TAB / "T15b_timing_fit.csv"
+    if tf.exists():
+        f_ = pd.read_csv(tf).drop(columns=["did"])
+        out += ["**Table S13c.** Fit and prediction time in seconds per model component (seed 0, one thread; "
+                "n_pred = calibration plus test points).", "", md(f_, 3), ""]
+    t16 = TAB / "T16_grouped_splits.csv"
+    if t16.exists():
+        g_ = pd.read_csv(t16).drop(columns=["n_seeds"])
+        out += ["**Table S13b.** Splits that keep repeated units together (sarcos: duplicates removed; video "
+                "transcoding: grouped by input video; superconductivity: grouped by feature vector) against the "
+                "random splits of the same seeds (0-4, $\\alpha=0.1$). Size in target standard deviations "
+                "(geometric mean).", "", md(g_, 3), ""]
     for i, (f, cap) in enumerate((("F4_upper_tail_per_dataset.png", "Coverage of the upper calibration stratum per dataset ($\\alpha=0.1$)."),
                                   ("F8_error_analysis.png", "Error analysis. Left: price of stratum-wise validity (SDLC/DLS size ratio) "
                                    "against relative RMSE. Right: worst-stratum coverage of SDLC minus its null mean "

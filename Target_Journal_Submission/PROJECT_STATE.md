@@ -14,8 +14,9 @@
 - [x] Synthetic v3 (results/synthetic_v3.jsonl), Prop1 extension, tail-alert decision study (results/tail_alerts.jsonl), grid convergence
 - [x] Confirmatory replication: fit 85/85, refit 85/85, eval 85/85; analyze_confirmatory.py (unchanged since pre-registration) → results/confirmatory/statistics_confirmatory.json. ALL hypotheses supported.
 - [x] Manuscript revised (all src/*.md), renderer v3 context, supplementary builder (scripts/build_supplement.py), bibliography verified (agent), CSL URL fallback
-- [ ] Queue scripts/queue_cycle1b.sh running: MLP v3 → DenseWeight → grid → grouped splits → timing_fit → timing (logs results/experiment_logs/)
-- [ ] After queue: rerun analyze3, write LEARNERS_SECTION in 04_results.md (MLP, DenseWeight, grouped splits, timing), render DOCX/PDF/supplement
+- [x] Queue complete (2026-11-21): MLP v3 155, DenseWeight 93, grid, grouped 15/15, timing_fit, timing_methods_v3
+- [x] analyze3 rerun; MLP/DenseWeight/grouped/timing paragraphs in 04_results.md; supplement Tables S13b (grouped), S13c (fit timing)
+- [ ] Render: manuscript DOCX done; check supplement DOCX/PDF + Final_Manuscript.pdf (code/scripts/build_pdf.py) built and committed
 - [ ] Review cycles 2–10 (workflow), final comparison with strongest ESWA papers, final audit, rejection-risk report, READY/NOT READY decision, manifest
 
 ## Key results (machine-generated; see results/statistics_v3.json)
