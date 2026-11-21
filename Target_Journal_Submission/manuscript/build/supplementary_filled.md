@@ -474,6 +474,16 @@ Exact duplicate rows (features and target), duplicate feature vectors, the share
 | sarcos            | dedup       | S-CQR     | 0.904                | 0.900               | 0.900                     | 0.898                    | 0.586            | 0.559           | 5       |
 | sarcos            | dedup       | SDLC      | 0.898                | 0.901               | 0.891                     | 0.897                    | 0.373            | 0.356           | 5       |
 
+**Table S16.** Level-optimised stratified CQR in the spirit of BFQR (stratum levels chosen on the calibration covariates to minimise the expected size subject to a mass-weighted average coverage of $1-\alpha$) against CQR, S-CQR, S-NCP and SDLC (seed 0 of all 31 datasets, $\alpha=0.1$, same models and strata).
+
+| Method                 | Coverage   | Worst stratum   | Lower tail   | Upper tail   | Size (geometric mean)   |
+|:-----------------------|:-----------|:----------------|:-------------|:-------------|:------------------------|
+| BFQR (level-optimised) | 0.904      | 0.678           | 0.863        | 0.726        | 0.901                   |
+| CQR                    | 0.901      | 0.681           | 0.795        | 0.751        | 0.921                   |
+| S-CQR                  | 0.904      | 0.856           | 0.897        | 0.902        | 1.057                   |
+| S-NCP                  | 0.901      | 0.863           | 0.905        | 0.907        | 0.872                   |
+| SDLC                   | 0.901      | 0.861           | 0.902        | 0.907        | 0.818                   |
+
 ![**Fig. S1.** Coverage of the upper calibration stratum per dataset ($\alpha=0.1$).](/home/user/p_c1_2/Target_Journal_Submission/figures/F4_upper_tail_per_dataset.png){width=100%}
 
 ![**Fig. S2.** Error analysis. Left: price of stratum-wise validity (SDLC/DLS size ratio) against relative RMSE. Right: worst-stratum coverage of SDLC minus its null mean against calibration-set size, with the 5% null band.](/home/user/p_c1_2/Target_Journal_Submission/figures/F8_error_analysis.png){width=100%}
@@ -482,9 +492,9 @@ Exact duplicate rows (features and target), duplicate feature vectors, the share
 
 # S5. Earlier implementations
 
-The first run (v1) evaluated all density-based sets on a fixed grid of 200 equal-mass cells of the marginal training-target distribution. The second (v2) used an exact implementation but standardised residuals with an in-sample scale model and used a density floor. Their complete analyses are archived in `supplementary/v1_preregistered_analysis/` and `supplementary/v2_exact_insample_analysis/`. The coverage results were the same in all versions. Table S16 shows how the size comparisons changed; this dependence on the implementation is why the comparisons on CTR23 are labelled exploratory and were replicated on held-out data (v1 reported medians of log ratios; v2 also geometric means; the final version reports the Hodges–Lehmann estimate).
+The first run (v1) evaluated all density-based sets on a fixed grid of 200 equal-mass cells of the marginal training-target distribution. The second (v2) used an exact implementation but standardised residuals with an in-sample scale model and used a density floor. Their complete analyses are archived in `supplementary/v1_preregistered_analysis/` and `supplementary/v2_exact_insample_analysis/`. The coverage results were the same in all versions. Table S17 shows how the size comparisons changed; this dependence on the implementation is why the comparisons on CTR23 are labelled exploratory and were replicated on held-out data (v1 reported medians of log ratios; v2 also geometric means; the final version reports the Hodges–Lehmann estimate).
 
-**Table S16.** Size comparisons of SDLC with the stratified comparators in the three implementations ($\alpha=0.1$, 31 datasets; negative log ratios favour SDLC).
+**Table S17.** Size comparisons of SDLC with the stratified comparators in the three implementations ($\alpha=0.1$, 31 datasets; negative log ratios favour SDLC).
 
 | Version                     | Comparison    | Median log size ratio   | Geometric-mean ratio   | SDLC smaller on   | Holm p   |
 |:----------------------------|:--------------|:------------------------|:-----------------------|:------------------|:---------|
@@ -503,11 +513,10 @@ The first run (v1) evaluated all density-based sets on a fixed grid of 200 equal
 
 # S6. Pre-registered analysis plan of the confirmatory replication
 
-Reproduced verbatim from `PREREGISTRATION_confirmatory.md`, committed to the public repository before any confirmatory evaluation.
+Reproduced from `PREREGISTRATION_confirmatory.md` (unchanged except that a working-branch name is omitted), committed to the public repository (commit `ccba99b`) before any confirmatory evaluation.
 
 
-**Status.** This document and `code/scripts/analyze_confirmatory.py` are committed to the public repository
-(branch `claude/amazing-maxwell-i1mihd`) BEFORE any method has been evaluated on the confirmatory datasets. At the time of the
+**Status.** This document and `code/scripts/analyze_confirmatory.py` are committed to the public repository BEFORE any method has been evaluated on the confirmatory datasets. At the time of the
 commit, no confirmatory evaluation file (`results/confirmatory/raw_eval_v3/`) exists. Model fitting for these
 datasets (`results/confirmatory/raw_contexts*`) may be in progress; fitting produces only base-model outputs
 (point, quantile, scale and histogram predictions) and no conformal-method result. The git history provides

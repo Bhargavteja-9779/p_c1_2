@@ -1,0 +1,16 @@
+{
+ "n": 31,
+ "sdlc_vs_bfqr_geo": 0.9081908155552563,
+ "sdlc_smaller": 19,
+ "p_size": 0.07933946698904037,
+ "bfqr_vs_scqr_geo": 0.8522828325488795,
+ "bfqr_smaller_than_scqr": 27,
+ "worst_sdlc_gt_bfqr": 30,
+ "p_worst": 2.7939677238464355e-09,
+ "bfqr_upper_below_08": 18,
+ "bfqr_min_level_median": 0.725,
+ "bfqr_coverage": 0.9035451496538016,
+ "bfqr_worst_stratum": 0.6779041378617754,
+ "bfqr_upper": 0.725633945952726,
+ "bfqr_lower": 0.8625511207272281
+}

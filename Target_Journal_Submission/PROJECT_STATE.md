@@ -16,7 +16,8 @@
 - [x] Manuscript revised (all src/*.md), renderer v3 context, supplementary builder (scripts/build_supplement.py), bibliography verified (agent), CSL URL fallback
 - [x] Queue complete (queue_cycle1b → resumed by queue_cycle1c/1d after two container restarts): MLP v3 155/155, DenseWeight 93/93, grid convergence, grouped splits 15/15, timing_fit 31/31, timing_methods_v3
 - [x] analyze3 rerun; 04_results.md: MLP, DenseWeight, repeated units (grouped splits), computational cost; supplement Tables S13 (method timing), S14 (fit timing), S15 (grouped), S16 (earlier implementations); DOCX/PDF rendered
-- [ ] Review cycles 2–10 (workflow), final comparison with strongest ESWA papers, final audit, rejection-risk report, READY/NOT READY decision, manifest
+- [x] Review cycle 2 (single editor agent, REVIEW/review_02_editor.md) and fixes; BFQR level-optimised baseline (results/bfqr_*.json, Table S16); valuation case study (results/case_study_dollars.json); manuscript shortened to ~12.4k words; authors/declarations set; AI-trace scan; SUBMISSION/ package (code/scripts/package_submission.py)
+- [ ] Authors to fill: affiliations, corresponding e-mail, second author, date, final comparison with strongest ESWA papers, final audit, rejection-risk report, READY/NOT READY decision, manifest
 
 ## Key results (machine-generated; see results/statistics_v3.json)
 RQ1: marginal worst-stratum 0.63–0.78 (26–31/31 below null); stratified ≈0.89 (≤2/31 below null).

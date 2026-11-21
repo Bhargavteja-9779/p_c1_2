@@ -1,5 +1,5 @@
 """Build the Supplementary Material (manuscript/Supplementary_Material.docx and .pdf) from generated tables,
-figures and result files. Numbering: Sections S1-S6, Tables S1-S16, Figures S1-S3 (cited in the main text).
+figures and result files. Numbering: Sections S1-S6, Tables S1-S17, Figures S1-S3 (cited in the main text).
 No number is typed by hand."""
 from __future__ import annotations
 
@@ -145,6 +145,14 @@ def main():
                 "grouped by identical feature vector; the random-split columns repeat the main benchmark for the "
                 "same seeds. Size: geometric mean over seeds of the normalised mean set size.", "",
                 g16.to_markdown(index=False, disable_numparse=True), ""]
+    t17 = TAB / "T17_bfqr.csv"
+    if t17.exists():
+        b = pd.read_csv(t17)
+        b.columns = ["Method", "Coverage", "Worst stratum", "Lower tail", "Upper tail", "Size (geometric mean)"]
+        out += ["**Table S16.** Level-optimised stratified CQR in the spirit of BFQR (stratum levels chosen on the "
+                "calibration covariates to minimise the expected size subject to a mass-weighted average coverage of "
+                "$1-\\alpha$) against CQR, S-CQR, S-NCP and SDLC (seed 0 of all 31 datasets, $\\alpha=0.1$, same "
+                "models and strata).", "", md(b), ""]
     for i, (f, cap) in enumerate((("F4_upper_tail_per_dataset.png", "Coverage of the upper calibration stratum per dataset ($\\alpha=0.1$)."),
                                   ("F8_error_analysis.png", "Error analysis. Left: price of stratum-wise validity (SDLC/DLS size ratio) "
                                    "against relative RMSE. Right: worst-stratum coverage of SDLC minus its null mean "
@@ -181,19 +189,20 @@ def main():
             "marginal training-target distribution. The second (v2) used an exact implementation but standardised "
             "residuals with an in-sample scale model and used a density floor. Their complete analyses are archived "
             "in `supplementary/v1_preregistered_analysis/` and `supplementary/v2_exact_insample_analysis/`. The "
-            "coverage results were the same in all versions. Table S16 shows how the size comparisons changed; this "
+            "coverage results were the same in all versions. Table S17 shows how the size comparisons changed; this "
             "dependence on the implementation is why the comparisons on CTR23 are labelled exploratory and were "
             "replicated on held-out data (v1 reported medians of log ratios; v2 also geometric means; the final "
             "version reports the Hodges–Lehmann estimate).", "",
-            "**Table S16.** Size comparisons of SDLC with the stratified comparators in the three implementations "
+            "**Table S17.** Size comparisons of SDLC with the stratified comparators in the three implementations "
             "($\\alpha=0.1$, 31 datasets; negative log ratios favour SDLC).", "",
             pd.DataFrame(rows).to_markdown(index=False, disable_numparse=True), ""]
     # S6 pre-registration -------------------------------------------------------------------------------------
     pre = (TOP / "PREREGISTRATION_confirmatory.md").read_text().split("\n", 1)[1]
     pre = pre.replace("\n## ", "\n### ")
+    pre = __import__("re").sub(r"\s*\(branch `[^`]*`\)", "", pre)
     out += ["# S6. Pre-registered analysis plan of the confirmatory replication", "",
-            "Reproduced verbatim from `PREREGISTRATION_confirmatory.md`, committed to the public repository "
-            "before any confirmatory evaluation.", "", pre]
+            "Reproduced from `PREREGISTRATION_confirmatory.md` (unchanged except that a working-branch name is omitted), "
+            "committed to the public repository (commit `ccba99b`) before any confirmatory evaluation.", "", pre]
     text = "\n".join(out)
     BUILD.mkdir(parents=True, exist_ok=True)
     src = BUILD / "supplementary_filled.md"
