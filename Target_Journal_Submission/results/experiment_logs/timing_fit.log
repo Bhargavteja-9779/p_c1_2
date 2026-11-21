@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/home/user/p_c1_2/Target_Journal_Submission/code/experiments/timing_fit.py", line 13, in <module>
+    from sklearn.model_selection import KFold  # noqa: E402
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'sklearn'

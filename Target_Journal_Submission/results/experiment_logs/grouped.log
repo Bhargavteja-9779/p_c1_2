@@ -2,3 +2,7 @@
 /home/user/p_c1_2/Target_Journal_Submission/results/raw_grouped/44964_2.jsonl ok 110.0s
 /home/user/p_c1_2/Target_Journal_Submission/results/raw_grouped/44964_1.jsonl ok 113.6s
 /home/user/p_c1_2/Target_Journal_Submission/results/raw_grouped/44964_0.jsonl ok 124.9s
+Traceback (most recent call last):
+  File "/home/user/p_c1_2/Target_Journal_Submission/code/experiments/run_grouped.py", line 26, in <module>
+    from sklearn.model_selection import KFold
+ModuleNotFoundError: No module named 'sklearn'

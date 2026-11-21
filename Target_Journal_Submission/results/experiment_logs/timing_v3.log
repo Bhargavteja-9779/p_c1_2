@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/home/user/p_c1_2/Target_Journal_Submission/code/experiments/timing.py", line 21, in <module>
+    from experiments.evaluate_from_cache3 import CACHE, CACHE3, build_context  # noqa: E402
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/p_c1_2/Target_Journal_Submission/code/experiments/evaluate_from_cache3.py", line 25, in <module>
+    from scipy.stats import norm
+ModuleNotFoundError: No module named 'scipy'

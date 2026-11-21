@@ -26,4 +26,9 @@ Confirmatory (17 held-out): C-H1–C-H4 supported; size ratios BCCP 0.862, S-NCP
 RQ5: dedicated tail classifier (TC-LS) needs fewer alerts at the same recall guarantee; at cost ratio 10 no significant difference to SDLC.
 
 ## Resume instructions
+**New session ("continue"):** (1) `git log -3`, read this file's Status; (2) if `QUEUE_DONE` is not the last line of
+results/experiment_logs/queue_cycle1b.log, run `bash code/scripts/resume_queue.sh` in the background (creates
+/root/venv with requirements.txt if missing — system pip cannot build liac-arff; needs cloud env "p_c1_2" with
+OpenML hosts allowed); (3) then continue with the next unchecked Status item. Commit + push after every stage.
+Python for all scripts: /root/venv/bin/python. Data (data/) and raw_contexts are gitignored → re-downloaded/refit.
 If the container restarted: check `ls results/raw_mlp_v3 | wc -l` (155), `results/raw_denseweight` (93), `results/raw_grouped` (15), `results/timing_*.csv`; re-launch `bash code/scripts/queue_cycle1b.sh` (all steps skip finished outputs except timing/grid, which are cheap).
