@@ -17,7 +17,8 @@
 - [x] Queue complete (2026-11-21): MLP v3 155, DenseWeight 93, grid, grouped 15/15, timing_fit, timing_methods_v3
 - [x] analyze3 rerun; MLP/DenseWeight/grouped/timing paragraphs in 04_results.md; supplement Tables S13b (grouped), S13c (fit timing)
 - [x] Rendered 2026-11-21: Final_Manuscript.docx/.pdf, Supplementary_Material.docx/.pdf (supplement build re-downloads all datasets into data/, ~30 min in a fresh container)
-- [ ] NEXT: discussion line on video_transcoding grouped result (SDLC > BCCP, 1.20) — then review cycles 2–10
+- [x] Discussion line on video_transcoding grouped result
+- [ ] Review cycle 2 (full, 10+1 agents; user chose: one full cycle, then the USER decides on further cycles — ask before cycle 3). Workflow code/scripts/review_cycle_workflow.js args {cycle:2}. If REVIEW/review_02.md is missing in a new session, re-run it. Then fix issues, write REVIEW/response_02.md, update REVIEW_HISTORY.md, re-render.
 - [ ] Review cycles 2–10 (workflow), final comparison with strongest ESWA papers, final audit, rejection-risk report, READY/NOT READY decision, manifest
 
 ## Key results (machine-generated; see results/statistics_v3.json)
