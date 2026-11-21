@@ -4,5 +4,7 @@ Finished reviews are `<label>.json`; `.partial.md` = reviewer still running or i
 
 * cycle2:R1-novelty: result
 * cycle2:R2-methodology: result
-* cycle2:R3-experimental-design: started
-* cycle2:R4-statistics: started
+* cycle2:R3-experimental-design: result
+* cycle2:R4-statistics: result
+* cycle2:R5-data-leakage: started
+* cycle2:R6-robustness: started
