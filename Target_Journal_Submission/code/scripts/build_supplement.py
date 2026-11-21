@@ -242,6 +242,14 @@ def main():
         out += ["Table S17b (continued). Coverage of the top 1% of outcomes with one definition in both pipelines "
                 "($y\\ge q_{0.99}$ of the training targets; a seed counts only if the group holds at least 10 test "
                 "points; mean, minimum and maximum over datasets).", "", md(tu, 3), ""]
+        t25 = TAB / "T25_tail1_vs_rw.csv"
+        if t25.exists():
+            out += ["Table S17b (continued). RW-DLC versus stratified methods with dedicated 1% tail strata (stratum "
+                    "edges at the training quantiles 0.01, 0.10, 0.25, 0.75, 0.90, 0.99; review round 8; "
+                    "experiments/eval_tail1.py, scripts/analyze_review08.py; held-out data, 5 seeds). Top-1% coverage "
+                    "($y\\ge q_{0.99}$, seeds with at least 10 such test points), marginal coverage and normalised size "
+                    "(geometric-mean and Hodges-Lehmann ratios); two-sided Wilcoxon tests, Holm over all six tests.",
+                    "", md(pd.read_csv(t25), 3), ""]
         rw = pd.DataFrame([dict(variant=k, **v) for k, v in r5["rw3_sensitivity"].items()])
         out += ["Table S17b (continued). RW-3 (top-1% coverage of RW-DLC versus SDLC, held-out data, one-sided "
                 "Wilcoxon test): the pre-specified definition ($y>q_{0.99}$) and post hoc variants.", "", md(rw, 3), ""]
