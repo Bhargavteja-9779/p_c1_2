@@ -1,5 +1,5 @@
 ---
-title: "Supplementary Material: Covering rare outcomes in imbalanced regression: stratified and relevance-weighted conformal prediction with density scores"
+title: "Supplementary Material: Covering rare outcomes in imbalanced regression with conformal prediction: guarantees, size-optimal scores and what tail coverage costs"
 ---
 
 # S1. Datasets
@@ -639,6 +639,8 @@ Table S17b (continued). RW-3 (top-1% coverage of RW-DLC versus SDLC, held-out da
 | confirmatory | RW-4         | size: RW-DLC vs RW-DLS-U                          | 0.8854     | 0.0305 | 0.0533   | False       |
 | confirmatory | RW-4         | size: RW-DLC vs RW-NCP-U                          | 0.9037     | 0.0267 | 0.0533   | False       |
 
+**Table S19.** Relevance-weighted study on the OpenML-CTR23 datasets: not yet available.
+
 ![**Fig. S1.** Coverage of the upper calibration stratum per dataset ($\alpha=0.1$).](/home/user/p_c1_2/Target_Journal_Submission/figures/F4_upper_tail_per_dataset.png){width=100%}
 
 ![**Fig. S2.** Error analysis. Left: price of stratum-wise validity (SDLC/DLS size ratio) against relative RMSE. Right: worst-stratum coverage of SDLC minus its null mean against calibration-set size, with the 5% null band.](/home/user/p_c1_2/Target_Journal_Submission/figures/F8_error_analysis.png){width=100%}
@@ -647,9 +649,9 @@ Table S17b (continued). RW-3 (top-1% coverage of RW-DLC versus SDLC, held-out da
 
 # S5. Earlier implementations
 
-The first run (v1) evaluated all density-based sets on a fixed grid of 200 equal-mass cells of the marginal training-target distribution. The second (v2) used an exact implementation but standardised residuals with an in-sample scale model and used a density floor. Their complete analyses are archived in the anonymised code package provided as supplementary material. The coverage results were the same in all versions. Table S19 shows how the size comparisons changed; this dependence on the implementation is why the comparisons on CTR23 are labelled exploratory and were replicated on held-out data (v1 reported medians of log ratios; v2 also geometric means; the final version reports the Hodges–Lehmann estimate).
+The first run (v1) evaluated all density-based sets on a fixed grid of 200 equal-mass cells of the marginal training-target distribution. The second (v2) used an exact implementation but standardised residuals with an in-sample scale model and used a density floor. Their complete analyses are archived in the anonymised code package provided as supplementary material. The coverage results were the same in all versions. Table S20 shows how the size comparisons changed; this dependence on the implementation is why the comparisons on CTR23 are labelled exploratory and were replicated on held-out data (v1 reported medians of log ratios; v2 also geometric means; the final version reports the Hodges–Lehmann estimate).
 
-**Table S19.** Size comparisons of SDLC with the stratified comparators in the three implementations ($\alpha=0.1$, 31 datasets; negative log ratios favour SDLC).
+**Table S20.** Size comparisons of SDLC with the stratified comparators in the three implementations ($\alpha=0.1$, 31 datasets; negative log ratios favour SDLC).
 
 | Version                     | Comparison    | Median log size ratio   | Geometric-mean ratio   | SDLC smaller on   | Holm p   |
 |:----------------------------|:--------------|:------------------------|:-----------------------|:------------------|:---------|
@@ -668,7 +670,7 @@ The first run (v1) evaluated all density-based sets on a fixed grid of 200 equal
 
 # S6. Pre-specified analysis plan of the confirmatory replication (verbatim)
 
-Reproduced from the analysis-plan file of the code package, committed (identifier `ccba99b`) before any confirmatory evaluation. The plan was written before we adopted the term *pre-specified*; its original wording ("pre-registered", "public repository") is kept. As stated in the manuscript, the plan was committed to the authors' version-controlled repository, not registered with a third party, and the repository will be made public upon acceptance; the anonymised code package provided as supplementary material contains the version history with the commit identifiers.
+Reproduced from the analysis-plan file of the code package, committed (identifier `ccba99b`) before any confirmatory evaluation. The plan was written before we adopted the term *pre-specified*; its original wording ("pre-registered", "public repository") is kept. As stated in the manuscript, the plan was committed to the authors' version-controlled repository, not registered with a third party, and the repository will be made public upon acceptance; the anonymised code package provided as supplementary material lists the commit identifiers, commit times and SHA-256 hashes of both plans (PLAN_TIMESTAMPS.md).
 
 
 **Status.** This document and `code/scripts/analyze_confirmatory.py` are committed to the public repository
@@ -781,3 +783,110 @@ Negative or null outcomes will be reported whatever their direction.
 
 ### 5. Deviations
 Any change after this commit will be listed in the manuscript as a deviation with its reason.
+
+# S8. Additional results and analyses moved from the main text
+
+**S8.1 Further size comparisons on CTR23.**
+
+Post hoc, equivalence within ±5% was not established with S-NCP (TOST $p$ = 0.108) or S-HPD ($p$ = 0.284), and SDLC's sets were reliably smaller than S-NCP's (seed-level 95% interval below zero) on 18 datasets and reliably larger on 0. When an interval is required, SDLC-hull was smaller than BCCP-hull (ratio 0.903, 25/6), whereas against S-NCP-hull the median favoured SDLC-hull (23/8, Hodges–Lehmann ratio 0.979) and the geometric mean did not (1.014). These comparisons are exploratory (the protocol section of the main text); the confirmatory section of the main text tests them on held-out data.
+
+**S8.2 Synthetic study with known densities.**
+
+Five synthetic designs with known densities (Table S21; A skewed, B covariate-dependent skewness, C bimodal, D heavy-tailed, E zero-inflated) separate the score from its estimate. With the true density, the oracle SDLC set was smaller than the oracle normalised residual in every design, by 2.9% to 35.2%. The estimated SDLC was smaller than S-NCP in 41 of 50 design-seed combinations, but under the misspecified design C its sets were 53.2% larger than the oracle's. Under a genuine label shift (Supplementary Table S10), all stratified methods degraded similarly.
+
+**Table S21.** Synthetic study ($n_{\mathrm{train}}=n_{\mathrm{cal}}=5000$, 10 seeds, $\alpha=0.1$, 20,000 test points per seed). Designs: A skewed noise; B covariate-dependent skewness; C bimodal; D heavy-tailed; E zero-inflated. Each cell: coverage of the upper stratum / mean set size relative to S-NCP. Oracle methods (O-) use the true conditional density or the true $\mu$ and $\sigma$; O-BCCP is BCCP with the true $\mu$, and O-HDR-X is the shortest set with exact covariate-conditional coverage. Design E has an atom at zero, so its conditional law has no Lebesgue density and the oracle rows are empty.
+
+| Method    | A             | B             | C             | D             | E             |
+|:----------|:--------------|:--------------|:--------------|:--------------|:--------------|
+| O-HDR-X   | 0.693 / 0.804 | 0.841 / 0.920 | 0.897 / 0.672 | 0.832 / 0.889 |               |
+| O-SDLC    | 0.897 / 0.860 | 0.903 / 0.907 | 0.903 / 0.643 | 0.907 / 0.914 |               |
+| O-S-NCP   | 0.897 / 0.904 | 0.898 / 0.938 | 0.909 / 0.993 | 0.906 / 0.941 |               |
+| O-BCCP    | 0.894 / 1.023 | 0.898 / 1.026 | 0.911 / 1.211 | 0.904 / 1.000 |               |
+| SCP       | 0.709 / 0.978 | 0.806 / 1.041 | 0.865 / 1.114 | 0.813 / 0.994 | 0.370 / 0.963 |
+| CQR       | 0.694 / 1.020 | 0.752 / 1.071 | 0.795 / 1.080 | 0.758 / 1.087 | 0.556 / 0.751 |
+| HPD-split | 0.675 / 0.906 | 0.814 / 0.983 | 0.883 / 0.993 | 0.818 / 0.951 | 0.590 / 0.776 |
+| BCCP      | 0.893 / 1.066 | 0.899 / 1.070 | 0.894 / 1.122 | 0.901 / 1.055 | 0.902 / 1.631 |
+| S-NCP     | 0.895 / 1.000 | 0.894 / 1.000 | 0.902 / 1.000 | 0.901 / 1.000 | 0.893 / 1.000 |
+| S-CQR     | 0.891 / 1.091 | 0.896 / 1.075 | 0.899 / 1.069 | 0.902 / 1.131 | 0.903 / 1.018 |
+| S-HPD     | 0.896 / 0.997 | 0.894 / 1.000 | 0.902 / 1.000 | 0.901 / 1.000 | 0.893 / 0.983 |
+| SDLC-N    | 0.893 / 0.981 | 0.896 / 0.985 | 0.895 / 0.983 | 0.901 / 0.990 | 0.896 / 0.989 |
+| SDLC      | 0.894 / 0.966 | 0.898 / 0.986 | 0.894 / 0.986 | 0.903 / 0.992 | 0.896 / 0.912 |
+
+
+**S8.3 Secondary and post hoc analyses of the held-out replication.**
+
+Post hoc checks of the held-out collection (main text, Datasets; Table S17b) leave every C-H3 decision unchanged. With the duplicate pair merged (16 independent targets), SDLC was smaller than S-NCP on 14 of 16 datasets (ratio 0.980, Holm $p$ = 0.013) and than BCCP on 14 (ratio 0.851). On the 10 held-out datasets with continuous targets (at least 100 distinct values, no atom above 5%) it was smaller than S-NCP and S-HPD on all of them (ratios 0.953 and 0.972), and the same held for the 11 datasets whose tail strata had their nominal mass. The small advantage over S-NCP is therefore a result for continuous targets; on discretised or atom-heavy targets the two scores were indistinguishable.
+
+The secondary results repeated the trade-off seen on CTR23. SDLC covered 0.747 of the top 1%, against 0.781 for S-NCP (range over datasets 0.40–0.93; top 1% defined as $y\ge q_{0.99}$ of the training targets, as everywhere in the main pipeline), and its worst coverage over deciles of $\hat\sigma(x)$ was 0.817, against 0.831. The price of stratification relative to DLS was 1.22. The pre-specified secondary analyses (Supplementary Table S16) were less favourable for the interval forms: SDLC-hull was smaller than BCCP-hull (ratio 0.894, Holm $p$ = 0.013) but not than S-NCP-hull (ratio 1.045, 10/7 datasets, $p$ = 0.712). Post hoc, SDLC was equivalent to S-HPD within ±5% (TOST $p$ = 0.004), equivalence with S-NCP narrowly failed ($p$ = 0.054), and SDLC was reliably smaller than S-NCP on 8 of 17 datasets and reliably larger on 1. On the 7 held-out targets with $|$skewness$|>1$, the advantage over S-NCP and S-HPD disappeared (ratios 1.017 and 1.004), while that over BCCP and S-CQR remained (Supplementary Table S17). Among scores that use $\hat\sigma$, the choice matters little for size; the clear gains are over BCCP and stratified CQR.
+
+**S8.3b Definition of the top 1% in the relevance-weighted study.**
+
+The pre-specified definition ($y>q_{0.99}$) differs from that of the main pipeline ($y\ge q_{0.99}$) and leaves the group empty or nearly empty on targets whose maximum is an atom. With the main-pipeline definition and at least 10 test points per seed, RW-3 still held (RW-DLC 0.884 against 0.760, higher on 15 of 17 datasets, one-sided $p$ = 0.009; post hoc), also with the duplicate pair merged (Supplementary Table S17b). The mean hides a wide range: RW-DLC covered between 0.52 and 0.99 of the top 1% across datasets.
+
+**S8.4 Coverage under target shift.**
+
+**Table S22.** Coverage under target shift ($\alpha=0.1$; means over datasets). *Positive control*: the upper stratum is up-weighted by 5 and the lower stratum down-weighted by 0.5, without changing the within-stratum laws. *Tilts*: importance weights $\omega_\gamma(y)=\exp(\gamma\zeta_y)$ with $\zeta_y$ the normal score of $y$ under the training distribution; the coverage of the upper calibration stratum is shown for all datasets and for the 15 datasets whose effective sample size is at least 50.
+
+| Method     | Positive control: marginal   | Positive control: worst stratum   | Tilt γ=1: upper stratum   | Tilt γ=2: upper stratum   | Tilt γ=2: upper (ESS ≥ 50)   | Tilt γ=2: marginal   |
+|:-----------|:-----------------------------|:----------------------------------|:--------------------------|:--------------------------|:-----------------------------|:---------------------|
+| SCP        | 0.838                        | 0.630                             | 0.633                     | 0.550                     | 0.532                        | 0.637                |
+| NCP        | 0.875                        | 0.765                             | 0.776                     | 0.720                     | 0.751                        | 0.766                |
+| CQR        | 0.861                        | 0.720                             | 0.695                     | 0.596                     | 0.624                        | 0.668                |
+| Mondrian-ŷ | 0.877                        | 0.770                             | 0.750                     | 0.654                     | 0.649                        | 0.717                |
+| DCP        | 0.877                        | 0.783                             | 0.783                     | 0.726                     | 0.765                        | 0.770                |
+| HPD-split  | 0.874                        | 0.759                             | 0.773                     | 0.719                     | 0.748                        | 0.765                |
+| DLS        | 0.848                        | 0.660                             | 0.664                     | 0.577                     | 0.530                        | 0.658                |
+| BCCP       | 0.904                        | 0.890                             | 0.861                     | 0.777                     | 0.754                        | 0.803                |
+| S-NCP      | 0.904                        | 0.891                             | 0.881                     | 0.833                     | 0.825                        | 0.847                |
+| S-CQR      | 0.905                        | 0.892                             | 0.859                     | 0.770                     | 0.761                        | 0.797                |
+| S-HPD      | 0.905                        | 0.893                             | 0.881                     | 0.833                     | 0.825                        | 0.846                |
+| SDLC-N     | 0.906                        | 0.893                             | 0.877                     | 0.816                     | 0.795                        | 0.833                |
+| SDLC       | 0.904                        | 0.891                             | 0.869                     | 0.798                     | 0.774                        | 0.819                |
+
+
+Under the positive control, which re-weights whole strata, the stratum-wise coverage of every stratified method was unchanged, as Corollary 1(i) states (Supplementary Table S22, the shift figure of the main text). Their marginal coverage stayed at the nominal level (0.904 for SDLC), whereas that of the marginal methods fell to 0.838–0.877. Continuous tilts towards the upper tail also re-weight targets *within* strata, so Corollary 1(i) does not apply. Under a moderate tilt ($\gamma=1$) the stratified methods kept 0.861–0.881 coverage of the upper stratum, against 0.633–0.783 for the marginal methods. Under a strong tilt ($\gamma=2$) every method lost coverage. The stratified methods lost less (0.770–0.833, against 0.550–0.726). Among them, SDLC (0.798) was below S-NCP and S-HPD (0.833), which is the same reallocation away from the most extreme outcomes seen above; Remark A.1 (Appendix A) shows why coverage is lowest near the outer end of a tail stratum, where the tilts move mass. The effective sample size of the $\gamma=2$ weights was small (median 49, minimum 5.9), but restricting the analysis to the 15 datasets where it was at least 50 left the ordering unchanged.
+
+**S8.5 Upper-tail alerts.**
+
+**Table S23.** Upper-tail alerts ($\alpha=0.1$; means over datasets): recall, alert rate and precision, the number of datasets with recall at least 0.9, and the expected cost per unit when a missed extreme outcome costs $c$ times a false alert. Set-based alerts (SCP to SDLC-floor) versus dedicated rules built from the same models: conformal tail classifiers (TC-LS, TC-H), conformal selection with FDR level $q_{\mathrm{FDR}}$ (CS-BH-$q_{\mathrm{FDR}}$) and the point-prediction rule (Point).
+
+| Rule       | Recall   | Alert rate   | Precision   | Datasets recall ≥ 0.9   | Cost c=1   | Cost c=10   | Cost c=20   |
+|:-----------|:---------|:-------------|:------------|:------------------------|:-----------|:------------|:------------|
+| SCP        | 0.947    | 0.273        | 0.512       | 26                      | 0.175      | 0.229       | 0.289       |
+| CQR        | 0.952    | 0.286        | 0.495       | 27                      | 0.187      | 0.234       | 0.285       |
+| HPD-split  | 0.952    | 0.278        | 0.493       | 25                      | 0.179      | 0.226       | 0.279       |
+| BCCP       | 0.983    | 0.468        | 0.379       | 31                      | 0.362      | 0.381       | 0.402       |
+| S-NCP      | 0.983    | 0.358        | 0.449       | 31                      | 0.253      | 0.270       | 0.289       |
+| S-CQR      | 0.988    | 0.430        | 0.397       | 31                      | 0.323      | 0.334       | 0.346       |
+| SDLC       | 0.978    | 0.382        | 0.428       | 31                      | 0.277      | 0.300       | 0.325       |
+| SDLC-floor | 0.966    | 0.330        | 0.467       | 30                      | 0.228      | 0.262       | 0.301       |
+| TC-LS      | 0.906    | 0.248        | 0.590       | 19                      | 0.159      | 0.253       | 0.357       |
+| TC-H       | 0.909    | 0.272        | 0.523       | 18                      | 0.182      | 0.273       | 0.374       |
+| CS-BH-0.1  | 0.479    | 0.054        | 0.861       | 6                       | 0.066      | 0.611       | 1.217       |
+| CS-BH-0.2  | 0.603    | 0.076        | 0.766       | 10                      | 0.062      | 0.490       | 0.965       |
+| Point      | 0.625    | 0.077        | 0.813       | 5                       | 0.056      | 0.457       | 0.903       |
+
+
+The preferable rule depends on the cost of a miss relative to a false alert. With equal costs, the rules that raise few alerts were cheapest: the point rule and conformal selection (expected cost 0.056 and 0.062 per unit, against 0.277 for SDLC). When a miss costs ten times a false alert, SDLC's expected cost did not differ significantly from that of TC-LS (SDLC lower on 14 of 31 datasets, $p$ = 0.130) and was lower than that of conformal selection on 19 datasets. At a cost ratio of 20, SDLC was cheaper than TC-LS on 22 datasets ($p$ = 0.083), because its recall exceeds the guaranteed 0.9 while TC-LS attains it almost exactly. Among the stratified scores, however, S-NCP gave the cheapest alerts: SDLC's expected cost was higher than S-NCP's on 27 of 31 datasets at $c=10$ and on 29 at $c=20$, because S-NCP raised fewer upper-tail alerts. These $p$-values are unadjusted and descriptive. Alerts read off *marginal* sets (SCP, CQR, HPD-split) were the cheapest on average at high cost ratios (0.279 for HPD-split at $c=20$). They had no recall guarantee, however, and their recall fell below 0.9 on 4–6 datasets. the cost figure of the main text shows cost curves for three valuation datasets.
+
+**S8.6 Sensitivity analyses.**
+
+*Miscoverage level and strata.* The conclusions held at $\alpha=0.05$ and $\alpha=0.2$ (SDLC worst stratum 0.947 and 0.789; Supplementary Table S6). With decile strata the worst decile coverage of SDLC rose to 0.888, from 0.863 with five strata, at a size increase from 0.874 to 0.898. The floor variant (SDLC-floor, $\beta=0.2$) reached its weaker guarantee with smaller sets (worst stratum 0.821, size 0.806).
+
+*Calibration-set size.* With a quarter of the calibration split (on average 1,082 points) stratum-wise validity was retained, but SDLC's sets grew from 0.874 to 1.243, mainly because tail strata with fewer than $1/\alpha-1$ points have an infinite threshold (87 runs, against 2 with the full split; Supplementary Table S8).
+
+*Base learner.* With a two-layer perceptron (5 seeds), marginal methods reached a worst-stratum coverage of 0.650–0.830 and stratified methods 0.889–0.891. SDLC again gave the smallest stratified sets: smaller than BCCP on 23 of 31 datasets (ratio 0.946), than S-NCP on 27 (ratio 0.938, Holm $p$ < 0.001) and than S-HPD on 29 (ratio 0.927).
+
+*Imbalance-aware training.* With DenseWeight sample weights (Steininger et al. 2021), SCP's worst-stratum coverage rose from 0.630 to 0.759, but the shortfall remained large and its sets grew by a factor of 1.31. Stratified calibration remained valid (0.885 for SDLC), and SDLC again gave the smallest stratified sets (Holm $p$ < 0.001, < 0.001, < 0.001 and < 0.001 against BCCP, S-NCP, S-CQR and S-HPD). Imbalance-aware learning and stratified calibration are complementary; the former does not deliver the guarantee.
+
+*Grouped splits.* On three datasets with repeated units (sarcos, superconductivity, video_transcoding) we repeated the main comparison with splits that keep each unit in one part (5 seeds; Supplementary Table S15). On sarcos and superconductivity the results were close to those of random splits (SDLC/S-NCP size ratios 0.965 and 0.914). On video_transcoding, splitting by video increased every method's sets several-fold (SDLC: 0.113 to 0.775), so random splits of this dataset measure interpolation between runs of known videos. Stratified methods still covered their worst stratum at 0.852–0.904, against at most 0.766 for marginal methods, but SDLC's sets were larger than BCCP's (ratio 1.205), and BCCP and S-CQR covered less than nominal marginally (0.875 and 0.873), as expected when exchangeability holds between groups rather than rows. SDLC's size advantage thus depends on the density model transferring to unseen units, and grouped validation is advisable for such data. Post hoc, we also split two datasets by time (Supplementary Table S15). With whole months held out (Bike_Sharing_Demand; the curated data contain no year or day), stratified methods kept a worst-stratum coverage of 0.87 (SDLC) against at most 0.72 for marginal methods, sets grew by about a quarter, and SDLC remained smaller than BCCP and S-NCP. With Moneyball split forward in time (earliest seasons for training, then calibration, latest for test), stratified methods kept close to nominal coverage (0.881 for SDLC) but their sets became three to four times larger than under random splits, SDLC's most of all (3.83 against 3.06 for BCCP). Under a genuine shift over time, the density score loses its advantage.
+
+**S8.7 Error analysis.**
+
+The price of stratum-wise validity (SDLC relative to DLS) rose with the skewness of the target (Spearman $\rho$ = 0.62, $p$ < 0.001) and fell with the calibration-set size ($\rho$ = -0.41). It was largest for forest fires (8.75), whose atom at zero merges the two lower strata. Its upper-stratum coverage also includes automatic misses: whether the largest fire falls into the training split decides the domain $\mathcal{Y}_D$, and in three of ten seeds one to three test targets lay above it. Across all datasets, out-of-domain test targets were rare (at most 2.3% of a run's test points on CTR23 and 0.2% on the held-out data; Supplementary Tables S1–S2). SDLC was larger than S-NCP on 4 datasets (socmob, cars, forest fires and QSAR fish toxicity; ratios up to 1.64), all small or with many ties, so that the scale and noise models rest on few distinct values. The density score helps most when the location model is accurate and the noise is heteroscedastic ($\rho$ = 0.47 with the relative RMSE).
+
+Fig. S4 shows prediction sets for one dataset whose target is capped at its maximum, California housing. CQR's sets around the capped top values are wide but do not cover all of them, whereas the stratified sets do; SDLC adds disjoint pieces in the upper stratum because its threshold there is lower than in the neighbouring stratum. Across all 70 points the methods miss similar numbers of targets (panel titles).
+
+![**Fig. S4.** Prediction sets for 70 test points of the California housing data (seed 0; 14 per calibration stratum, sorted by the true value; dashed lines are stratum boundaries; crosses mark missed targets; the panel titles give the number of missed targets). CQR's sets around the capped top values are wide but do not cover all of them; SDLC adds disjoint pieces in the upper stratum, where its threshold is lower.](/home/user/p_c1_2/Target_Journal_Submission/figures/F9_example_sets_california.png){width=100%}
+
+
