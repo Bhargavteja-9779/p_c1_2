@@ -12,7 +12,8 @@ Full mode, in order (completed units are cached and skipped, so an interrupted r
   6. Proposition 1 (analytic + Monte Carlo extensions), synthetic study, tail-alert decision study,
      MLP and DenseWeight learner studies, grid convergence, grouped splits, timing, leakage audit
   7. confirmatory replication (fit, refit, evaluate, pre-registered analysis)  -> results/confirmatory
-  8. statistics, tables and figures (scripts/analyze3.py, scripts/figures_extra.py)
+  8. relevance-weighted study (experiments/run_rw.py, scripts/analyze_rw.py), statistics, tables and figures
+     (scripts/analyze3.py, scripts/analyze_secondary.py, scripts/figures_extra.py)
   9. manuscript DOCX/PDF, highlights, cover letter and supplementary material, every number filled from files
 No GPU is required; hardware is detected only to report it.
 """
@@ -89,7 +90,11 @@ def main():
     sh("experiments/refit_scales.py", w, env=conf)
     sh("experiments/evaluate_from_cache3.py", w, env=conf)
     sh("scripts/analyze_confirmatory.py")
+    sh("experiments/run_rw.py", "ctr23", w, env={"TSCP_RW_CTX": str(TOP / "results" / "raw_contexts")})
+    sh("experiments/run_rw.py", "confirmatory", w)
+    sh("scripts/analyze_rw.py")
     sh("scripts/analyze3.py")
+    sh("scripts/analyze_secondary.py")
     sh("scripts/figures_extra.py", "f0", "f1", "f9")
     sh("scripts/render_manuscript.py")
     sh("scripts/build_pdf.py")

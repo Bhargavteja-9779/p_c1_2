@@ -1,15 +1,22 @@
-# Covering the rare outcomes: stratified conformal prediction for imbalanced regression
+# Covering rare outcomes in imbalanced regression: stratified and relevance-weighted conformal prediction
 
 Code, configuration and raw results for the manuscript
-*"Covering the rare outcomes: stratified conformal prediction with size-optimal density scores for imbalanced regression"*
-(submitted to *Expert Systems with Applications*).
+*"Covering rare outcomes in imbalanced regression: stratified and relevance-weighted conformal prediction with density scores"*
+(prepared for the *Journal of King Saud University – Computer and Information Sciences*).
 
 The method (SDLC, stratified density-level conformal prediction) calibrates a separate conformal
 threshold within each stratum of the **target** (e.g. lower tail / bulk / upper tail). Every candidate
 value `y` is tested against the threshold of *its own* stratum, which yields finite-sample coverage
 *conditional on the target stratum* — i.e. guaranteed coverage of rare/extreme outcomes — and
 robustness to shifts of the target distribution. The conformity score is a conditional density
-estimate, which is the size-optimal choice (Propositions 2 and 3 of the paper).
+estimate, which is the size-optimal choice for the oracle (Proposition 2 of the paper).
+
+The second method (RW-DLC, relevance-weighted density-level conformal prediction; `experiments/run_rw.py`) needs no
+strata: it weights calibration by an imbalanced-regression relevance function phi(y) (e.g. inverse target density),
+guarantees relevance-weighted coverage in finite samples (Theorem 2) and uses the size-optimal score -phi(y) f(y|x)
+(Proposition 4). Its analysis plan is `../PREREGISTRATION_relevance_weighted.md`; analysis: `scripts/analyze_rw.py`.
+Run: `python experiments/run_rw.py confirmatory 4`, and, after re-fitting the CTR23 model outputs with
+`python experiments/run_benchmark.py --mode fitonly --out ../results/raw_refit`, `python experiments/run_rw.py ctr23 4`.
 
 ## 1. Installation
 

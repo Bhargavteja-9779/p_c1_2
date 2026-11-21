@@ -31,7 +31,8 @@ from src.models.density import RobustLSDensity  # noqa: E402
 
 ALPHA, G, TAU_REL, CHUNK = 0.1, 4000, 0.01, 400
 SUITES = {
-    "ctr23": dict(ctx=TOP / "results" / "raw_refit_contexts", ctx3=TOP / "results" / "raw_contexts_v3",
+    "ctr23": dict(ctx=Path(os.environ.get("TSCP_RW_CTX", TOP / "results" / ("raw_refit_contexts" if (TOP / "results" / "raw_refit_contexts").exists() else "raw_contexts"))),
+                  ctx3=TOP / "results" / "raw_contexts_v3",
                   cfg=ROOT / "config" / "benchmark.json", seeds=range(10)),
     "confirmatory": dict(ctx=TOP / "results" / "confirmatory" / "raw_contexts",
                          ctx3=TOP / "results" / "confirmatory" / "raw_contexts_v3",
