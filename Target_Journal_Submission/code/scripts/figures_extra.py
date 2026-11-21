@@ -10,6 +10,7 @@ import json
 import sys
 from pathlib import Path
 
+import matplotlib.patheffects as pe
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
@@ -101,14 +102,21 @@ def f0():
     def box(x, y_, w, h, txt, c, fs=6.8):
         bx.add_patch(FancyBboxPatch((x, y_), w, h, boxstyle="round,pad=0.3,rounding_size=1.0", fc=c, ec="#8a8984",
                                     lw=0.6))
-        bx.text(x + w / 2, y_ + h / 2, txt, ha="center", va="center", fontsize=fs, linespacing=1.35)
+        lines = txt.split("\n")                 # one text object per line: mathtext accents (hats) stay in place
+        lh = 0.47 * fs
+        for i, ln in enumerate(lines):
+            bx.text(x + w / 2, y_ + h / 2 + ((len(lines) - 1) / 2 - i) * lh, ln, ha="center", va="center", fontsize=fs)
 
-    def arrow(x1, y1, x2, y2):
-        bx.add_patch(FancyArrowPatch((x1, y1), (x2, y2), arrowstyle="-|>", mutation_scale=7, color=DARK, lw=0.8))
+    def arrow(x1, y1, x2, y2, over=False):
+        a = FancyArrowPatch((x1, y1), (x2, y2), arrowstyle="-|>", mutation_scale=7, color=DARK, lw=0.8, zorder=3)
+        if over:                                  # drawn over a crossing arrow with a white outline (bridge)
+            a.set_path_effects([pe.Stroke(linewidth=3.2, foreground="white"), pe.Normal()])
+            a.set_zorder(4)
+        bx.add_patch(a)
     # training row
     box(1, 44, 15, 10, "Proper training\nset (50%)", TR)
     box(20, 44, 25, 10, "Density model: mean $\\hat\\mu(x)$, scale $\\hat\\sigma(x)$,\nnoise density $\\hat g$"
-        " $\\rightarrow$ $\\hat f(y\\mid x)$ (Eq. 8)", TR)
+        " $\\rightarrow$ $\\hat f(y\\mid x)$ (Eq. 7)", TR)
     box(49, 44, 21, 10, "Target strata $B_1,\\ldots,B_K$\nfrom training quantiles", TR)
     box(74, 44, 25, 10, "Relevance $\\phi(y)$ from the\ntraining targets (RW-DLC only)", TR)
     arrow(16.5, 49, 19.5, 49)
@@ -125,7 +133,7 @@ def f0():
     arrow(16.5, 27, 19.5, 27)
     arrow(45.5, 28.5, 48.5, 32)
     arrow(45.5, 25.5, 48.5, 20.5)
-    arrow(70.5, 32.5, 73.5, 32.5)
+    arrow(70.5, 32.5, 73.5, 32.5, over=True)
     arrow(70.5, 20.5, 73.5, 20.5)
     arrow(32.5, 43.5, 32.5, 32.5)        # density model -> scores
     arrow(59.5, 43.5, 59.5, 37.5)        # strata -> SDLC
@@ -137,7 +145,7 @@ def f0():
     arrow(16.5, 7.5, 19.5, 7.5)
     fig.text(0.01, 0.008, "Abbreviations: SDLC, stratified density-level conformal prediction; RW-DLC, relevance-weighted "
              "density-level conformal prediction;\n$\\hat q_k$, conformal threshold of stratum $k$ (Eq. 3); $q(y)$, "
-             "relevance-weighted threshold (Eq. 11). The scale model $\\hat\\sigma$ is fitted to three-fold out-of-fold "
+             "relevance-weighted threshold (Eq. 10). The scale model $\\hat\\sigma$ is fitted to three-fold out-of-fold "
              "residuals of $\\hat\\mu$,\nand $\\hat g$ is a kernel density estimate of the cross-fitted standardised "
              "residuals. Panel (a) is an illustration, not data.",
              fontsize=6.4, va="bottom", linespacing=1.5)
