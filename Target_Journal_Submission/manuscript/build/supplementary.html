@@ -5055,6 +5055,364 @@ the guarantees hold on average over calibration sets).</p>
 </tr>
 </tbody>
 </table>
+<p>Table S15 (continued). Splits by time (post hoc;
+experiments/run_temporal.py). Moneyball “forward”: earliest seasons for
+training (50% of rows), next for calibration (25%), latest for test;
+“blocked”: whole seasons assigned at random. Bike_Sharing_Demand
+“blocked”: whole months assigned at random (the curated data contain no
+year or day). Random-split values from the same seeds of the main
+benchmark.</p>
+<table>
+<colgroup>
+<col style="width: 11%" />
+<col style="width: 5%" />
+<col style="width: 6%" />
+<col style="width: 6%" />
+<col style="width: 9%" />
+<col style="width: 9%" />
+<col style="width: 5%" />
+<col style="width: 7%" />
+<col style="width: 10%" />
+<col style="width: 9%" />
+<col style="width: 4%" />
+<col style="width: 8%" />
+<col style="width: 6%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">dataset</th>
+<th style="text-align: left;">split</th>
+<th style="text-align: left;">method</th>
+<th style="text-align: left;">coverage</th>
+<th style="text-align: left;">coverage_min</th>
+<th style="text-align: left;">coverage_max</th>
+<th style="text-align: left;">worst</th>
+<th style="text-align: left;">worst_min</th>
+<th style="text-align: left;">coverage_random</th>
+<th style="text-align: left;">worst_random</th>
+<th style="text-align: left;">size</th>
+<th style="text-align: left;">size_random</th>
+<th style="text-align: left;">n_seeds</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Moneyball</td>
+<td style="text-align: left;">blocked</td>
+<td style="text-align: left;">SCP</td>
+<td style="text-align: left;">0.888</td>
+<td style="text-align: left;">0.871</td>
+<td style="text-align: left;">0.918</td>
+<td style="text-align: left;">0.784</td>
+<td style="text-align: left;">0.766</td>
+<td style="text-align: left;">0.903</td>
+<td style="text-align: left;">0.804</td>
+<td style="text-align: left;">0.842</td>
+<td style="text-align: left;">0.906</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Moneyball</td>
+<td style="text-align: left;">blocked</td>
+<td style="text-align: left;">CQR</td>
+<td style="text-align: left;">0.892</td>
+<td style="text-align: left;">0.833</td>
+<td style="text-align: left;">0.930</td>
+<td style="text-align: left;">0.789</td>
+<td style="text-align: left;">0.744</td>
+<td style="text-align: left;">0.897</td>
+<td style="text-align: left;">0.793</td>
+<td style="text-align: left;">0.962</td>
+<td style="text-align: left;">1.110</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Moneyball</td>
+<td style="text-align: left;">blocked</td>
+<td style="text-align: left;">HPD-split</td>
+<td style="text-align: left;">0.885</td>
+<td style="text-align: left;">0.849</td>
+<td style="text-align: left;">0.908</td>
+<td style="text-align: left;">0.793</td>
+<td style="text-align: left;">0.737</td>
+<td style="text-align: left;">0.914</td>
+<td style="text-align: left;">0.814</td>
+<td style="text-align: left;">0.857</td>
+<td style="text-align: left;">0.947</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Moneyball</td>
+<td style="text-align: left;">blocked</td>
+<td style="text-align: left;">BCCP</td>
+<td style="text-align: left;">0.883</td>
+<td style="text-align: left;">0.862</td>
+<td style="text-align: left;">0.902</td>
+<td style="text-align: left;">0.823</td>
+<td style="text-align: left;">0.792</td>
+<td style="text-align: left;">0.908</td>
+<td style="text-align: left;">0.806</td>
+<td style="text-align: left;">0.859</td>
+<td style="text-align: left;">0.949</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Moneyball</td>
+<td style="text-align: left;">blocked</td>
+<td style="text-align: left;">S-NCP</td>
+<td style="text-align: left;">0.884</td>
+<td style="text-align: left;">0.855</td>
+<td style="text-align: left;">0.908</td>
+<td style="text-align: left;">0.796</td>
+<td style="text-align: left;">0.708</td>
+<td style="text-align: left;">0.914</td>
+<td style="text-align: left;">0.813</td>
+<td style="text-align: left;">0.875</td>
+<td style="text-align: left;">1.003</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Moneyball</td>
+<td style="text-align: left;">blocked</td>
+<td style="text-align: left;">S-CQR</td>
+<td style="text-align: left;">0.883</td>
+<td style="text-align: left;">0.833</td>
+<td style="text-align: left;">0.922</td>
+<td style="text-align: left;">0.786</td>
+<td style="text-align: left;">0.744</td>
+<td style="text-align: left;">0.899</td>
+<td style="text-align: left;">0.811</td>
+<td style="text-align: left;">0.970</td>
+<td style="text-align: left;">1.129</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Moneyball</td>
+<td style="text-align: left;">blocked</td>
+<td style="text-align: left;">SDLC</td>
+<td style="text-align: left;">0.890</td>
+<td style="text-align: left;">0.874</td>
+<td style="text-align: left;">0.905</td>
+<td style="text-align: left;">0.817</td>
+<td style="text-align: left;">0.778</td>
+<td style="text-align: left;">0.912</td>
+<td style="text-align: left;">0.813</td>
+<td style="text-align: left;">0.872</td>
+<td style="text-align: left;">0.979</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Moneyball</td>
+<td style="text-align: left;">forward</td>
+<td style="text-align: left;">SCP</td>
+<td style="text-align: left;">0.953</td>
+<td style="text-align: left;">0.942</td>
+<td style="text-align: left;">0.961</td>
+<td style="text-align: left;">0.862</td>
+<td style="text-align: left;">0.667</td>
+<td style="text-align: left;">0.903</td>
+<td style="text-align: left;">0.804</td>
+<td style="text-align: left;">1.422</td>
+<td style="text-align: left;">0.906</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Moneyball</td>
+<td style="text-align: left;">forward</td>
+<td style="text-align: left;">CQR</td>
+<td style="text-align: left;">0.970</td>
+<td style="text-align: left;">0.961</td>
+<td style="text-align: left;">0.985</td>
+<td style="text-align: left;">0.927</td>
+<td style="text-align: left;">0.908</td>
+<td style="text-align: left;">0.897</td>
+<td style="text-align: left;">0.793</td>
+<td style="text-align: left;">1.757</td>
+<td style="text-align: left;">1.110</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Moneyball</td>
+<td style="text-align: left;">forward</td>
+<td style="text-align: left;">HPD-split</td>
+<td style="text-align: left;">0.939</td>
+<td style="text-align: left;">0.927</td>
+<td style="text-align: left;">0.955</td>
+<td style="text-align: left;">0.814</td>
+<td style="text-align: left;">0.667</td>
+<td style="text-align: left;">0.914</td>
+<td style="text-align: left;">0.814</td>
+<td style="text-align: left;">1.368</td>
+<td style="text-align: left;">0.947</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Moneyball</td>
+<td style="text-align: left;">forward</td>
+<td style="text-align: left;">BCCP</td>
+<td style="text-align: left;">0.886</td>
+<td style="text-align: left;">0.864</td>
+<td style="text-align: left;">0.900</td>
+<td style="text-align: left;">0.819</td>
+<td style="text-align: left;">0.791</td>
+<td style="text-align: left;">0.908</td>
+<td style="text-align: left;">0.806</td>
+<td style="text-align: left;">3.063</td>
+<td style="text-align: left;">0.949</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Moneyball</td>
+<td style="text-align: left;">forward</td>
+<td style="text-align: left;">S-NCP</td>
+<td style="text-align: left;">0.882</td>
+<td style="text-align: left;">0.864</td>
+<td style="text-align: left;">0.897</td>
+<td style="text-align: left;">0.805</td>
+<td style="text-align: left;">0.783</td>
+<td style="text-align: left;">0.914</td>
+<td style="text-align: left;">0.813</td>
+<td style="text-align: left;">2.959</td>
+<td style="text-align: left;">1.003</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Moneyball</td>
+<td style="text-align: left;">forward</td>
+<td style="text-align: left;">S-CQR</td>
+<td style="text-align: left;">0.927</td>
+<td style="text-align: left;">0.915</td>
+<td style="text-align: left;">0.961</td>
+<td style="text-align: left;">0.877</td>
+<td style="text-align: left;">0.837</td>
+<td style="text-align: left;">0.899</td>
+<td style="text-align: left;">0.811</td>
+<td style="text-align: left;">3.351</td>
+<td style="text-align: left;">1.129</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Moneyball</td>
+<td style="text-align: left;">forward</td>
+<td style="text-align: left;">SDLC</td>
+<td style="text-align: left;">0.881</td>
+<td style="text-align: left;">0.870</td>
+<td style="text-align: left;">0.900</td>
+<td style="text-align: left;">0.802</td>
+<td style="text-align: left;">0.775</td>
+<td style="text-align: left;">0.912</td>
+<td style="text-align: left;">0.813</td>
+<td style="text-align: left;">3.831</td>
+<td style="text-align: left;">0.979</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Bike_Sharing_Demand</td>
+<td style="text-align: left;">blocked</td>
+<td style="text-align: left;">SCP</td>
+<td style="text-align: left;">0.901</td>
+<td style="text-align: left;">0.876</td>
+<td style="text-align: left;">0.925</td>
+<td style="text-align: left;">0.481</td>
+<td style="text-align: left;">0.421</td>
+<td style="text-align: left;">0.899</td>
+<td style="text-align: left;">0.495</td>
+<td style="text-align: left;">1.798</td>
+<td style="text-align: left;">1.590</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Bike_Sharing_Demand</td>
+<td style="text-align: left;">blocked</td>
+<td style="text-align: left;">CQR</td>
+<td style="text-align: left;">0.890</td>
+<td style="text-align: left;">0.835</td>
+<td style="text-align: left;">0.928</td>
+<td style="text-align: left;">0.543</td>
+<td style="text-align: left;">0.499</td>
+<td style="text-align: left;">0.898</td>
+<td style="text-align: left;">0.665</td>
+<td style="text-align: left;">1.470</td>
+<td style="text-align: left;">1.397</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Bike_Sharing_Demand</td>
+<td style="text-align: left;">blocked</td>
+<td style="text-align: left;">HPD-split</td>
+<td style="text-align: left;">0.894</td>
+<td style="text-align: left;">0.838</td>
+<td style="text-align: left;">0.937</td>
+<td style="text-align: left;">0.722</td>
+<td style="text-align: left;">0.664</td>
+<td style="text-align: left;">0.896</td>
+<td style="text-align: left;">0.721</td>
+<td style="text-align: left;">1.644</td>
+<td style="text-align: left;">1.361</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Bike_Sharing_Demand</td>
+<td style="text-align: left;">blocked</td>
+<td style="text-align: left;">BCCP</td>
+<td style="text-align: left;">0.906</td>
+<td style="text-align: left;">0.890</td>
+<td style="text-align: left;">0.927</td>
+<td style="text-align: left;">0.870</td>
+<td style="text-align: left;">0.824</td>
+<td style="text-align: left;">0.898</td>
+<td style="text-align: left;">0.883</td>
+<td style="text-align: left;">2.005</td>
+<td style="text-align: left;">1.695</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Bike_Sharing_Demand</td>
+<td style="text-align: left;">blocked</td>
+<td style="text-align: left;">S-NCP</td>
+<td style="text-align: left;">0.898</td>
+<td style="text-align: left;">0.859</td>
+<td style="text-align: left;">0.941</td>
+<td style="text-align: left;">0.875</td>
+<td style="text-align: left;">0.816</td>
+<td style="text-align: left;">0.897</td>
+<td style="text-align: left;">0.878</td>
+<td style="text-align: left;">1.937</td>
+<td style="text-align: left;">1.503</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Bike_Sharing_Demand</td>
+<td style="text-align: left;">blocked</td>
+<td style="text-align: left;">S-CQR</td>
+<td style="text-align: left;">0.891</td>
+<td style="text-align: left;">0.830</td>
+<td style="text-align: left;">0.941</td>
+<td style="text-align: left;">0.826</td>
+<td style="text-align: left;">0.718</td>
+<td style="text-align: left;">0.900</td>
+<td style="text-align: left;">0.883</td>
+<td style="text-align: left;">1.693</td>
+<td style="text-align: left;">1.482</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Bike_Sharing_Demand</td>
+<td style="text-align: left;">blocked</td>
+<td style="text-align: left;">SDLC</td>
+<td style="text-align: left;">0.899</td>
+<td style="text-align: left;">0.863</td>
+<td style="text-align: left;">0.942</td>
+<td style="text-align: left;">0.870</td>
+<td style="text-align: left;">0.821</td>
+<td style="text-align: left;">0.894</td>
+<td style="text-align: left;">0.873</td>
+<td style="text-align: left;">1.857</td>
+<td style="text-align: left;">1.469</td>
+<td style="text-align: left;">5</td>
+</tr>
+</tbody>
+</table>
 <p><strong>Table S16.</strong> Pre-specified secondary analyses of the
 held-out replication (hull forms) and post hoc equivalence tests (±5% on
 the log-size scale, TOST with two one-sided Wilcoxon tests), on CTR23
@@ -5985,6 +6343,105 @@ of the training targets; a seed counts only if the group holds at least
 <td style="text-align: left;">0.760</td>
 <td style="text-align: left;">0.401</td>
 <td style="text-align: left;">0.928</td>
+</tr>
+</tbody>
+</table>
+<p>Table S17b (continued). RW-DLC versus stratified methods with
+dedicated 1% tail strata (stratum edges at the training quantiles 0.01,
+0.10, 0.25, 0.75, 0.90, 0.99; review round 8; experiments/eval_tail1.py,
+scripts/analyze_review08.py; held-out data, 5 seeds). Top-1% coverage
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>≥</mo><msub><mi>q</mi><mn>0.99</mn></msub></mrow><annotation encoding="application/x-tex">y\ge q_{0.99}</annotation></semantics></math>,
+seeds with at least 10 such test points), marginal coverage and
+normalised size (geometric-mean and Hodges-Lehmann ratios); two-sided
+Wilcoxon tests, Holm over all six tests.</p>
+<table>
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 5%" />
+<col style="width: 6%" />
+<col style="width: 6%" />
+<col style="width: 6%" />
+<col style="width: 7%" />
+<col style="width: 4%" />
+<col style="width: 7%" />
+<col style="width: 4%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 6%" />
+<col style="width: 7%" />
+<col style="width: 7%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">comparison</th>
+<th style="text-align: left;">top1_rw</th>
+<th style="text-align: left;">top1_comp</th>
+<th style="text-align: left;">top1_diff</th>
+<th style="text-align: left;">top1_wins</th>
+<th style="text-align: left;">top1_losses</th>
+<th style="text-align: left;">top1_n</th>
+<th style="text-align: left;">top1_p_holm</th>
+<th style="text-align: left;">cov_rw</th>
+<th style="text-align: left;">cov_comp</th>
+<th style="text-align: left;">size_geo</th>
+<th style="text-align: left;">size_hl</th>
+<th style="text-align: left;">size_wins</th>
+<th style="text-align: left;">size_losses</th>
+<th style="text-align: left;">size_p_holm</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">RW-DLC vs SDLC (1% tail strata)</td>
+<td style="text-align: left;">0.884</td>
+<td style="text-align: left;">0.906</td>
+<td style="text-align: left;">-0.022</td>
+<td style="text-align: left;">12</td>
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">17</td>
+<td style="text-align: left;">1.000</td>
+<td style="text-align: left;">0.884</td>
+<td style="text-align: left;">0.901</td>
+<td style="text-align: left;">0.952</td>
+<td style="text-align: left;">0.987</td>
+<td style="text-align: left;">9</td>
+<td style="text-align: left;">8</td>
+<td style="text-align: left;">1.000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">RW-DLC vs S-NCP (1% tail strata)</td>
+<td style="text-align: left;">0.884</td>
+<td style="text-align: left;">0.908</td>
+<td style="text-align: left;">-0.024</td>
+<td style="text-align: left;">12</td>
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">17</td>
+<td style="text-align: left;">1.000</td>
+<td style="text-align: left;">0.884</td>
+<td style="text-align: left;">0.902</td>
+<td style="text-align: left;">0.941</td>
+<td style="text-align: left;">0.957</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">7</td>
+<td style="text-align: left;">1.000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">RW-DLC vs BCCP (1% tail strata)</td>
+<td style="text-align: left;">0.884</td>
+<td style="text-align: left;">0.911</td>
+<td style="text-align: left;">-0.026</td>
+<td style="text-align: left;">11</td>
+<td style="text-align: left;">6</td>
+<td style="text-align: left;">17</td>
+<td style="text-align: left;">1.000</td>
+<td style="text-align: left;">0.884</td>
+<td style="text-align: left;">0.901</td>
+<td style="text-align: left;">0.818</td>
+<td style="text-align: left;">0.876</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">7</td>
+<td style="text-align: left;">0.209</td>
 </tr>
 </tbody>
 </table>

@@ -482,6 +482,32 @@ Table S15 (continued). Grouped splits: range over the five seeds of marginal and
 | video_transcoding | SCP       | 0.864                            | 0.932                 | 0.341                      | 0.632                      | 5       |
 | video_transcoding | SDLC      | 0.788                            | 0.935                 | 0.750                      | 0.893                      | 5       |
 
+Table S15 (continued). Splits by time (post hoc; experiments/run_temporal.py). Moneyball "forward": earliest seasons for training (50% of rows), next for calibration (25%), latest for test; "blocked": whole seasons assigned at random. Bike_Sharing_Demand "blocked": whole months assigned at random (the curated data contain no year or day). Random-split values from the same seeds of the main benchmark.
+
+| dataset             | split   | method    | coverage   | coverage_min   | coverage_max   | worst   | worst_min   | coverage_random   | worst_random   | size   | size_random   | n_seeds   |
+|:--------------------|:--------|:----------|:-----------|:---------------|:---------------|:--------|:------------|:------------------|:---------------|:-------|:--------------|:----------|
+| Moneyball           | blocked | SCP       | 0.888      | 0.871          | 0.918          | 0.784   | 0.766       | 0.903             | 0.804          | 0.842  | 0.906         | 5         |
+| Moneyball           | blocked | CQR       | 0.892      | 0.833          | 0.930          | 0.789   | 0.744       | 0.897             | 0.793          | 0.962  | 1.110         | 5         |
+| Moneyball           | blocked | HPD-split | 0.885      | 0.849          | 0.908          | 0.793   | 0.737       | 0.914             | 0.814          | 0.857  | 0.947         | 5         |
+| Moneyball           | blocked | BCCP      | 0.883      | 0.862          | 0.902          | 0.823   | 0.792       | 0.908             | 0.806          | 0.859  | 0.949         | 5         |
+| Moneyball           | blocked | S-NCP     | 0.884      | 0.855          | 0.908          | 0.796   | 0.708       | 0.914             | 0.813          | 0.875  | 1.003         | 5         |
+| Moneyball           | blocked | S-CQR     | 0.883      | 0.833          | 0.922          | 0.786   | 0.744       | 0.899             | 0.811          | 0.970  | 1.129         | 5         |
+| Moneyball           | blocked | SDLC      | 0.890      | 0.874          | 0.905          | 0.817   | 0.778       | 0.912             | 0.813          | 0.872  | 0.979         | 5         |
+| Moneyball           | forward | SCP       | 0.953      | 0.942          | 0.961          | 0.862   | 0.667       | 0.903             | 0.804          | 1.422  | 0.906         | 5         |
+| Moneyball           | forward | CQR       | 0.970      | 0.961          | 0.985          | 0.927   | 0.908       | 0.897             | 0.793          | 1.757  | 1.110         | 5         |
+| Moneyball           | forward | HPD-split | 0.939      | 0.927          | 0.955          | 0.814   | 0.667       | 0.914             | 0.814          | 1.368  | 0.947         | 5         |
+| Moneyball           | forward | BCCP      | 0.886      | 0.864          | 0.900          | 0.819   | 0.791       | 0.908             | 0.806          | 3.063  | 0.949         | 5         |
+| Moneyball           | forward | S-NCP     | 0.882      | 0.864          | 0.897          | 0.805   | 0.783       | 0.914             | 0.813          | 2.959  | 1.003         | 5         |
+| Moneyball           | forward | S-CQR     | 0.927      | 0.915          | 0.961          | 0.877   | 0.837       | 0.899             | 0.811          | 3.351  | 1.129         | 5         |
+| Moneyball           | forward | SDLC      | 0.881      | 0.870          | 0.900          | 0.802   | 0.775       | 0.912             | 0.813          | 3.831  | 0.979         | 5         |
+| Bike_Sharing_Demand | blocked | SCP       | 0.901      | 0.876          | 0.925          | 0.481   | 0.421       | 0.899             | 0.495          | 1.798  | 1.590         | 5         |
+| Bike_Sharing_Demand | blocked | CQR       | 0.890      | 0.835          | 0.928          | 0.543   | 0.499       | 0.898             | 0.665          | 1.470  | 1.397         | 5         |
+| Bike_Sharing_Demand | blocked | HPD-split | 0.894      | 0.838          | 0.937          | 0.722   | 0.664       | 0.896             | 0.721          | 1.644  | 1.361         | 5         |
+| Bike_Sharing_Demand | blocked | BCCP      | 0.906      | 0.890          | 0.927          | 0.870   | 0.824       | 0.898             | 0.883          | 2.005  | 1.695         | 5         |
+| Bike_Sharing_Demand | blocked | S-NCP     | 0.898      | 0.859          | 0.941          | 0.875   | 0.816       | 0.897             | 0.878          | 1.937  | 1.503         | 5         |
+| Bike_Sharing_Demand | blocked | S-CQR     | 0.891      | 0.830          | 0.941          | 0.826   | 0.718       | 0.900             | 0.883          | 1.693  | 1.482         | 5         |
+| Bike_Sharing_Demand | blocked | SDLC      | 0.899      | 0.863          | 0.942          | 0.870   | 0.821       | 0.894             | 0.873          | 1.857  | 1.469         | 5         |
+
 **Table S16.** Pre-specified secondary analyses of the held-out replication (hull forms) and post hoc equivalence tests (±5% on the log-size scale, TOST with two one-sided Wilcoxon tests), on CTR23 and the held-out datasets.
 
 | suite        | analysis             | comparison              | n   | geo_ratio   | geo_lo   | geo_hi   | hl_ratio   | wins   | losses   | p     | p_holm   |
@@ -581,6 +607,14 @@ Table S17b (continued). Coverage of the top 1% of outcomes with one definition i
 | held-out | S-NCP     | 17           | 0.793  | 0.391 | 0.958 |
 | held-out | SCP       | 17           | 0.471  | 0.000 | 0.990 |
 | held-out | SDLC      | 17           | 0.760  | 0.401 | 0.928 |
+
+Table S17b (continued). RW-DLC versus stratified methods with dedicated 1% tail strata (stratum edges at the training quantiles 0.01, 0.10, 0.25, 0.75, 0.90, 0.99; review round 8; experiments/eval_tail1.py, scripts/analyze_review08.py; held-out data, 5 seeds). Top-1% coverage ($y\ge q_{0.99}$, seeds with at least 10 such test points), marginal coverage and normalised size (geometric-mean and Hodges-Lehmann ratios); two-sided Wilcoxon tests, Holm over all six tests.
+
+| comparison                       | top1_rw   | top1_comp   | top1_diff   | top1_wins   | top1_losses   | top1_n   | top1_p_holm   | cov_rw   | cov_comp   | size_geo   | size_hl   | size_wins   | size_losses   | size_p_holm   |
+|:---------------------------------|:----------|:------------|:------------|:------------|:--------------|:---------|:--------------|:---------|:-----------|:-----------|:----------|:------------|:--------------|:--------------|
+| RW-DLC vs SDLC (1% tail strata)  | 0.884     | 0.906       | -0.022      | 12          | 5             | 17       | 1.000         | 0.884    | 0.901      | 0.952      | 0.987     | 9           | 8             | 1.000         |
+| RW-DLC vs S-NCP (1% tail strata) | 0.884     | 0.908       | -0.024      | 12          | 5             | 17       | 1.000         | 0.884    | 0.902      | 0.941      | 0.957     | 10          | 7             | 1.000         |
+| RW-DLC vs BCCP (1% tail strata)  | 0.884     | 0.911       | -0.026      | 11          | 6             | 17       | 1.000         | 0.884    | 0.901      | 0.818      | 0.876     | 10          | 7             | 0.209         |
 
 Table S17b (continued). RW-3 (top-1% coverage of RW-DLC versus SDLC, held-out data, one-sided Wilcoxon test): the pre-specified definition ($y>q_{0.99}$) and post hoc variants.
 
