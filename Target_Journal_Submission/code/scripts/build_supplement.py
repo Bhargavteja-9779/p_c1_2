@@ -122,6 +122,23 @@ def main():
         tm.columns = ["Method", "Median µs per test point", "Maximum over datasets"]
         out += ["**Table S13.** Calibration and prediction time per test point (median over datasets of the "
                 "per-dataset median of three repetitions after a discarded warm-up; one thread).", "", md(tm, 1), ""]
+    t16 = TAB / "D16_grouped.csv"
+    if t16.exists():
+        gd = pd.read_csv(t16, dtype=str).drop(columns=["n_seeds"])
+        gd.columns = ["Dataset", "Split", "Method", "Coverage (grouped)", "Coverage (random)", "Worst stratum (grouped)",
+                      "Worst stratum (random)", "Size (grouped)", "Size (random)"]
+        out += ["**Table S14.** Splits that keep repeated units together (seeds 0–4, $\\alpha=0.1$, primary strata) "
+                "against random row splits on the same seeds: sarcos without exact duplicates (dedup), video "
+                "transcoding grouped by input video (by_video), superconductivity grouped by identical feature vectors "
+                "(by_features). Size in standard deviations of $y$ (geometric mean).", "",
+                gd.to_markdown(index=False, disable_numparse=True), ""]
+    t15b = TAB / "T15b_timing_fit.csv"
+    if t15b.exists():
+        tf = pd.read_csv(t15b)[["dataset", "n_train", "fit_mean", "fit_scale_with_oof", "fit_scale_crossfit", "fit_kde", "fit_quantile_pair",
+                                "fit_histogram_classifier"]]
+        tf.columns = ["Dataset", "Training rows", "Mean model", "Scale model (incl. out-of-fold residuals)", "Cross-fitted standardisation", "Noise density (KDE)",
+                      "Quantile pair (CQR)", "Histogram classifier"]
+        out += ["**Table S15.** Fitting time in seconds (seed 0, one thread).", "", md(tf, 3), ""]
     for i, (f, cap) in enumerate((("F4_upper_tail_per_dataset.png", "Coverage of the upper calibration stratum per dataset ($\\alpha=0.1$)."),
                                   ("F8_error_analysis.png", "Error analysis. Left: price of stratum-wise validity (SDLC/DLS size ratio) "
                                    "against relative RMSE. Right: worst-stratum coverage of SDLC minus its null mean "
@@ -158,11 +175,11 @@ def main():
             "marginal training-target distribution. The second (v2) used an exact implementation but standardised "
             "residuals with an in-sample scale model and used a density floor. Their complete analyses are archived "
             "in `supplementary/v1_preregistered_analysis/` and `supplementary/v2_exact_insample_analysis/`. The "
-            "coverage results were the same in all versions. Table S14 shows how the size comparisons changed; this "
+            "coverage results were the same in all versions. Table S16 shows how the size comparisons changed; this "
             "dependence on the implementation is why the comparisons on CTR23 are labelled exploratory and were "
             "replicated on held-out data (v1 reported medians of log ratios; v2 also geometric means; the final "
             "version reports the Hodges–Lehmann estimate).", "",
-            "**Table S14.** Size comparisons of SDLC with the stratified comparators in the three implementations "
+            "**Table S16.** Size comparisons of SDLC with the stratified comparators in the three implementations "
             "($\\alpha=0.1$, 31 datasets; negative log ratios favour SDLC).", "",
             pd.DataFrame(rows).to_markdown(index=False, disable_numparse=True), ""]
     # S6 pre-registration -------------------------------------------------------------------------------------
