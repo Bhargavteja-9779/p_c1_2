@@ -130,12 +130,26 @@ def main():
     T13 = pd.read_csv(TAB / "T13_tail_alerts.csv")
     lo = T13[T13.side == "lo"].drop(columns=["side"])
     out += ["**Table S12.** Lower-tail alerts (means over datasets).", "", md(lo), ""]
-    t15 = TAB / "T15_timing_methods.csv"
-    if t15.exists():
-        tm = pd.read_csv(t15)
-        tm.columns = ["Method", "Median µs per test point", "Maximum over datasets"]
-        out += ["**Table S13.** Calibration and prediction time per test point (median over datasets of the "
-                "per-dataset median of three repetitions after a discarded warm-up; one thread).", "", md(tm, 1), ""]
+    d15c, d15d = TAB / "D15c_timing_like.csv", TAB / "D15d_timing_rw.csv"
+    if d15c.exists():
+        envf = RES / "timing_like_env.json"
+        env = json.loads(envf.read_text()) if envf.exists() else {}
+        hw = (f"{env.get('cpu', 'CPU not recorded')}, {env.get('n_cpu', '?')} cores, Python {env.get('python', '?')}, "
+              f"NumPy {env.get('numpy', '?')}; BLAS/OpenMP threads fixed to 1 before import and checked with "
+              f"threadpoolctl; machine otherwise idle (load average {env.get('loadavg_start', ['?'])[0]:.2f} at start)"
+              if env else "hardware not recorded")
+        out += ["**Table S13.** Computational cost (seed 0, one CPU thread; median of three repetitions after a "
+                "discarded warm-up). (a) SDLC, S-NCP and BCCP on the OpenML-CTR23 datasets, timed with identical "
+                "boundaries: calibration = from the calibration labels and model outputs to the stratum thresholds; "
+                "batch prediction = from the point and scale predictions and the thresholds to the sets of the whole "
+                "test set, without labels; single query = the same for one test point (200 random test points). "
+                f"Hardware: {hw}.", "", "(a)", "", disp(pd.read_csv(d15c, dtype=str)), ""]
+        if d15d.exists():
+            out += ["(b) Relevance-weighted study on the held-out datasets: set-up times of RW-DLC-U (relevance "
+                    "function with an exact Gaussian kernel density estimate; calibration weights and threshold), set "
+                    "construction time per test point of all four methods with the same grid implementation "
+                    "(G = 4,000 target values), and the change of RW-DLC-U set sizes when the grid is refined to "
+                    "G = 16,000.", "", disp(pd.read_csv(d15d, dtype=str)), ""]
     tfit = TAB / "T15b_timing_fit.csv"
     if tfit.exists():
         tf = pd.read_csv(tfit)
