@@ -24,3 +24,9 @@ WARNING:openml.datasets.functions:Failed to download parquet, fallback on ARFF.
 WARNING:root:Received uncompressed content from OpenML for https://openml.org/data/v1/download/22103267/Bike_Sharing_Demand.arff.
 WARNING:openml.datasets.functions:Could not download file from https://data.openml.org/datasets/0004/44143/dataset_44143.pq: Bucket does not exist or is private.
 WARNING:openml.datasets.functions:Failed to download parquet, fallback on ARFF.
+WARNING:root:Received uncompressed content from OpenML for https://openml.org/data/v1/download/22103268/nyc-taxi-green-dec-2016.arff.
+WARNING:openml.datasets.functions:Could not download file from https://data.openml.org/datasets/0004/44145/dataset_44145.pq: Bucket does not exist or is private.
+WARNING:openml.datasets.functions:Failed to download parquet, fallback on ARFF.
+WARNING:root:Received uncompressed content from OpenML for https://openml.org/data/v1/download/22103270/sulfur.arff.
+WARNING:openml.datasets.functions:Could not download file from https://data.openml.org/datasets/0004/44146/dataset_44146.pq: Bucket does not exist or is private.
+WARNING:openml.datasets.functions:Failed to download parquet, fallback on ARFF.
