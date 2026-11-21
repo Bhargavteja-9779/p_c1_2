@@ -1,5 +1,5 @@
 """Build the Supplementary Material (manuscript/Supplementary_Material.docx and .pdf) from generated tables,
-figures and result files. Numbering: Sections S1-S6, Tables S1-S13, Figures S1-S3 (cited in the main text).
+figures and result files. Numbering: Sections S1-S6, Tables S1-S16, Figures S1-S3 (cited in the main text).
 No number is typed by hand."""
 from __future__ import annotations
 
@@ -43,17 +43,28 @@ def main():
             "strata $K$, realised training mass of the lowest and highest stratum (nominal 0.10), relative test RMSE "
             "of the point model, and licence as recorded by OpenML.", ""]
     d1 = csv("D1_datasets")
-    lic = {}
-    for did in CFG["datasets"]:
-        m = load(did)[2]
-        lic[m["name"].replace("_", " ")] = m.get("licence", "") or "not stated"
+    # Dataset metadata needs the raw OpenML files (several GB); it is cached in tables/ after the first build.
+    lic_f = TAB / "S1_licences.csv"
+    if lic_f.exists():
+        lic = dict(csv("S1_licences").values.tolist())
+    else:
+        lic = {}
+        for did in CFG["datasets"]:
+            m = load(did)[2]
+            lic[m["name"].replace("_", " ")] = m.get("licence", "") or "not stated"
+        pd.DataFrame(list(lic.items()), columns=["Dataset", "Licence"]).to_csv(lic_f, index=False)
     d1["Licence"] = d1.Dataset.map(lambda n: lic.get(n, ""))
     out += [d1.to_markdown(index=False, disable_numparse=True), ""]
-    rows = []
-    for did in CC["datasets"]:
-        X, y, m = load(did)
-        rows.append({"OpenML ID": str(did), "Dataset": m["name"], "n (used)": f"{len(y):,}", "p": str(X.shape[1]),
-                     "Distinct y": f"{len(set(y.tolist())):,}", "Licence": m.get("licence", "") or "not stated"})
+    s2_f = TAB / "S2_confirmatory_datasets.csv"
+    if s2_f.exists():
+        rows = csv("S2_confirmatory_datasets").to_dict("records")
+    else:
+        rows = []
+        for did in CC["datasets"]:
+            X, y, m = load(did)
+            rows.append({"OpenML ID": str(did), "Dataset": m["name"], "n (used)": f"{len(y):,}", "p": str(X.shape[1]),
+                         "Distinct y": f"{len(set(y.tolist())):,}", "Licence": m.get("licence", "") or "not stated"})
+        pd.DataFrame(rows).to_csv(s2_f, index=False)
     out += ["**Table S2.** Held-out datasets of the confirmatory replication (regression datasets of OpenML suites "
             "335/336 without source overlap with CTR23; datasets above 50,000 rows subsampled once with seed 2026). "
             "Excluded by content overlap: " + "; ".join(CC["excluded_by_content_overlap_with_CTR23"]) +
@@ -122,6 +133,17 @@ def main():
         tm.columns = ["Method", "Median µs per test point", "Maximum over datasets"]
         out += ["**Table S13.** Calibration and prediction time per test point (median over datasets of the "
                 "per-dataset median of three repetitions after a discarded warm-up; one thread).", "", md(tm, 1), ""]
+    d16 = TAB / "D16_grouped.csv"
+    if d16.exists():
+        out += ["**Table S14.** Splits that keep repeated units together (sarcos: duplicates removed; video "
+                "transcoding: grouped by input video; superconductivity: grouped by identical feature vector) "
+                "against random splits on the same seeds (0–4, $\\alpha=0.1$): marginal and worst-stratum coverage and "
+                "geometric-mean size in sd($y$).", "", csv("D16_grouped").to_markdown(index=False, disable_numparse=True), ""]
+    t15b = TAB / "T15b_timing_fit.csv"
+    if t15b.exists():
+        tf = pd.read_csv(t15b).drop(columns=["did"])
+        out += ["**Table S15.** Fitting and prediction time in seconds per model component (one thread).", "",
+                md(tf, 3), ""]
     for i, (f, cap) in enumerate((("F4_upper_tail_per_dataset.png", "Coverage of the upper calibration stratum per dataset ($\\alpha=0.1$)."),
                                   ("F8_error_analysis.png", "Error analysis. Left: price of stratum-wise validity (SDLC/DLS size ratio) "
                                    "against relative RMSE. Right: worst-stratum coverage of SDLC minus its null mean "
@@ -158,11 +180,11 @@ def main():
             "marginal training-target distribution. The second (v2) used an exact implementation but standardised "
             "residuals with an in-sample scale model and used a density floor. Their complete analyses are archived "
             "in `supplementary/v1_preregistered_analysis/` and `supplementary/v2_exact_insample_analysis/`. The "
-            "coverage results were the same in all versions. Table S14 shows how the size comparisons changed; this "
+            "coverage results were the same in all versions. Table S16 shows how the size comparisons changed; this "
             "dependence on the implementation is why the comparisons on CTR23 are labelled exploratory and were "
             "replicated on held-out data (v1 reported medians of log ratios; v2 also geometric means; the final "
             "version reports the Hodges–Lehmann estimate).", "",
-            "**Table S14.** Size comparisons of SDLC with the stratified comparators in the three implementations "
+            "**Table S16.** Size comparisons of SDLC with the stratified comparators in the three implementations "
             "($\\alpha=0.1$, 31 datasets; negative log ratios favour SDLC).", "",
             pd.DataFrame(rows).to_markdown(index=False, disable_numparse=True), ""]
     # S6 pre-registration -------------------------------------------------------------------------------------

@@ -37,3 +37,19 @@ WARNING:openml.datasets.functions:Could not download file from https://data.open
 WARNING:openml.datasets.functions:Failed to download parquet, fallback on ARFF.
 WARNING:openml.datasets.functions:Could not download file from https://data.openml.org/datasets/0004/44976/dataset_44976.pq: Bucket does not exist or is private.
 WARNING:openml.datasets.functions:Failed to download parquet, fallback on ARFF.
+/home/user/p_c1_2/Target_Journal_Submission/results/raw_grouped/44964_4.jsonl ok 84.4s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw_grouped/44976_3.jsonl ok 157.9s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw_grouped/44976_1.jsonl ok 169.7s
+WARNING:openml.datasets.functions:Could not download file from https://data.openml.org/datasets/0004/44974/dataset_44974.pq: Bucket does not exist or is private.
+WARNING:openml.datasets.functions:Failed to download parquet, fallback on ARFF.
+WARNING:openml.datasets.functions:Could not download file from https://data.openml.org/datasets/0004/44974/dataset_44974.pq: Bucket does not exist or is private.
+WARNING:openml.datasets.functions:Failed to download parquet, fallback on ARFF.
+/home/user/p_c1_2/Target_Journal_Submission/results/raw_grouped/44976_2.jsonl ok 173.0s
+WARNING:openml.datasets.functions:Could not download file from https://data.openml.org/datasets/0004/44974/dataset_44974.pq: Bucket does not exist or is private.
+WARNING:openml.datasets.functions:Failed to download parquet, fallback on ARFF.
+/home/user/p_c1_2/Target_Journal_Submission/results/raw_grouped/44976_4.jsonl ok 169.3s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw_grouped/44974_2.jsonl ok 312.8s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw_grouped/44974_1.jsonl ok 319.0s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw_grouped/44974_0.jsonl ok 333.5s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw_grouped/44974_3.jsonl ok 305.2s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw_grouped/44974_4.jsonl ok 317.1s

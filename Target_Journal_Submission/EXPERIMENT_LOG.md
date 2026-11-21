@@ -57,3 +57,11 @@
    tests/test_ls_exact3.py::test_run_geometry_equals_cellwise_reference. Speed-up 10–60x per call; the
    evaluation was restarted with the new code at 84/310 (first 84 files computed with the reference code,
    numerically identical). Timing results (Experiment 6) are measured with the final implementation.
+14. QUEUE COMPLETE (2026-11-21). Container rebuilt before the grouped-split step; dependencies reinstalled
+   (liac-arff needs `pip install --no-build-isolation`), OpenML hosts allowed in the cloud environment.
+   Grouped task 44976_0 failed with a corrupt ARFF (four workers downloading the same file at once); rerun with
+   one worker after clearing the cache. Results: sarcos and superconductivity unchanged under grouped splits;
+   video_transcoding sets ~7x larger, SDLC smaller than S-NCP (0.88) but larger than BCCP (1.20), BCCP/S-CQR
+   overall coverage 0.875/0.873 over 5 splits (reported, not hidden). Timing: SDLC 13.1 us per test point.
+   build_supplement.py now caches dataset licences/metadata (tables/S1_licences.csv, S2_confirmatory_datasets.csv,
+   seeded from the previous build; Tables S1/S2 byte-identical) because the full ARFF downloads take > 1 h.

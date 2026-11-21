@@ -1779,5 +1779,75 @@
    "upper": 0.7046756644368455,
    "worst": 0.7046756644368455
   }
- ]
+ ],
+ "timing_us_per_point": {
+  "CQR": 0.010303710995529514,
+  "DCP-hist": 3.6894935565612115,
+  "DCP": 0.24097243761289117,
+  "DCP-2p": 0.24804638676376953,
+  "DCP-N": 0.33478027339213867,
+  "DLS-hist": 0.38471539597440785,
+  "DLS": 14.00113285024372,
+  "DLS-2p": 15.535650987762672,
+  "DLS-N": 4.50731400005676,
+  "HPD-split-hist": 12.486950980054706,
+  "HPD-split": 13.097634020359406,
+  "HPD-split-LS2": 15.747696519318438,
+  "HPD-split-N": 4.285212403083489,
+  "Mondrian-\u0177": 0.19476538061806048,
+  "NCP": 0.011819335954399433,
+  "S-CQR": 0.06751402921245792,
+  "S-HPD-hist": 14.14726041678177,
+  "S-HPD": 13.514978971304531,
+  "S-HPD-LS2": 16.070592474121092,
+  "S-HPD-N": 4.26163934108874,
+  "S-NCP": 0.09173925785698242,
+  "BCCP": 0.06325439461103516,
+  "BCCP-hull": 0.12160288673371576,
+  "SCP": 0.013497150471585263,
+  "SDLC-hist": 0.3565940723368557,
+  "SDLC-hist-floor": 0.34552001492252155,
+  "SDLC-hist-hull": 0.3007681347205033,
+  "SDLC": 13.102621182609372,
+  "SDLC-2p": 16.81183473013349,
+  "SDLC-N": 4.565666991570272
+ },
+ "timing_fit_median": {
+  "did": 44976.0,
+  "n_train": 5000.0,
+  "n_pred": 5000.0,
+  "fit_mean": 0.2924514259998432,
+  "fit_scale_with_oof": 0.9969304000001102,
+  "fit_scale_crossfit": 0.3512909690000469,
+  "fit_kde": 0.002918222000062,
+  "build_table": 0.000750132000121,
+  "fit_quantile_pair": 0.6087095780001164,
+  "fit_histogram_classifier": 3.415090323999948,
+  "predict_mean": 0.0586810649999733,
+  "predict_scale": 0.0225321460000031,
+  "predict_histogram": 1.165481156999931
+ },
+ "grouped": {
+  "sarcos": {
+   "sdlc_vs_sncp_grouped": 0.965152005065187,
+   "sdlc_vs_bccp_grouped": 0.8889897336306509,
+   "marg_worst_grouped_max": 0.8894642045377333,
+   "strat_worst_grouped_min": 0.888963838362303,
+   "sdlc_cov_grouped": 0.8982197446502422
+  },
+  "superconductivity": {
+   "sdlc_vs_sncp_grouped": 0.9136387975039356,
+   "sdlc_vs_bccp_grouped": 0.8231843941817352,
+   "marg_worst_grouped_max": 0.8763351035815932,
+   "strat_worst_grouped_min": 0.8794550240212763,
+   "sdlc_cov_grouped": 0.8992926050657489
+  },
+  "video_transcoding": {
+   "sdlc_vs_sncp_grouped": 0.8821648654647453,
+   "sdlc_vs_bccp_grouped": 1.2046876416093564,
+   "marg_worst_grouped_max": 0.7655627697047497,
+   "strat_worst_grouped_min": 0.8519455194518197,
+   "sdlc_cov_grouped": 0.9000635727034243
+  }
+ }
 }

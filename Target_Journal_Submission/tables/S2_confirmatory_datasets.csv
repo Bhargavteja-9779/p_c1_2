@@ -1,0 +1,18 @@
+OpenML ID,Dataset,n (used),p,Distinct y,Licence
+44056,visualizing_soil,"8,641",6,40,Public
+44061,Mercedes_Benz_Greener_Manufacturing,"4,209",1094,"2,545",Public
+44068,particulate-matter-ukair-2017,"394,299",29,"21,599",Open Government Licence (OGL)
+44069,SGEMM_GPU_kernel_performance,"241,600",21,"58,161",CC BY 4.0
+44134,elevators,"16,599",16,61,Public
+44137,Ailerons,"13,750",33,35,Public
+44139,house_16H,"22,784",16,"2,045",Public
+44142,Bike_Sharing_Demand,"17,379",6,869,Public
+44143,nyc-taxi-green-dec-2016,"581,835",9,"1,811",Public
+44145,sulfur,"10,081",6,"9,368",Public
+44146,medical_charges,"163,065",3,"154,891",Public Domain (CC0)
+45032,yprop_4_1,"8,885",42,"1,336",Public
+45034,delays_zurich_transport,"5,465,575",8,"4,082",CCZero
+45041,topo_2_1,"8,885",261,"1,336",Public
+45043,seattlecrime6,"52,031",26,29,CC0
+45046,Allstate_Claims_Severity,"188,318",587,"158,223",Public
+45047,Airlines_DepDelay_1M,"1,000,000",5,629,CC0
