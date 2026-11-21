@@ -37,6 +37,12 @@ def disp(df, name=""):
     return display_df(df, name).to_markdown(index=False, disable_numparse=True)
 
 
+def _lic(m):
+    """Licence as recorded by OpenML; OpenML's placeholder "Public" is not a licence (review round 5)."""
+    v = (m.get("licence", "") or "").strip()
+    return "not stated (OpenML: \"Public\")" if v.lower() in ("", "public") else v
+
+
 def csv(name, **kw):
     return pd.read_csv(TAB / f"{name}.csv", dtype=str, keep_default_na=False, **kw)
 
@@ -53,35 +59,67 @@ def main():
             "**Table S1.** The OpenML-CTR23 datasets used in the main benchmark: size, number of features after "
             "one-hot encoding, skewness and number of distinct values of the target, realised number of calibration "
             "strata $K$, realised training mass of the lowest and highest stratum (nominal 0.10), relative test RMSE "
-            "of the point model, and licence as recorded by OpenML.", ""]
+            "of the point model, licence as recorded by OpenML (\"not stated\" where OpenML records none), and the share of "
+            "test targets outside the domain $\\mathcal{Y}_D$ (automatic misses; mean and maximum over seeds).", ""]
     d1 = csv("D1_datasets")
     lic = {}
     for did in CFG["datasets"]:
         m = load(did)[2]
-        lic[m["name"].replace("_", " ")] = m.get("licence", "") or "not stated"
+        lic[m["name"].replace("_", " ")] = _lic(m)
     d1["Licence"] = d1.Dataset.map(lambda n: lic.get(n, ""))
+    pr = TAB / "T19b_ctr23_profile.csv"
+    if pr.exists():                         # review round 5: OpenML IDs and out-of-domain test targets
+        pr = pd.read_csv(pr)
+        pr["key"] = pr.dataset.str.replace("_", " ")
+        idmap = dict(zip(pr.key, pr.did.astype(str)))
+        ood = dict(zip(pr.key, [f"{100 * a:.2f}/{100 * b:.2f}" for a, b in zip(pr.ood_mean, pr.ood_max)]))
+        d1.insert(0, "OpenML ID", d1.Dataset.map(lambda n: idmap.get(n, "")))
+        d1["Out-of-domain test targets, % (mean/max)"] = d1.Dataset.map(lambda n: ood.get(n, ""))
     out += [d1.to_markdown(index=False, disable_numparse=True), ""]
     rows = []
     os.environ["TSCP_NMAX"] = str(CC.get("n_max", 0))      # the pre-specified subsample used in the replication
     for did in CC["datasets"]:
         X, y, m = load(did)
         rows.append({"OpenML ID": str(did), "Dataset": m["name"], "n (used)": f"{len(y):,}", "p": str(X.shape[1]),
-                     "Distinct y": f"{len(set(y.tolist())):,}", "Licence": m.get("licence", "") or "not stated"})
+                     "Distinct y": f"{len(set(y.tolist())):,}", "Licence": _lic(m)})
+    pr = TAB / "T19_heldout_profile.csv"
+    if pr.exists():                         # review round 5: target scale, atoms, realised strata, out-of-domain
+        pr = pd.read_csv(pr).set_index("did")
+        for r in rows:
+            q = pr.loc[int(r["OpenML ID"])]
+            r["n (full)"] = f"{int(q.n_full):,}"
+            r["Distinct y (full)"] = f"{int(q.distinct_full):,}"
+            r["Largest atom"] = f"{q.largest_atom:.3f}"
+            r["Skewness (full)"] = f"{q.skew_full:.2f}"
+            r["Log scale (curated)"] = "yes" if q.curated_log_scale else "no"
+            r["K"] = f"{int(q.K_min)}" if q.K_min == q.K_max else f"{int(q.K_min)}-{int(q.K_max)}"
+            r["Lowest stratum mass"] = f"{q.lower_mass_min:.3f}-{q.lower_mass_max:.3f}"
+            r["Highest stratum mass"] = f"{q.upper_mass_min:.3f}-{q.upper_mass_max:.3f}"
+            r["Min. calibration points per stratum"] = str(int(q.ncal_min_stratum))
+            r["Out-of-domain test targets, % (max)"] = f"{100 * q.ood_max:.2f}"
     out += ["**Table S2.** Held-out datasets of the confirmatory replication (regression datasets of OpenML suites "
-            "335/336 without source overlap with CTR23; datasets above 50,000 rows subsampled once with seed 2026). "
+            "335/336 without source overlap with CTR23; datasets above 50,000 rows subsampled once with seed 2026; "
+            "\"Distinct y\" on the subsample, \"Distinct y (full)\" on the full data, the quantity the exclusion rule "
+            "uses; realised stratum masses as ranges over seeds, nominal 0.10; \"Log scale (curated)\": the benchmark "
+            "curators supplied the logarithm of the original quantity). yprop_4_1 and topo_2_1 contain identical "
+            "observations and targets. visualizing_soil (transect index) and seattlecrime6 (coded time of day) have "
+            "coded rather than quantitative targets. In house_16H, 52 records with log-price 0 form the whole lowest "
+            "stratum; in yprop_4_1/topo_2_1 a single record has y = 0 while all others lie in [0.845, 1]. "
             "Excluded by content overlap: " + "; ".join(CC["excluded_by_content_overlap_with_CTR23"]) +
             ". Excluded by the distinct-value rule: " + "; ".join(CC["excluded_by_rule_after_download"]) + ".", "",
             pd.DataFrame(rows).to_markdown(index=False, disable_numparse=True), ""]
     os.environ.pop("TSCP_NMAX", None)
     # S2 leakage ---------------------------------------------------------------------------------------
     la = pd.read_csv(TAB / "S2_leakage_audit.csv")
-    la = la[["dataset", "n", "dup_rows_frac", "dup_X_frac", "test_X_in_train_frac_seed0", "missing_frac"]]
-    la.columns = ["Dataset", "n", "Duplicate rows", "Duplicate feature vectors", "Test feature vectors seen in training (seed 0)",
-                  "Missing values"]
+    la = la[["suite", "dataset", "n", "dup_rows_frac", "dup_X_frac", "test_X_in_train_frac_seed0", "test_X_in_train_min",
+             "test_X_in_train_max", "missing_frac"]]
+    la.columns = ["Suite", "Dataset", "n", "Duplicate rows", "Duplicate feature vectors",
+                  "Test feature vectors seen in training (seed 0)", "Min over seeds", "Max over seeds", "Missing values"]
     out += ["# S2. Leakage audit", "",
             "Exact duplicate rows (features and target), duplicate feature vectors, the share of test feature vectors "
             "that also occur in the training split (seed 0), and the share of missing values, recomputed on the final "
-            "data files (scripts/leakage_audit.py). Random splitting keeps rows exchangeable, so the coverage guarantees "
+            "data files (scripts/leakage_audit.py), for the CTR23 and the held-out datasets; the share of test feature "
+            "vectors seen in training is given for seed 0 and as the range over all seeds. Random splitting keeps rows exchangeable, so the coverage guarantees "
             "hold for new rows from the same pool; repeated units (duplicates, repeated videos, repeat sales) mean "
             "that they do not transfer to new units.", "", "**Table S3.** Leakage audit (sorted by the share of test "
             "feature vectors seen in training).", "", md(la, 4), ""]
@@ -161,6 +199,15 @@ def main():
         out += ["**Table S15.** Grouped versus random splits on datasets with repeated units ($\\alpha=0.1$, 5 seeds; "
                 "normalised size; random-split values from the same seeds of the main benchmark).", "",
                 disp(pd.read_csv(d16, dtype=str)), ""]
+        t21 = TAB / "T21_grouped_seed_range.csv"
+        if t21.exists():
+            g21 = pd.read_csv(t21)
+            g21 = g21[g21.method.isin(["SCP", "CQR", "HPD-split", "BCCP", "S-NCP", "S-CQR", "SDLC"])]
+            g21.columns = ["Dataset", "Method", "Marginal cov. (min over seeds)", "Marginal cov. (max)",
+                           "Worst-stratum cov. (min)", "Worst-stratum cov. (max)", "Seeds"]
+            out += ["Table S15 (continued). Grouped splits: range over the five seeds of marginal and worst-stratum "
+                    "coverage (each seed is one calibration set; the guarantees hold on average over calibration sets).",
+                    "", md(g21, 3), ""]
     t18 = TAB / "T18_secondary.csv"
     if t18.exists():
         s = pd.read_csv(t18)
@@ -172,6 +219,25 @@ def main():
         out += ["**Table S17.** Held-out datasets: skewness and octile skewness of the training targets, and size "
                 "comparisons of SDLC by skewness subgroup (post hoc, descriptive).", "", md(sk, 3), "",
                 md(s[s.analysis.str.startswith("subgroup")], 3), ""]
+    t20 = TAB / "T20_review05_sensitivity.csv"
+    if t20.exists():                           # review round 5 (post hoc, from existing results)
+        r5 = json.loads((RES / "statistics_review05.json").read_text())
+        t20 = pd.read_csv(t20).drop(columns=["geo_lo", "geo_hi"])
+        out += ["**Table S17b.** Post hoc checks of the held-out replication and of CTR23 (review round 5; "
+                "scripts/analyze_review05.py; no model was refitted). Size comparisons of SDLC with the stratified "
+                "comparators (per-dataset geometric-mean normalised size, two-sided Wilcoxon signed-rank test, Holm "
+                "over the four comparators within a subset) on: all held-out datasets as pre-specified; the duplicate "
+                "pair yprop_4_1/topo_2_1 merged into one dataset (log-scale mean); continuous targets (at least 100 "
+                "distinct values and largest atom at most 5% of rows); datasets with nominal tail strata (realised "
+                "training mass of the lowest and highest stratum within [0.08, 0.12] in every seed, K = 5); and "
+                "without house_16H.", "", md(t20, 3), ""]
+        tu = pd.read_csv(TAB / "T23_top1_unified.csv")
+        out += ["Table S17b (continued). Coverage of the top 1% of outcomes with one definition in both pipelines "
+                "($y\\ge q_{0.99}$ of the training targets; a seed counts only if the group holds at least 10 test "
+                "points; mean, minimum and maximum over datasets).", "", md(tu, 3), ""]
+        rw = pd.DataFrame([dict(variant=k, **v) for k, v in r5["rw3_sensitivity"].items()])
+        out += ["Table S17b (continued). RW-3 (top-1% coverage of RW-DLC versus SDLC, held-out data, one-sided "
+                "Wilcoxon test): the pre-specified definition ($y>q_{0.99}$) and post hoc variants.", "", md(rw, 3), ""]
     nxt = 18                                  # tables after S17 are numbered in order of appearance
     t17 = TAB / "T17b_rw_tests.csv"
     if t17.exists():
