@@ -52,6 +52,27 @@ pip install -r code/requirements.txt fails on liac-arff (setuptools bug). Workar
 `pip install --no-deps openml==0.15.1 && pip install tqdm xmltodict minio requests python-dateutil`, and copy arff.py from the
 liac-arff sdist (`pip download --no-deps --no-binary :all: liac-arff`) into site-packages. OpenML data download via ARFF fallback works.
 
+
+## CHECKPOINT 2026-11-21 (session practical-sagan; branch claude/practical-sagan-qny271 = dreamy-albattani line + review-6 work)
+Done this session: complexity/deployment text for RW-DLC (02_theory §Computational complexity); experiments/timing_like.py
+(like-for-like SDLC/S-NCP/BCCP timing); scripts/analyze_timing.py (-> tables/D15c, D15d, results/timing_summary.json);
+Supplementary Table S13 = (a) like-for-like timing, (b) RW timing/grid accuracy (build_supplement.py); g_at computes the
+t tail only outside the table (bit-identical, tests/test_density_gat.py); timing_rw.py records peak memory.
+Running when the session stopped (may have died with the container):
+  queue scripts/queue_cycle3.sh (timing_rw -> CTR23 refit fitonly -> run_rw.py ctr23 4), then queue_cycle3b.sh
+  (timing_like.py), then queue_cycle3c.sh (timing_rw.py rerun). Markers in results/experiment_logs/queue_cycle3.log.
+  Review-5 reviewer agent (dataset validity) writing REVIEW/review_05.md — re-run it if the file is missing.
+RESUME: check queue_cycle3.log; relaunch missing steps (all skip finished outputs except timings):
+  cd code && OMP_NUM_THREADS=1 python3 experiments/run_benchmark.py --mode fitonly --out ../results/raw_refit
+  && python3 experiments/run_rw.py ctr23 4 ; then (idle machine) python3 experiments/timing_like.py ; python3 experiments/timing_rw.py
+Then: python3 scripts/analyze_timing.py; analyze_rw (CTR23 table D17_rw_ctr23) ; rewrite 04_results.md "*Computational cost.*"
+paragraph with {{J:timing_summary.json|...}} placeholders (like.SDLC.pred_us_median, like.ratio_pred_sdlc_sncp, like.ratio_e2e_sdlc_sncp,
+like.SDLC.single_p50_us_median, rw.RW-DLC.us_median, rw.ratio_rwdlc_sdlc_grid_median, rw.point_change_max, rw.mean_size_change_max),
+cite Supplementary Table S13 only; add CTR23 RW sentence in RQ4; write REVIEW/response_06.md (issues 1-10; binned KDE for p_Y
+declined for reported results = pre-specified implementation, noted as deployment option), response_05.md; reviews 8-10; final audit.
+Env: deps install needs `pip install --ignore-installed setuptools; pip install --no-build-isolation liac-arff; pip install -r code/requirements.txt`;
+cloud environment "p_c1_2" allows OpenML hosts.
+
 ## Key results (machine-generated; see results/statistics_v3.json)
 RQ1: marginal worst-stratum 0.63–0.78 (26–31/31 below null); stratified ≈0.89 (≤2/31 below null).
 RQ2: price SDLC/DLS geo 1.24; SDLC at α=0.1 smaller than every marginal method at α=0.05 on 23–28/31 while covering tails better.
