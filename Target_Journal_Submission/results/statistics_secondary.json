@@ -1,0 +1,210 @@
+{
+ "ctr23.hull": {
+  "SDLC-hull vs BCCP-hull": {
+   "n": 31,
+   "p": 0.000378243625164032,
+   "p_sign": 0.00019219517707824707,
+   "hl": -0.07653325513956688,
+   "hl_lo": -0.14754824036030642,
+   "hl_hi": -0.03224366684905722,
+   "rbc": -0.6975806451612904,
+   "wins": 26,
+   "losses": 5,
+   "ties": 0,
+   "geo_ratio": 0.9004330134146686,
+   "geo_lo": 0.8202146516743201,
+   "geo_hi": 0.9858201363963892,
+   "hl_ratio": 0.9263221088055924,
+   "hl_ratio_lo": 0.8628208145304374,
+   "hl_ratio_hi": 0.9682706178815449,
+   "p_holm": 0.000756487250328064
+  },
+  "SDLC-hull vs S-NCP-hull": {
+   "n": 31,
+   "p": 0.028926550410687923,
+   "p_sign": 0.010673840530216694,
+   "hl": -0.020549083472146682,
+   "hl_lo": -0.042332689430128995,
+   "hl_hi": -0.0022459699305417413,
+   "rbc": -0.4475806451612903,
+   "wins": 23,
+   "losses": 8,
+   "ties": 0,
+   "geo_ratio": 1.0086692951973544,
+   "geo_lo": 0.9576978191787129,
+   "geo_hi": 1.0794541869987389,
+   "hl_ratio": 0.9796606101501341,
+   "hl_ratio_lo": 0.9585508277906695,
+   "hl_ratio_hi": 0.9977565503727278,
+   "p_holm": 0.028926550410687923
+  }
+ },
+ "ctr23.tost5": {
+  "S-NCP": {
+   "p_tost": 0.10832744045183063,
+   "equivalent": false,
+   "hl_ratio": 0.9641879229841589,
+   "geo_ratio": 0.9637667351082613
+  },
+  "S-HPD": {
+   "p_tost": 0.28411169024184346,
+   "equivalent": false,
+   "hl_ratio": 0.9558116803285179,
+   "geo_ratio": 0.9490290190734848
+  }
+ },
+ "ctr23.reliability": {
+  "BCCP": {
+   "n": 31,
+   "reliably_smaller": 17,
+   "reliably_larger": 0
+  },
+  "S-NCP": {
+   "n": 31,
+   "reliably_smaller": 18,
+   "reliably_larger": 0
+  },
+  "S-CQR": {
+   "n": 31,
+   "reliably_smaller": 26,
+   "reliably_larger": 1
+  },
+  "S-HPD": {
+   "n": 31,
+   "reliably_smaller": 18,
+   "reliably_larger": 0
+  }
+ },
+ "confirmatory.hull": {
+  "SDLC-hull vs BCCP-hull": {
+   "n": 17,
+   "p": 0.00665283203125,
+   "p_sign": 0.049041748046875,
+   "hl": -0.08300336245518736,
+   "hl_lo": -0.18570001030530653,
+   "hl_hi": -0.025352956205098365,
+   "rbc": -0.7254901960784313,
+   "wins": 13,
+   "losses": 4,
+   "ties": 0,
+   "geo_ratio": 0.8942786153746796,
+   "geo_lo": 0.8201435340796138,
+   "geo_hi": 0.9635180835433599,
+   "hl_ratio": 0.9203480525858383,
+   "hl_ratio_lo": 0.8305227058676845,
+   "hl_ratio_hi": 0.9749657310869609,
+   "p_holm": 0.0133056640625
+  },
+  "SDLC-hull vs S-NCP-hull": {
+   "n": 17,
+   "p": 0.7118988037109375,
+   "p_sign": 0.629058837890625,
+   "hl": -0.00420243361652535,
+   "hl_lo": -0.025983908981562998,
+   "hl_hi": 0.04658066267712685,
+   "rbc": -0.1111111111111111,
+   "wins": 10,
+   "losses": 7,
+   "ties": 0,
+   "geo_ratio": 1.0453715034431024,
+   "geo_lo": 0.9799076303910396,
+   "geo_hi": 1.1615699519141458,
+   "hl_ratio": 0.9958063842511329,
+   "hl_ratio_lo": 0.9743507677787785,
+   "hl_ratio_hi": 1.0476825845423174,
+   "p_holm": 0.7118988037109375
+  }
+ },
+ "confirmatory.tost5": {
+  "S-NCP": {
+   "p_tost": 0.054443359375,
+   "equivalent": false,
+   "hl_ratio": 0.9730022885147203,
+   "geo_ratio": 0.9792765346451198
+  },
+  "S-HPD": {
+   "p_tost": 0.0039520263671875,
+   "equivalent": true,
+   "hl_ratio": 0.9791739475213163,
+   "geo_ratio": 0.9882844020093741
+  }
+ },
+ "confirmatory.reliability": {
+  "BCCP": {
+   "n": 17,
+   "reliably_smaller": 14,
+   "reliably_larger": 0
+  },
+  "S-NCP": {
+   "n": 17,
+   "reliably_smaller": 8,
+   "reliably_larger": 1
+  },
+  "S-CQR": {
+   "n": 17,
+   "reliably_smaller": 12,
+   "reliably_larger": 0
+  },
+  "S-HPD": {
+   "n": 17,
+   "reliably_smaller": 5,
+   "reliably_larger": 1
+  }
+ },
+ "confirmatory.skew_groups": {
+  "|skew|>1": {
+   "BCCP": {
+    "n": 7,
+    "geo_ratio": 0.8286142273012386,
+    "wins": 5,
+    "losses": 2
+   },
+   "S-NCP": {
+    "n": 7,
+    "geo_ratio": 1.0169700126490409,
+    "wins": 5,
+    "losses": 2
+   },
+   "S-CQR": {
+    "n": 7,
+    "geo_ratio": 0.8699409421142841,
+    "wins": 5,
+    "losses": 2
+   },
+   "S-HPD": {
+    "n": 7,
+    "geo_ratio": 1.0043059354658708,
+    "wins": 6,
+    "losses": 1
+   }
+  },
+  "|skew|<=1": {
+   "BCCP": {
+    "n": 10,
+    "geo_ratio": 0.8818468958030579,
+    "wins": 9,
+    "losses": 1
+   },
+   "S-NCP": {
+    "n": 10,
+    "geo_ratio": 0.9537254872012719,
+    "wins": 10,
+    "losses": 0
+   },
+   "S-CQR": {
+    "n": 10,
+    "geo_ratio": 0.8121312485648002,
+    "wins": 10,
+    "losses": 0
+   },
+   "S-HPD": {
+    "n": 10,
+    "geo_ratio": 0.9772216479063592,
+    "wins": 9,
+    "losses": 1
+   }
+  }
+ },
+ "confirmatory.n_skewed": 7,
+ "confirmatory.skew_median": 0.8601670243378043
+}

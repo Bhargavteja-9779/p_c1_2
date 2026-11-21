@@ -62,3 +62,5 @@
 ../results/raw_refit/44962_0.jsonl skip
 ../results/raw_refit/44965_0.jsonl skip
 ../results/raw_refit/44979_1.jsonl skip
+../results/raw_refit/44963_1.jsonl ok 135.3s
+../results/raw_refit/44984_1.jsonl ok 17.3s
