@@ -108,7 +108,7 @@ When the user says "start"/"continue": work on branch claude/zen-pasteur-413mhs 
 DONE: all compute (queue 3, CTR23 RW 310 runs, timing, temporal splits, dedicated 1% strata on held-out + CTR23);
 reviews 1-9 answered (REVIEW/response_01, 02_04, 05, 06, 07, 08, 09 — no "pending" items left); manuscript, supplement, PDFs rebuilt.
 REMAINING (about 1 hour):
-1. Review 10 (final adversarial, ONE agent). If REVIEW/review_10.md does not exist, re-run it: one general-purpose agent with the
+1. Review 10 is DONE: REVIEW/review_10.md exists (minor revision, 16 text-only issues: title mismatch on title page/cover letter; headline RW numbers must use the pre-specified definition or be labelled; 'about a third' claims wrong (0.749 overall; 0.55 on 12 sparse datasets, 0.911 on the rest); §6.5 shift sentence; temporal/grouped overstatements; skewness limitation wording; three SDLC top-1% values; 'review round' in S17b captions; cross-refs §5.7, Table B1, S8.3b; broken S8 sentences; Fig. 6 caption; Remark A.1; cover letter 'plans'). Skip to step 2. (Only if the file were missing, re-run it: one general-purpose agent with the
    brief "final adversarial reviewer for JKSU-CIS: check internal consistency of all numbers (abstract, intro, conclusion,
    cover letter vs body and results/*.json), broken text/cross-references after restructuring (moved material in
    manuscript/src/supp_extra.md = Supplement S8, equations renumbered), errors in post hoc scripts (analyze_review05.py,
