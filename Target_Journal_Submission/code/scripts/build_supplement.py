@@ -1,5 +1,5 @@
 """Build the Supplementary Material (manuscript/Supplementary_Material.docx and .pdf) from generated tables,
-figures and result files. Numbering: Sections S1-S6, Tables S1-S17, Figures S1-S3 (cited in the main text).
+figures and result files. Numbering: Sections S1-S5, Tables S1-S17, Figures S1-S3 (cited in the main text).
 No number is typed by hand."""
 from __future__ import annotations
 
@@ -196,13 +196,6 @@ def main():
             "**Table S17.** Size comparisons of SDLC with the stratified comparators in the three implementations "
             "($\\alpha=0.1$, 31 datasets; negative log ratios favour SDLC).", "",
             pd.DataFrame(rows).to_markdown(index=False, disable_numparse=True), ""]
-    # S6 pre-registration -------------------------------------------------------------------------------------
-    pre = (TOP / "PREREGISTRATION_confirmatory.md").read_text().split("\n", 1)[1]
-    pre = pre.replace("\n## ", "\n### ")
-    pre = __import__("re").sub(r"\s*\(branch `[^`]*`\)", "", pre)
-    out += ["# S6. Pre-registered analysis plan of the confirmatory replication", "",
-            "Reproduced from `PREREGISTRATION_confirmatory.md` (unchanged except that a working-branch name is omitted), "
-            "committed to the public repository (commit `ccba99b`) before any confirmatory evaluation.", "", pre]
     text = "\n".join(out)
     BUILD.mkdir(parents=True, exist_ok=True)
     src = BUILD / "supplementary_filled.md"

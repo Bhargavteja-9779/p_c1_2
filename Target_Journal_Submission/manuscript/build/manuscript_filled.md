@@ -233,7 +233,7 @@ Following @demsar2006statistical, the unit of analysis is the dataset: metrics a
 
 *What changed afterwards.* (1) An audit found that string-typed features had been parsed as missing values (month and day in the forest-fire data); the loader was corrected and every dataset with string-typed features was re-processed and recomputed. (2) After the first run we learned of BCCP and BFQR; BCCP's hull form, the decile-stratified variants and tail-alert metrics were added. (3) The first implementation evaluated all density-based sets on a fixed grid of 200 equal-mass cells of the *marginal* target distribution, which inflates sets whenever the conditional density is narrower than a cell, for baselines and proposed method alike. Under that implementation the size comparison with BCCP was not significant (Supplementary Section S5). (4) A review of the second run identified further weaknesses that we corrected for every method: the noise density was fitted to residuals standardised by an in-sample scale model (now cross-fitted), the density had an ad hoc floor (now a defensive $t$ component), interval methods used closed stratum pieces (now half-open), the domain included impossible negative values (now truncated), and the set geometry was computed on a per-$x$ grid (now stratum-exact). All reported results use the final implementation; earlier results are archived with the code.
 
-*Consequences.* Because the implementation changed after results had been seen, every size comparison on CTR23 (RQ3) is treated as exploratory. The coverage results (RQ1, RQ2, RQ4) are unaffected in direction by any of these changes. To test the size comparisons, we fixed a confirmatory analysis plan (hypotheses, tests, decision rules and analysis script; Supplementary Section S6) and committed it to the version-controlled project repository (commit `ccba99b`, whose timestamp precedes every confirmatory evaluation) *before* evaluating any method on the 17 held-out datasets. Section 6.5 reports the outcome whatever its direction.
+*Consequences.* Because the implementation changed after results had been seen, every size comparison on CTR23 (RQ3) is treated as exploratory. The coverage results (RQ1, RQ2, RQ4) are unaffected in direction by any of these changes. To test the size comparisons, we fixed a confirmatory analysis plan (hypotheses, tests, decision rules and analysis script; file `PREREGISTRATION_confirmatory.md` in the code repository) and committed it to the version-controlled project repository (commit `ccba99b`, whose timestamp precedes every confirmatory evaluation) *before* evaluating any method on the 17 held-out datasets. Section 6.5 reports the outcome whatever its direction.
 
 
 # 6. Results
@@ -360,7 +360,7 @@ The synthetic study separates the score from its estimate (Table 6). It covers f
 
 ## 6.5 Confirmatory replication on held-out datasets
 
-On the 17 held-out datasets, analysed exactly as pre-registered (Supplementary Section S6), all four hypotheses were supported (Table 7).
+On the 17 held-out datasets, analysed exactly as pre-registered, all four hypotheses were supported (Table 7).
 
 * *C-H1 (tail coverage).* SDLC's worst-stratum coverage exceeded that of each of the seven marginal and covariate-adaptive methods (Holm $p$ < 0.001).
 * *C-H2 (validity).* Its worst-stratum coverage fell below the 5% quantile of the exact-validity null reference on 1 of 17 datasets (critical value 3).

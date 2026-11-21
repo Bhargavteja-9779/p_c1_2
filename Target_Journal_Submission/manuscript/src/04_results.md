@@ -48,7 +48,7 @@ The synthetic study separates the score from its estimate (Table [-@tbl:syntheti
 
 ## Confirmatory replication on held-out datasets {#sec:confirmatory}
 
-On the {{conf.n_eval}} held-out datasets, analysed exactly as pre-registered (Supplementary Section S6), all four hypotheses were supported (Table [-@tbl:confirmatory]).
+On the {{conf.n_eval}} held-out datasets, analysed exactly as pre-registered, all four hypotheses were supported (Table [-@tbl:confirmatory]).
 
 * *C-H1 (tail coverage).* SDLC's worst-stratum coverage exceeded that of each of the seven marginal and covariate-adaptive methods (Holm $p$ {{C-H1.maxp}}).
 * *C-H2 (validity).* Its worst-stratum coverage fell below the 5% quantile of the exact-validity null reference on {{C-H2.below}} of {{conf.n_eval}} datasets (critical value {{C-H2.crit}}).
