@@ -78,50 +78,62 @@ regression</h1>
 address]</p>
 <div class="abstract">
 <div class="abstract-title">Abstract</div>
-<p>Prediction intervals for regression are usually calibrated to hold on
-average over all outcomes, so they can systematically miss the rare,
-extreme outcomes that matter most in imbalanced regression. We study
-stratum-wise coverage, the probability that a prediction set contains
-the outcome given that the outcome lies in a target stratum such as the
-upper tail. Even the oracle interval with exact covariate-conditional
-coverage under-covers the tails: in a Gaussian model with half of the
-variance explained it covers 70.5% of the top decile. Calibrating
-conformal thresholds within target strata guarantees stratum-wise
-coverage for any score, so the score determines only efficiency. We show
-that conditional-density level sets with stratum-specific thresholds are
-the smallest stratum-valid sets, that their plug-in conformal version is
-asymptotically optimal, and that the gain over a normalised residual
-comes from reallocating coverage across inputs. The resulting method,
-stratified density-level conformal prediction (SDLC), was compared with
-13 procedures on 31 OpenML-CTR23 datasets. At a nominal 90%, marginal
-and covariate-adaptive methods covered only 63.0%–78.3% of the outcomes
-in their worst-covered stratum, whereas stratified methods were
-consistent with exact validity. SDLC gave the smallest stratum-valid
-sets, smaller than bin-conditional conformal prediction on 24 of 31
-datasets, and a pre-registered replication on 17 held-out datasets
-confirmed the ordering (size ratios between 0.841 and 0.984). Gains over
-a stratified normalised residual were small and came with lower coverage
-of the noisiest inputs. A decision study shows when dedicated conformal
-tail classifiers are preferable for alerts. Code and raw results are
-released.</p>
+<p>Expert systems that value, insure or inspect are judged by rare,
+extreme outcomes, yet their prediction intervals hold only on average.
+In a house-valuation benchmark, standard 90% conformal intervals covered
+only 48.7% of the most expensive tenth of sales. We study stratum-wise
+coverage: the probability that a set contains the outcome given that the
+outcome lies in a target stratum, such as the upper tail. Even the
+oracle interval with exact covariate-conditional coverage under-covers
+the tails: in a Gaussian model with half of the variance explained it
+covers 70.5% of the top decile. Calibrating conformal thresholds within
+target strata guarantees it for any score, so the score determines only
+efficiency. We show that conditional-density level sets with
+stratum-specific thresholds are the smallest stratum-valid sets, that
+their plug-in conformal version is asymptotically optimal, and that the
+gain over a normalised residual comes from reallocating coverage across
+inputs. The resulting stratified density-level conformal prediction
+(SDLC) was compared with 13 procedures on 31 OpenML-CTR23 datasets. At a
+nominal 90%, marginal and covariate-adaptive methods covered only
+63.0%–78.3% of their worst-covered stratum, whereas stratified methods
+were consistent with exact validity. SDLC gave the smallest
+stratum-valid sets, smaller than bin-conditional conformal prediction on
+24 of 31 datasets, and a pre-registered replication on 17 held-out
+datasets confirmed the ordering (size ratios between 0.841 and 0.984).
+Gains over a stratified normalised residual were small and came with
+lower coverage of the noisiest inputs. A decision study shows when
+dedicated tail classifiers are preferable for alerts.</p>
 </div>
 </header>
 <p><strong>Keywords:</strong> Conformal prediction; Imbalanced
 regression; Prediction intervals; Uncertainty quantification; Mondrian
 calibration; Extreme values; Distribution shift</p>
 <h1 id="introduction">1. Introduction</h1>
-<p>Many regression problems that intelligent systems are asked to solve
-are judged by how they handle the <em>rare</em> outcomes: the unusually
-expensive property, the exceptional salary, the extreme load on a power
-grid, the very toxic compound. These outcomes are rare by definition, so
-they are under-represented in training data, and models trained by
-minimising average loss shrink their predictions towards the bulk of the
-target distribution. This is the setting of <em>imbalanced
-regression</em> <span class="citation" data-cites="branco2016survey ribeiro2020imbalanced yang2021delving">(<a href="#ref-branco2016survey" role="doc-biblioref">Branco et al.,
+<p>Expert systems that price, insure, inspect or allocate resources are
+increasingly required to report not only a prediction but how far the
+truth may be from it. Automated property valuation, salary benchmarking,
+load forecasting for power grids and toxicity screening share one
+feature: the costly errors occur on <em>rare, extreme</em> outcomes. An
+understated valuation of an expensive house misprices a mortgage or a
+tax assessment; an underestimated peak load or toxicity is a safety
+problem. These outcomes are rare by definition, so they are
+under-represented in training data, and models trained by minimising
+average loss shrink their predictions towards the bulk of the target
+distribution. This is the setting of <em>imbalanced regression</em>
+<span class="citation" data-cites="branco2016survey ribeiro2020imbalanced yang2021delving">(<a href="#ref-branco2016survey" role="doc-biblioref">Branco et al.,
 2017a</a>; <a href="#ref-ribeiro2020imbalanced" role="doc-biblioref">Ribeiro and Moniz, 2020</a>; <a href="#ref-yang2021delving" role="doc-biblioref">Yang et al.,
 2021</a>)</span>, where a growing literature re-weights, re-samples or
 re-parameterises models so that point predictions for rare targets
 become more accurate.</p>
+<p>The problem is easy to overlook because standard uncertainty reports
+look correct on average. In the King County house-sales data (one split
+of our benchmark), a split-conformal 90% interval around a
+gradient-boosting model covered 88.7% of all test sales but only 48.7%
+of the 563 sales in the top tenth of the training prices (at least
+$895,000). The prices it missed exceeded its upper bound by a median of
+$125,581. Conformalised quantile regression covered 74.2% of these
+sales. Calibrating within target strata, the approach studied here,
+covered 88.5% (Section 6.7).</p>
 <p>Point predictions are only half of what a decision maker needs.
 Prediction <em>sets</em> (or intervals) with a coverage guarantee state
 how far the truth may be from the prediction, and conformal prediction
@@ -137,7 +149,12 @@ extreme, how often does the set contain it?</strong> A marginal
 guarantee is silent on this question, because the frequent bulk of the
 distribution can be over-covered while the rare tails are under-covered
 and the average still equals
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>−</mo><mi>α</mi></mrow><annotation encoding="application/x-tex">1-\alpha</annotation></semantics></math>.</p>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>−</mo><mi>α</mi></mrow><annotation encoding="application/x-tex">1-\alpha</annotation></semantics></math>.
+For an expert system the natural requirement is outcome-conditional and
+auditable: <em>among the cases whose outcome turns out to be extreme,
+the prediction set must contain the outcome at a stated rate.</em> An
+auditor can check this requirement from held-out outcomes alone, without
+access to the model.</p>
 <p>A large body of work makes conformal sets adapt to the covariates, so
 that coverage holds approximately conditionally on
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math>
@@ -166,22 +183,28 @@ heavily skewed distribution of conflict fatalities, and <span class="citation" d
 calibrate within bins of the outcome to obtain equal coverage across
 groups. Its finite-sample bin-wise validity is an instance of Mondrian
 (label-conditional) validity <span class="citation" data-cites="vovk2005alrw vovk2013conditional">(<a href="#ref-vovk2013conditional" role="doc-biblioref">Vovk, 2013</a>; <a href="#ref-vovk2005alrw" role="doc-biblioref">Vovk et al.,
-2005</a>)</span>. Because the guarantee holds for any score, the open
-questions concern the score: which score makes stratum-valid sets
-smallest, where the gain comes from and what it costs. Two further
-questions are how the guarantee behaves when the target distribution
-shifts, and whether the answers hold beyond the data on which they were
-found. This paper makes four contributions.</p>
+2005</a>)</span>. What has been missing is the evidence and the theory
+that a system designer needs to adopt the device. Is the requirement
+really unmet by covariate-adaptive methods, or only by poorly estimated
+ones? Because the guarantee holds for any score, which score makes
+stratum-valid sets smallest, where does the gain come from and what does
+it cost? How does the guarantee behave when the target distribution
+shifts, and is a prediction set the right tool when the decision is a
+simple alert? Finally, do the answers hold beyond the data on which they
+were found? This paper answers these questions with four contributions.
+Stratified calibration itself is not one of them.</p>
 <ol type="1">
-<li><strong>Theory of stratum-wise coverage.</strong> We quantify how
-far the oracle covariate-conditional set falls short in the tails: in a
-Gaussian model with half of the variance explained, it covers 70.5% of
-the top-decile outcomes (Proposition 1). Monte Carlo extensions to
-heavy-tailed signals and skewed noise show that the shortfall persists
-but that its shape depends on the model. For the oracle problem,
-conditional-density level sets with stratum-specific thresholds minimise
-expected size among all sets with stratum-wise coverage (Proposition 2),
-the per-stratum form of known level-set results <span class="citation" data-cites="lei2013distribution sadinle2019least kiyani2024length">(<a href="#ref-kiyani2024length" role="doc-biblioref">Kiyani et al.,
+<li><strong>Theory of stratum-wise coverage.</strong> We show that the
+requirement cannot be met by improving covariate-conditional coverage,
+and we quantify how far the oracle covariate-conditional set falls short
+in the tails: in a Gaussian model with half of the variance explained,
+it covers 70.5% of the top-decile outcomes (Proposition 1). Monte Carlo
+extensions to heavy-tailed signals and skewed noise show that the
+shortfall persists but that its shape depends on the model. For the
+oracle problem, conditional-density level sets with stratum-specific
+thresholds minimise expected size among all sets with stratum-wise
+coverage (Proposition 2), the per-stratum form of known level-set
+results <span class="citation" data-cites="lei2013distribution sadinle2019least kiyani2024length">(<a href="#ref-kiyani2024length" role="doc-biblioref">Kiyani et al.,
 2024</a>; <a href="#ref-lei2013distribution" role="doc-biblioref">Lei et
 al., 2013</a>; <a href="#ref-sadinle2019least" role="doc-biblioref">Sadinle et al., 2019</a>)</span>. We prove that
 their plug-in conformal version is asymptotically size-optimal under
@@ -206,12 +229,16 @@ and HPD scores, an ablation that isolates each component of the density
 score, and seven marginal or covariate-adaptive methods. The size
 comparisons are then replicated on 17 held-out datasets under an
 analysis plan that was made public before evaluation.</li>
-<li><strong>Decision-oriented evidence.</strong> We evaluate tail alerts
-derived from prediction sets against dedicated conformal tail
-classifiers and conformal selection <span class="citation" data-cites="jin2023selection">(<a href="#ref-jin2023selection" role="doc-biblioref">Jin and Candès, 2023</a>)</span>, with
-expected-cost curves for valuation problems, and we analyse robustness
-to target shift, imbalance-aware training, a second learner family, the
-miscoverage level, the strata and the calibration-set size.</li>
+<li><strong>Decision-oriented evidence for deployment.</strong> We
+evaluate tail alerts derived from prediction sets against dedicated
+conformal tail classifiers and conformal selection <span class="citation" data-cites="jin2023selection">(<a href="#ref-jin2023selection" role="doc-biblioref">Jin and Candès,
+2023</a>)</span>, with expected-cost curves for valuation problems, and
+we analyse robustness to target shift, imbalance-aware training, a
+second learner family, the miscoverage level, the strata and the
+calibration-set size. A valuation case study expresses the consequences
+in money, and a five-point deployment guide (Section 7) states when to
+use SDLC, a simpler stratified score or a dedicated tail
+classifier.</li>
 </ol>
 <p>The remainder of the paper is organised as follows. Section 2 reviews
 related work. Section 3 formalises the problem and analyses the oracle
@@ -1955,7 +1982,7 @@ SDLC relative to the single-threshold density level set (DLS) the factor
 was 1.24 (1.12–1.45), with a median of 1.11, for a gain in worst-stratum
 coverage of 0.231 (between 0.126 and 0.260 across scores). The price was
 concentrated: it exceeded 1.5 on only 3 datasets for SDLC (Section
-6.9).</p>
+6.10).</p>
 <p>A fairer view of the price compares stratified sets with marginal
 sets that buy tail coverage by lowering
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
@@ -2123,7 +2150,7 @@ SDLC was smaller on 27 datasets (Holm
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
 &lt; 0.001; Hodges–Lehmann ratio 0.962), but the gain was small and its
 geometric-mean ratio, 0.975 (0.941–1.020), was pulled towards one by a
-few datasets with large losses (Section 6.9). When an interval is
+few datasets with large losses (Section 6.10). When an interval is
 required, SDLC-hull was smaller than BCCP-hull (ratio 0.903, 25/6),
 whereas against S-NCP-hull the median favoured SDLC-hull (23/8,
 Hodges–Lehmann ratio 0.979) and the geometric mean did not (1.014).
@@ -2875,7 +2902,26 @@ means over datasets): marginal coverage (left) and coverage of the upper
 stratum (right) under the positive control and upward
 tilts.</figcaption>
 </figure>
-<h2 id="tail-alerts-and-decisions-rq5">6.7 Tail alerts and decisions
+<h2 id="valuation-case-study">6.7 Valuation case study</h2>
+<p>Two of the benchmark datasets are house-price valuation problems, a
+typical expert-system application in which an understated price for an
+expensive property is costly. For seed 0 we expressed the results in
+money (Supplementary code
+<code>experiments/case_study_dollars.py</code>; one split, so the
+numbers illustrate rather than estimate). In King County the top stratum
+contained 563 test sales of at least $895,000 (median $1,185,000).
+Split-conformal intervals covered 48.7% of them and missed 289; the
+missed prices exceeded the upper bound by a median of $125,581 and by
+$42,312,252 in total. CQR missed 145 (median shortfall $108,252) and
+HPD-split 103. The stratified methods missed 77 (BCCP), 64 (S-NCP) and
+65 (SDLC), against 56 expected at the nominal level, and SDLC’s sets for
+these sales were narrower than those of S-NCP and CQR (mean width
+$765,828 against $951,248 and $842,783). Miami showed the same pattern:
+split-conformal intervals covered 40.9% of the 357 sales of at least
+$705,000, CQR 80.1% and SDLC 88.8%, again with the narrowest stratified
+sets. All methods had close to 90% overall coverage, so an
+average-coverage report would not have revealed the difference.</p>
+<h2 id="tail-alerts-and-decisions-rq5">6.8 Tail alerts and decisions
 (RQ5)</h2>
 <p>A set that intersects the upper stratum raises an alert. Every
 stratified method guarantees an alert recall of at least 0.9; their mean
@@ -3096,7 +3142,7 @@ per unit of upper-tail alert rules as a function of the cost ratio
 for three valuation datasets (means over 10 splits,
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><mn>0.1</mn></mrow><annotation encoding="application/x-tex">\alpha=0.1</annotation></semantics></math>).</figcaption>
 </figure>
-<h2 id="sensitivity-analyses-rq6">6.8 Sensitivity analyses (RQ6)</h2>
+<h2 id="sensitivity-analyses-rq6">6.9 Sensitivity analyses (RQ6)</h2>
 <p><em>Miscoverage level and strata.</em> The conclusions held at
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><mn>0.05</mn></mrow><annotation encoding="application/x-tex">\alpha=0.05</annotation></semantics></math>
 and
@@ -3185,7 +3231,7 @@ needs, and at most 3.6 s on one thread (Supplementary Table S14); the
 kernel density and table took at most 0.20 s. The cost of SDLC is
 therefore dominated by the gradient-boosted models that every
 location–scale method shares.</p>
-<h2 id="error-analysis">6.9 Error analysis</h2>
+<h2 id="error-analysis">6.10 Error analysis</h2>
 <p>Where does stratification cost the most, and where does SDLC lose to
 simpler scores? The price of stratum-wise validity (SDLC relative to
 DLS) rose with the skewness of the target (Spearman

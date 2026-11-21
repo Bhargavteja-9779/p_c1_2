@@ -1,0 +1,104 @@
+{
+ "kings_county": {
+  "n_test": 5404,
+  "n_top": 563,
+  "top_threshold": 895000.0,
+  "expected_missed": 56.300000000000004,
+  "top_median_price": 1185000.0,
+  "SCP": {
+   "top_coverage": 0.4866785079928952,
+   "top_missed": 289,
+   "coverage": 0.887120651369356,
+   "mean_size_top": 271296.453125,
+   "median_shortfall": 125580.6796875,
+   "total_shortfall": 42312251.6875
+  },
+  "CQR": {
+   "top_coverage": 0.7424511545293073,
+   "top_missed": 145,
+   "coverage": 0.8900814211695041,
+   "mean_size_top": 842783.1311056839,
+   "median_shortfall": 108252.265625,
+   "total_shortfall": 25766824.8125
+  },
+  "HPD-split": {
+   "top_coverage": 0.8170515097690941,
+   "top_missed": 103,
+   "coverage": 0.8915618060695781,
+   "mean_size_top": 784004.1720342333
+  },
+  "BCCP": {
+   "top_coverage": 0.8632326820603907,
+   "top_missed": 77,
+   "coverage": 0.8932272390821614,
+   "mean_size_top": 652098.6664631439,
+   "median_shortfall": 167712.59375,
+   "total_shortfall": 15286457.5
+  },
+  "S-NCP": {
+   "top_coverage": 0.8863232682060391,
+   "top_missed": 64,
+   "coverage": 0.8963730569948186,
+   "mean_size_top": 951247.8795509872,
+   "median_shortfall": 96911.87577727844,
+   "total_shortfall": 8878813.897398386
+  },
+  "SDLC": {
+   "top_coverage": 0.8845470692717584,
+   "top_missed": 65,
+   "coverage": 0.890821613619541,
+   "mean_size_top": 765827.5048993283
+  }
+ },
+ "miami_housing": {
+  "n_test": 3483,
+  "n_top": 357,
+  "top_threshold": 705000.0,
+  "expected_missed": 35.7,
+  "top_median_price": 1023000.0,
+  "SCP": {
+   "top_coverage": 0.40896358543417366,
+   "top_missed": 211,
+   "coverage": 0.8983634797588286,
+   "mean_size_top": 197262.0625,
+   "median_shortfall": 101153.40625,
+   "total_shortfall": 19661637.0625
+  },
+  "CQR": {
+   "top_coverage": 0.8011204481792717,
+   "top_missed": 71,
+   "coverage": 0.9000861326442722,
+   "mean_size_top": 825597.0586922269,
+   "median_shortfall": 79040.1875,
+   "total_shortfall": 10312323.1875
+  },
+  "HPD-split": {
+   "top_coverage": 0.865546218487395,
+   "top_missed": 48,
+   "coverage": 0.9055412001148435,
+   "mean_size_top": 744649.3321869036
+  },
+  "BCCP": {
+   "top_coverage": 0.896358543417367,
+   "top_missed": 37,
+   "coverage": 0.9015216767154751,
+   "mean_size_top": 675455.2441351541,
+   "median_shortfall": 111704.5,
+   "total_shortfall": 3521822.65625
+  },
+  "S-NCP": {
+   "top_coverage": 0.8823529411764706,
+   "top_missed": 42,
+   "coverage": 0.9084122882572495,
+   "mean_size_top": 772193.8957217397,
+   "median_shortfall": 85926.08072438551,
+   "total_shortfall": 4618717.218001654
+  },
+  "SDLC": {
+   "top_coverage": 0.8879551820728291,
+   "top_missed": 40,
+   "coverage": 0.9046798736721218,
+   "mean_size_top": 654506.5807703886
+  }
+ }
+}
