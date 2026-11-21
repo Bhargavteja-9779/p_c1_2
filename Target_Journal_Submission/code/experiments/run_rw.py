@@ -163,6 +163,8 @@ def run(suite, did, seed):
     d_t = np.searchsorted(dec, yt, side="right")
     q01, q99 = np.quantile(ytr, [0.01, 0.99])
     top, bot = yt > q99, yt < q01
+    # review 5 (issue 5): definition of the main pipeline (half-open groups: y >= q99, y < q01; evaluate_from_cache3)
+    top_h, bot_h = yt >= q99, yt < q01
     ess = {k: float(PHI[k][1].sum() ** 2 / (PHI[k][1] ** 2).sum()) for k in PHI}
     rows = []
     for m in methods:
@@ -175,6 +177,8 @@ def run(suite, did, seed):
                          decile_cov=dcov, macro_decile=float(np.nanmean(dcov)), worst_decile=float(np.nanmin(dcov)),
                          top1_cov=float(cv[top].mean()) if top.any() else np.nan, n_top1=int(top.sum()),
                          bot1_cov=float(cv[bot].mean()) if bot.any() else np.nan, n_bot1=int(bot.sum()),
+                         top1h_cov=float(cv[top_h].mean()) if top_h.any() else np.nan, n_top1h=int(top_h.sum()),
+                         bot1h_cov=float(cv[bot_h].mean()) if bot_h.any() else np.nan, n_bot1h=int(bot_h.sum()),
                          size=float(size[m].mean() / sd), empty=float((size[m] == 0).mean()),
                          ess_U=ess["U"], ess_H=ess["H"], inf_thr=inf_thr.get(m, np.nan), tau=tau,
                          grid_dy_over_sd=float(dy / sd), seconds=time.perf_counter() - t0))
