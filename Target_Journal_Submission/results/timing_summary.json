@@ -66,6 +66,8 @@
   "point_change_max": 0.3335833958487265,
   "point_change_max_did": 44069,
   "n_datasets": 17,
+  "peak_MB_G4000_max": 201.84043502807617,
+  "peak_MB_G16000_max": 807.0364036560059,
   "ratio_rwdlc_exact_sdlc_median": 10.752987801913829
  }
 }

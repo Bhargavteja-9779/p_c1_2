@@ -394,6 +394,128 @@ Exact duplicate rows (features and target), duplicate feature vectors, the share
 | TC-H       | 0.905    | 0.272  | 0.537       | 0.156     | 0.210     | 0.277      | 0.410      | 21                   |
 | TC-LS      | 0.906    | 0.284  | 0.538       | 0.169     | 0.224     | 0.292      | 0.427      | 16                   |
 
+**Table S13.** Computational cost (seed 0, one CPU thread; median of three repetitions after a discarded warm-up). (a) SDLC, S-NCP and BCCP on the OpenML-CTR23 datasets, timed with identical boundaries: calibration = from the calibration labels and model outputs to the stratum thresholds; batch prediction = from the point and scale predictions and the thresholds to the sets of the whole test set, without labels; single query = the same for one test point (200 random test points). Hardware: Intel(R) Xeon(R) Processor @ 2.10GHz, 4 cores, Python 3.13.18, NumPy 2.5.3; BLAS/OpenMP threads fixed to 1 before import and checked with threadpoolctl; machine otherwise idle (load average 4.00 at start).
+
+(a)
+
+| Dataset                       | Method   | n cal   | n test   | K   | Calibration (ms)   | Batch prediction (µs/point)   | Single query p50 (µs)   | Single query p99 (µs)   |
+|:------------------------------|:---------|:--------|:---------|:----|:-------------------|:------------------------------|:------------------------|:------------------------|
+| Moneyball                     | SDLC     | 308     | 308      | 5   | 0.05               | 20                            | 5704                    | 16141                   |
+| Moneyball                     | S-NCP    | 308     | 308      | 5   | 0.02               | 0.08                          | 6.42                    | 20                      |
+| Moneyball                     | BCCP     | 308     | 308      | 5   | 0.02               | 0.07                          | 5.76                    | 14                      |
+| abalone                       | SDLC     | 1044    | 1045     | 5   | 0.23               | 13                            | 5967                    | 19795                   |
+| abalone                       | S-NCP    | 1044    | 1045     | 5   | 0.05               | 0.09                          | 6.61                    | 92                      |
+| abalone                       | BCCP     | 1044    | 1045     | 5   | 0.07               | 0.07                          | 5.87                    | 90                      |
+| airfoil self noise            | SDLC     | 376     | 375      | 5   | 0.05               | 21                            | 6184                    | 9621                    |
+| airfoil self noise            | S-NCP    | 376     | 375      | 5   | 0.02               | 0.08                          | 6.37                    | 9.15                    |
+| airfoil self noise            | BCCP     | 376     | 375      | 5   | 0.02               | 0.07                          | 5.76                    | 12                      |
+| auction verification          | SDLC     | 511     | 510      | 5   | 0.18               | 33                            | 9645                    | 14428                   |
+| auction verification          | S-NCP    | 511     | 510      | 5   | 0.03               | 0.06                          | 5.31                    | 12                      |
+| auction verification          | BCCP     | 511     | 510      | 5   | 0.02               | 0.07                          | 4.75                    | 11                      |
+| concrete compressive strength | SDLC     | 258     | 257      | 5   | 0.13               | 25                            | 6509                    | 14297                   |
+| concrete compressive strength | S-NCP    | 258     | 257      | 5   | 0.02               | 0.08                          | 5.27                    | 14                      |
+| concrete compressive strength | BCCP     | 258     | 257      | 5   | 0.01               | 0.06                          | 4.81                    | 9.38                    |
+| energy efficiency             | SDLC     | 192     | 192      | 5   | 0.03               | 42                            | 6471                    | 16741                   |
+| energy efficiency             | S-NCP    | 192     | 192      | 5   | 0.02               | 0.11                          | 6.35                    | 15                      |
+| energy efficiency             | BCCP     | 192     | 192      | 5   | 0.02               | 0.09                          | 5.74                    | 23                      |
+| forest fires                  | SDLC     | 129     | 130      | 3   | 0.12               | 36                            | 3826                    | 7770                    |
+| forest fires                  | S-NCP    | 129     | 130      | 3   | 0.01               | 0.10                          | 5.61                    | 9.42                    |
+| forest fires                  | BCCP     | 129     | 130      | 3   | 0.01               | 0.09                          | 5.05                    | 6.66                    |
+| physiochemical protein        | SDLC     | 11432   | 11433    | 5   | 1.00               | 34                            | 11185                   | 17421                   |
+| physiochemical protein        | S-NCP    | 11432   | 11433    | 5   | 0.30               | 0.07                          | 6.57                    | 26                      |
+| physiochemical protein        | BCCP     | 11432   | 11433    | 5   | 0.29               | 0.06                          | 5.87                    | 18                      |
+| superconductivity             | SDLC     | 5316    | 5315     | 5   | 0.48               | 10                            | 7186                    | 20047                   |
+| superconductivity             | S-NCP    | 5316    | 5315     | 5   | 0.14               | 0.06                          | 5.82                    | 12                      |
+| superconductivity             | BCCP     | 5316    | 5315     | 5   | 0.12               | 0.05                          | 5.08                    | 14                      |
+| geographical origin of music  | SDLC     | 265     | 264      | 5   | 0.20               | 28                            | 6264                    | 10083                   |
+| geographical origin of music  | S-NCP    | 265     | 264      | 5   | 0.02               | 0.08                          | 5.65                    | 11                      |
+| geographical origin of music  | BCCP     | 265     | 264      | 5   | 0.02               | 0.07                          | 5.18                    | 10                      |
+| naval propulsion plant        | SDLC     | 2984    | 2983     | 5   | 0.20               | 6.88                          | 5884                    | 12802                   |
+| naval propulsion plant        | S-NCP    | 2984    | 2983     | 5   | 0.08               | 0.05                          | 5.13                    | 9.41                    |
+| naval propulsion plant        | BCCP     | 2984    | 2983     | 5   | 0.07               | 0.04                          | 4.50                    | 8.57                    |
+| QSAR fish toxicity            | SDLC     | 227     | 227      | 5   | 0.03               | 27                            | 5707                    | 12598                   |
+| QSAR fish toxicity            | S-NCP    | 227     | 227      | 5   | 0.02               | 0.09                          | 5.74                    | 8.85                    |
+| QSAR fish toxicity            | BCCP     | 227     | 227      | 5   | 0.01               | 0.07                          | 5.18                    | 12                      |
+| grid stability                | SDLC     | 2500    | 2500     | 5   | 0.23               | 5.57                          | 5686                    | 13092                   |
+| grid stability                | S-NCP    | 2500    | 2500     | 5   | 0.09               | 0.06                          | 6.53                    | 36                      |
+| grid stability                | BCCP     | 2500    | 2500     | 5   | 0.08               | 0.06                          | 5.81                    | 23                      |
+| video transcoding             | SDLC     | 17196   | 17196    | 5   | 1.54               | 29                            | 12346                   | 23221                   |
+| video transcoding             | S-NCP    | 17196   | 17196    | 5   | 0.45               | 0.07                          | 6.60                    | 12                      |
+| video transcoding             | BCCP     | 17196   | 17196    | 5   | 0.43               | 0.05                          | 5.81                    | 23                      |
+| wave energy                   | SDLC     | 18000   | 18000    | 5   | 1.49               | 6.67                          | 6527                    | 12332                   |
+| wave energy                   | S-NCP    | 18000   | 18000    | 5   | 0.49               | 0.07                          | 6.53                    | 12                      |
+| wave energy                   | BCCP     | 18000   | 18000    | 5   | 0.43               | 0.06                          | 5.88                    | 23                      |
+| sarcos                        | SDLC     | 12233   | 12234    | 5   | 1.16               | 6.86                          | 6245                    | 11387                   |
+| sarcos                        | S-NCP    | 12233   | 12234    | 5   | 0.24               | 0.06                          | 5.51                    | 13                      |
+| sarcos                        | BCCP     | 12233   | 12234    | 5   | 0.27               | 0.05                          | 5.16                    | 10                      |
+| california housing            | SDLC     | 5160    | 5160     | 5   | 0.34               | 8.13                          | 7161                    | 14387                   |
+| california housing            | S-NCP    | 5160    | 5160     | 5   | 0.12               | 0.05                          | 5.24                    | 10                      |
+| california housing            | BCCP     | 5160    | 5160     | 5   | 0.11               | 0.04                          | 4.52                    | 8.00                    |
+| cpu activity                  | SDLC     | 2048    | 2048     | 5   | 0.15               | 7.09                          | 5270                    | 9013                    |
+| cpu activity                  | S-NCP    | 2048    | 2048     | 5   | 0.06               | 0.05                          | 5.17                    | 18                      |
+| cpu activity                  | BCCP     | 2048    | 2048     | 5   | 0.05               | 0.04                          | 4.58                    | 13                      |
+| diamonds                      | SDLC     | 13485   | 13485    | 5   | 1.15               | 11                            | 7443                    | 16097                   |
+| diamonds                      | S-NCP    | 13485   | 13485    | 5   | 0.35               | 0.07                          | 6.66                    | 11                      |
+| diamonds                      | BCCP     | 13485   | 13485    | 5   | 0.33               | 0.05                          | 5.81                    | 11                      |
+| kin8nm                        | SDLC     | 2048    | 2048     | 5   | 0.19               | 4.62                          | 5325                    | 10128                   |
+| kin8nm                        | S-NCP    | 2048    | 2048     | 5   | 0.07               | 0.06                          | 6.40                    | 11                      |
+| kin8nm                        | BCCP     | 2048    | 2048     | 5   | 0.06               | 0.05                          | 5.74                    | 26                      |
+| pumadyn32nh                   | SDLC     | 2048    | 2048     | 5   | 0.14               | 3.60                          | 5230                    | 9417                    |
+| pumadyn32nh                   | S-NCP    | 2048    | 2048     | 5   | 0.05               | 0.05                          | 5.12                    | 12                      |
+| pumadyn32nh                   | BCCP     | 2048    | 2048     | 5   | 0.05               | 0.04                          | 4.64                    | 37                      |
+| miami housing                 | SDLC     | 3483    | 3483     | 5   | 0.30               | 7.45                          | 6702                    | 12989                   |
+| miami housing                 | S-NCP    | 3483    | 3483     | 5   | 0.11               | 0.07                          | 6.41                    | 24                      |
+| miami housing                 | BCCP     | 3483    | 3483     | 5   | 0.11               | 0.05                          | 5.64                    | 11                      |
+| cps88wages                    | SDLC     | 7039    | 7038     | 5   | 0.63               | 13                            | 8916                    | 14871                   |
+| cps88wages                    | S-NCP    | 7039    | 7038     | 5   | 0.18               | 0.06                          | 6.15                    | 11                      |
+| cps88wages                    | BCCP     | 7039    | 7038     | 5   | 0.17               | 0.04                          | 5.35                    | 8.43                    |
+| socmob                        | SDLC     | 289     | 289      | 4   | 0.17               | 24                            | 5673                    | 14907                   |
+| socmob                        | S-NCP    | 289     | 289      | 4   | 0.01               | 0.08                          | 5.68                    | 38                      |
+| socmob                        | BCCP     | 289     | 289      | 4   | 0.01               | 0.08                          | 5.09                    | 40                      |
+| kings county                  | SDLC     | 5403    | 5404     | 5   | 1.53               | 9.43                          | 7110                    | 17212                   |
+| kings county                  | S-NCP    | 5403    | 5404     | 5   | 0.16               | 0.07                          | 6.56                    | 16                      |
+| kings county                  | BCCP     | 5403    | 5404     | 5   | 0.15               | 0.05                          | 5.81                    | 14                      |
+| brazilian houses              | SDLC     | 2673    | 2673     | 5   | 0.26               | 98                            | 23194                   | 41209                   |
+| brazilian houses              | S-NCP    | 2673    | 2673     | 5   | 0.10               | 0.06                          | 6.47                    | 15                      |
+| brazilian houses              | BCCP     | 2673    | 2673     | 5   | 0.08               | 0.05                          | 5.75                    | 14                      |
+| fps benchmark                 | SDLC     | 6156    | 6156     | 5   | 0.69               | 16                            | 8403                    | 15454                   |
+| fps benchmark                 | S-NCP    | 6156    | 6156     | 5   | 0.17               | 0.06                          | 6.50                    | 16                      |
+| fps benchmark                 | BCCP     | 6156    | 6156     | 5   | 0.17               | 0.05                          | 5.74                    | 16                      |
+| health insurance              | SDLC     | 5568    | 5568     | 3   | 0.44               | 9.04                          | 5151                    | 11891                   |
+| health insurance              | S-NCP    | 5568    | 5568     | 3   | 0.14               | 0.05                          | 6.44                    | 14                      |
+| health insurance              | BCCP     | 5568    | 5568     | 3   | 0.12               | 0.04                          | 5.80                    | 19                      |
+| cars                          | SDLC     | 201     | 201      | 5   | 0.03               | 41                            | 7302                    | 14725                   |
+| cars                          | S-NCP    | 201     | 201      | 5   | 0.01               | 0.09                          | 5.25                    | 16                      |
+| cars                          | BCCP     | 201     | 201      | 5   | 0.01               | 0.07                          | 4.67                    | 9.85                    |
+| fifa                          | SDLC     | 4794    | 4795     | 4   | 0.61               | 9.05                          | 5475                    | 9923                    |
+| fifa                          | S-NCP    | 4794    | 4795     | 4   | 0.13               | 0.05                          | 6.51                    | 13                      |
+| fifa                          | BCCP     | 4794    | 4795     | 4   | 0.13               | 0.04                          | 5.65                    | 13                      |
+| space ga                      | SDLC     | 777     | 776      | 5   | 0.26               | 14                            | 6375                    | 11274                   |
+| space ga                      | S-NCP    | 777     | 776      | 5   | 0.03               | 0.07                          | 6.40                    | 16                      |
+| space ga                      | BCCP     | 777     | 776      | 5   | 0.03               | 0.06                          | 5.69                    | 11                      |
+
+(b) Relevance-weighted study on the held-out datasets: set-up times of RW-DLC-U (relevance function with an exact Gaussian kernel density estimate; calibration weights and threshold), set construction time per test point of all four methods with the same grid implementation (G = 4,000 target values), and the change of RW-DLC-U set sizes when the grid is refined to G = 16,000.
+
+| OpenML ID   | n train   | n test   | Relevance fit (s)   | RW calibration (s)   | RW-DLC (µs/point)   | RW-NCP (µs/point)   | SDLC, grid (µs/point)   | S-NCP, grid (µs/point)   | Mean size change (%)   | Median per-point change (%)   | Max per-point change (%)   | Peak memory, G = 4,000 (MB)   | Peak memory, G = 16,000 (MB)   |
+|:------------|:----------|:---------|:--------------------|:---------------------|:--------------------|:--------------------|:------------------------|:-------------------------|:-----------------------|:------------------------------|:---------------------------|:------------------------------|:-------------------------------|
+| 44056       | 4320      | 2161     | 0.11                | 0.06                 | 366                 | 19                  | 411                     | 16                       | 0.01                   | 0.64                          | 14.31                      | 196                           | 785                            |
+| 44061       | 2104      | 1053     | 0.03                | 0.01                 | 143                 | 14                  | 150                     | 14                       | 0.00                   | 0.02                          | 0.16                       | 72                            | 286                            |
+| 44068       | 25000     | 12500    | 4.43                | 1.96                 | 108                 | 12                  | 109                     | 13                       | 0.00                   | 0.04                          | 0.42                       | 78                            | 313                            |
+| 44069       | 25000     | 12500    | 3.99                | 1.77                 | 375                 | 11                  | 382                     | 12                       | 0.03                   | 1.56                          | 33.36                      | 202                           | 807                            |
+| 44134       | 8300      | 4149     | 0.56                | 0.27                 | 248                 | 11                  | 239                     | 11                       | 0.00                   | 0.09                          | 0.56                       | 144                           | 577                            |
+| 44137       | 6875      | 3437     | 0.29                | 0.14                 | 259                 | 11                  | 237                     | 13                       | 0.00                   | 0.07                          | 0.44                       | 145                           | 581                            |
+| 44139       | 11392     | 5696     | 0.84                | 0.44                 | 52                  | 13                  | 46                      | 12                       | 0.00                   | 0.07                          | 1.71                       | 45                            | 181                            |
+| 44142       | 8690      | 4344     | 0.45                | 0.25                 | 201                 | 14                  | 197                     | 12                       | 0.01                   | 0.03                          | 7.34                       | 113                           | 454                            |
+| 44143       | 25000     | 12500    | 4.18                | 2.20                 | 115                 | 14                  | 107                     | 12                       | 0.00                   | 0.05                          | 1.12                       | 83                            | 331                            |
+| 44145       | 5040      | 2521     | 0.21                | 0.09                 | 274                 | 14                  | 251                     | 13                       | 0.01                   | 0.23                          | 9.84                       | 149                           | 595                            |
+| 44146       | 25000     | 12500    | 3.73                | 2.04                 | 211                 | 13                  | 205                     | 13                       | 0.00                   | 0.18                          | 1.03                       | 123                           | 493                            |
+| 45032       | 4442      | 2222     | 0.13                | 0.06                 | 187                 | 12                  | 183                     | 12                       | 0.03                   | 0.06                          | 0.51                       | 94                            | 375                            |
+| 45034       | 25000     | 12500    | 3.48                | 1.70                 | 43                  | 11                  | 45                      | 13                       | 0.00                   | 0.01                          | 0.12                       | 44                            | 175                            |
+| 45041       | 4442      | 2222     | 0.13                | 0.07                 | 127                 | 12                  | 137                     | 13                       | 0.02                   | 0.07                          | 0.66                       | 80                            | 321                            |
+| 45043       | 25000     | 12500    | 4.66                | 2.42                 | 45                  | 11                  | 44                      | 12                       | 0.01                   | 0.02                          | 0.07                       | 41                            | 165                            |
+| 45046       | 25000     | 12500    | 3.80                | 1.88                 | 82                  | 13                  | 89                      | 14                       | 0.00                   | 0.02                          | 0.19                       | 66                            | 263                            |
+| 45047       | 25000     | 12500    | 4.94                | 2.38                 | 50                  | 13                  | 50                      | 13                       | 0.00                   | 0.02                          | 0.13                       | 42                            | 168                            |
+
 **Table S14.** Fitting and prediction time of the model components in seconds (seed 0, one CPU thread). SDLC uses the mean model, the scale model with out-of-fold residuals, the cross-fitted scale models and the kernel density.
 
 | did   | dataset                       | n_train   | n_pred   | fit_mean   | fit_scale_with_oof   | fit_scale_crossfit   | fit_kde   | build_table   | fit_quantile_pair   | fit_histogram_classifier   | predict_mean   | predict_scale   | predict_histogram   |
@@ -610,11 +732,14 @@ Table S17b (continued). Coverage of the top 1% of outcomes with one definition i
 
 Table S17b (continued). RW-DLC versus stratified methods with dedicated 1% tail strata (stratum edges at the training quantiles 0.01, 0.10, 0.25, 0.75, 0.90, 0.99; review round 8; experiments/eval_tail1.py, scripts/analyze_review08.py; held-out data, 5 seeds). Top-1% coverage ($y\ge q_{0.99}$, seeds with at least 10 such test points), marginal coverage and normalised size (geometric-mean and Hodges-Lehmann ratios); two-sided Wilcoxon tests, Holm over all six tests.
 
-| comparison                       | top1_rw   | top1_comp   | top1_diff   | top1_wins   | top1_losses   | top1_n   | top1_p_holm   | cov_rw   | cov_comp   | size_geo   | size_hl   | size_wins   | size_losses   | size_p_holm   |
-|:---------------------------------|:----------|:------------|:------------|:------------|:--------------|:---------|:--------------|:---------|:-----------|:-----------|:----------|:------------|:--------------|:--------------|
-| RW-DLC vs SDLC (1% tail strata)  | 0.884     | 0.906       | -0.022      | 12          | 5             | 17       | 1.000         | 0.884    | 0.901      | 0.952      | 0.987     | 9           | 8             | 1.000         |
-| RW-DLC vs S-NCP (1% tail strata) | 0.884     | 0.908       | -0.024      | 12          | 5             | 17       | 1.000         | 0.884    | 0.902      | 0.941      | 0.957     | 10          | 7             | 1.000         |
-| RW-DLC vs BCCP (1% tail strata)  | 0.884     | 0.911       | -0.026      | 11          | 6             | 17       | 1.000         | 0.884    | 0.901      | 0.818      | 0.876     | 10          | 7             | 0.209         |
+| suite        | comparison                       | top1_rw   | top1_comp   | top1_diff   | top1_wins   | top1_losses   | top1_n   | top1_p_holm   | cov_rw   | cov_comp   | size_geo   | size_hl   | size_wins   | size_losses   | size_p_holm   |
+|:-------------|:---------------------------------|:----------|:------------|:------------|:------------|:--------------|:---------|:--------------|:---------|:-----------|:-----------|:----------|:------------|:--------------|:--------------|
+| confirmatory | RW-DLC vs SDLC (1% tail strata)  | 0.884     | 0.906       | -0.022      | 12          | 5             | 17       | 1.000         | 0.884    | 0.901      | 0.952      | 0.987     | 9           | 8             | 1.000         |
+| confirmatory | RW-DLC vs S-NCP (1% tail strata) | 0.884     | 0.908       | -0.024      | 12          | 5             | 17       | 1.000         | 0.884    | 0.902      | 0.941      | 0.957     | 10          | 7             | 1.000         |
+| confirmatory | RW-DLC vs BCCP (1% tail strata)  | 0.884     | 0.911       | -0.026      | 11          | 6             | 17       | 1.000         | 0.884    | 0.901      | 0.818      | 0.876     | 10          | 7             | 0.209         |
+| ctr23        | RW-DLC vs SDLC (1% tail strata)  | 0.917     | 0.913       | 0.003       | 12          | 10            | 24       | 0.708         | 0.862    | 0.904      | 0.749      | 0.779     | 24          | 7             | 0.000         |
+| ctr23        | RW-DLC vs S-NCP (1% tail strata) | 0.917     | 0.910       | 0.006       | 13          | 9             | 24       | 0.708         | 0.862    | 0.904      | 0.737      | 0.797     | 27          | 4             | 0.000         |
+| ctr23        | RW-DLC vs BCCP (1% tail strata)  | 0.917     | 0.912       | 0.005       | 12          | 10            | 24       | 0.708         | 0.862    | 0.905      | 0.700      | 0.747     | 29          | 2             | 0.000         |
 
 Table S17b (continued). RW-3 (top-1% coverage of RW-DLC versus SDLC, held-out data, one-sided Wilcoxon test): the pre-specified definition ($y>q_{0.99}$) and post hoc variants.
 
@@ -630,6 +755,14 @@ Table S17b (continued). RW-3 (top-1% coverage of RW-DLC versus SDLC, held-out da
 
 | suite        | hypothesis   | comparison                                        | estimate   | p      | p_holm   | supported   |
 |:-------------|:-------------|:--------------------------------------------------|:-----------|:-------|:---------|:------------|
+| ctr23        | RW-1         | Cov_phiU(RW-DLC) equivalent to 0.90 (margin 0.02) | 0.9007     | 0.0000 | 0.0000   | True        |
+| ctr23        | RW-2         | Cov_phiU: RW-DLC > SCP                            | 0.2106     | 0.0000 | 0.0000   | True        |
+| ctr23        | RW-2         | Cov_phiU: RW-DLC > NCP                            | 0.1075     | 0.0000 | 0.0000   | True        |
+| ctr23        | RW-2         | Cov_phiU: RW-DLC > CQR                            | 0.1489     | 0.0000 | 0.0000   | True        |
+| ctr23        | RW-2         | Cov_phiU: RW-DLC > DLS-M                          | 0.1946     | 0.0000 | 0.0000   | True        |
+| ctr23        | RW-3         | top-1% coverage: RW-DLC > SDLC                    | 0.1913     | 0.0000 | 0.0000   | True        |
+| ctr23        | RW-4         | size: RW-DLC vs RW-DLS-U                          | 0.8284     | 0.0000 | 0.0000   | True        |
+| ctr23        | RW-4         | size: RW-DLC vs RW-NCP-U                          | 0.8739     | 0.0000 | 0.0000   | True        |
 | confirmatory | RW-1         | Cov_phiU(RW-DLC) equivalent to 0.90 (margin 0.02) | 0.8976     | 0.0000 | 0.0000   | True        |
 | confirmatory | RW-2         | Cov_phiU: RW-DLC > SCP                            | 0.1791     | 0.0000 | 0.0000   | True        |
 | confirmatory | RW-2         | Cov_phiU: RW-DLC > NCP                            | 0.1216     | 0.0000 | 0.0001   | True        |
@@ -639,7 +772,20 @@ Table S17b (continued). RW-3 (top-1% coverage of RW-DLC versus SDLC, held-out da
 | confirmatory | RW-4         | size: RW-DLC vs RW-DLS-U                          | 0.8854     | 0.0305 | 0.0533   | False       |
 | confirmatory | RW-4         | size: RW-DLC vs RW-NCP-U                          | 0.9037     | 0.0267 | 0.0533   | False       |
 
-**Table S19.** Relevance-weighted study on the OpenML-CTR23 datasets: not yet available.
+**Table S19.** Relevance-weighted study on the OpenML-CTR23 datasets ($\alpha=0.1$, 10 seeds; means over datasets; columns as in the main-text table of the relevance-weighted study).
+
+| Method   | Marginal cov.   | Relevance-weighted cov. (φ_U)   | Mean decile cov.   | Worst decile cov.   | Top-1% cov.   | Normalised size (arith. mean)   | Normalised size (geo. mean)   |
+|:---------|:----------------|:--------------------------------|:-------------------|:--------------------|:--------------|:--------------------------------|:------------------------------|
+| SCP      | 0.903           | 0.690                           | 0.901              | 0.616               | 0.398         | 1.043                           | 0.763                         |
+| NCP      | 0.903           | 0.793                           | 0.900              | 0.735               | 0.629         | 1.036                           | 0.769                         |
+| CQR      | 0.903           | 0.752                           | 0.901              | 0.697               | 0.459         | 1.180                           | 0.927                         |
+| DLS      | 0.902           | 0.706                           | 0.899              | 0.642               | 0.430         | 0.979                           | 0.703                         |
+| S-NCP    | 0.904           | 0.868                           | 0.904              | 0.833               | 0.773         | 1.381                           | 0.919                         |
+| SDLC     | 0.903           | 0.851                           | 0.902              | 0.823               | 0.715         | 1.349                           | 0.874                         |
+| RW-NCP-U | 0.939           | 0.904                           | 0.939              | 0.860               | 0.827         | 2.136                           | 1.160                         |
+| RW-DLS-U | 0.961           | 0.906                           | 0.960              | 0.877               | 0.790         | 2.161                           | 1.223                         |
+| RW-DLC-U | 0.862           | 0.901                           | 0.863              | 0.754               | 0.907         | 1.931                           | 1.013                         |
+| RW-DLC-H | 0.915           | 0.870                           | 0.914              | 0.808               | 0.783         | 1.313                           | 0.854                         |
 
 ![**Fig. S1.** Coverage of the upper calibration stratum per dataset ($\alpha=0.1$).](/home/user/p_c1_2/Target_Journal_Submission/figures/F4_upper_tail_per_dataset.png){width=100%}
 

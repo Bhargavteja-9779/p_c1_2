@@ -79,22 +79,28 @@ def main():
         R["point_change_max"] = float(w.rw_point_size_max_rel_change.max())
         R["point_change_max_did"] = int(w.did[w.rw_point_size_max_rel_change.idxmax()])
         R["n_datasets"] = int(len(w))
+        R["peak_MB_G4000_max"] = float(w.rw_peak_MB_G4000.max())
+        R["peak_MB_G16000_max"] = float(w.rw_peak_MB_G16000.max())
         if "like" in out:
             R["ratio_rwdlc_exact_sdlc_median"] = float(w["us_per_point_RW-DLC_G4000"].median() / out["like"]["SDLC"]["pred_us_median"])
         out["rw"] = R
         d = w[["did", "n_train", "n_test", "t_relevance_fit_s", "t_rw_calibration_s",
                "us_per_point_RW-DLC_G4000", "us_per_point_RW-NCP_G4000", "us_per_point_SDLC_G4000",
                "us_per_point_S-NCP_G4000", "rw_mean_size_rel_change_G4000_vs_16000",
-               "rw_point_size_median_rel_change", "rw_point_size_max_rel_change"]].copy()
+               "rw_point_size_median_rel_change", "rw_point_size_max_rel_change", "rw_peak_MB_G4000",
+               "rw_peak_MB_G16000"]].copy()
         for c in d.columns[3:5]:
             d[c] = d[c].map(lambda v: f"{v:.2f}")
         for c in d.columns[5:9]:
             d[c] = d[c].map(lambda v: f"{v:.0f}")
-        for c in d.columns[9:]:
+        for c in d.columns[9:12]:
             d[c] = d[c].map(lambda v: f"{100 * v:.2f}")
+        for c in d.columns[12:]:
+            d[c] = d[c].map(lambda v: f"{v:.0f}")
         d.columns = ["OpenML ID", "n train", "n test", "Relevance fit (s)", "RW calibration (s)",
                      "RW-DLC (µs/point)", "RW-NCP (µs/point)", "SDLC, grid (µs/point)", "S-NCP, grid (µs/point)",
-                     "Mean size change (%)", "Median per-point change (%)", "Max per-point change (%)"]
+                     "Mean size change (%)", "Median per-point change (%)", "Max per-point change (%)",
+                     "Peak memory, G = 4,000 (MB)", "Peak memory, G = 16,000 (MB)"]
         d.to_csv(TAB / "D15d_timing_rw.csv", index=False)
     (RES / "timing_summary.json").write_text(json.dumps(out, indent=1))
     print(json.dumps(out, indent=1))
