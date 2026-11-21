@@ -419,3 +419,6 @@ if __name__ == "__main__":
         render_aux("cover_letter.md", "cover_letter.docx")
     render()
     build_docx()
+    from scripts.anonymise_docx import clean
+    for f_ in sorted(MS.glob("*.docx")):
+        clean(f_)

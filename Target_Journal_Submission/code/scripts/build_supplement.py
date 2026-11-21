@@ -260,6 +260,9 @@ def main():
                 "(column suite: collection of datasets).", "", md(pd.read_csv(t17), 4), ""]
         nxt += 1
     d17 = TAB / "D17_rw_ctr23.csv"
+    if not d17.exists():                      # keep S19 reserved so that main-text references stay stable
+        out += [f"**Table S{nxt}.** Relevance-weighted study on the OpenML-CTR23 datasets: not yet available.", ""]
+        nxt += 1
     if d17.exists():
         out += [f"**Table S{nxt}.** Relevance-weighted study on the OpenML-CTR23 datasets ($\\alpha=0.1$, 10 seeds; means "
                 "over datasets; columns as in the main-text table of the relevance-weighted study).", "",
@@ -316,8 +319,8 @@ def main():
     note = ("The plan was written before we adopted the term *pre-specified*; its original wording (\"pre-registered\", "
             "\"public repository\") is kept. As stated in the manuscript, the plan was committed to the authors' "
             "version-controlled repository, not registered with a third party, and the repository will be made public "
-            "upon acceptance; the anonymised code package provided as supplementary material contains the version "
-            "history with the commit identifiers.")
+            "upon acceptance; the anonymised code package provided as supplementary material lists the commit "
+            "identifiers, commit times and SHA-256 hashes of both plans (PLAN_TIMESTAMPS.md).")
     out += ["# S6. Pre-specified analysis plan of the confirmatory replication (verbatim)", "",
             "Reproduced from the analysis-plan file of the code package, committed (identifier `ccba99b`) before any "
             "confirmatory evaluation. " + note, "", pre]
@@ -328,6 +331,23 @@ def main():
     out += ["# S7. Pre-specified analysis plan of the relevance-weighted study (verbatim)", "",
             "Reproduced from the analysis-plan file of the code package, committed (identifier `a9f31d2`) before RW-DLC "
             "was evaluated on any dataset. The same note on wording as for Section S6 applies.", "", pre2]
+    extra = MS / "src" / "supp_extra.md"
+    if extra.exists():                        # material moved from the main text (review round 9), placeholders filled
+        import scripts.render_manuscript as RM
+        keep = {f: (BUILD / f).read_bytes() for f in ("manuscript_filled.md", "placeholder_values.json")
+                if (BUILD / f).exists()}
+        saved = RM.ORDER
+        RM.ORDER = ["supp_extra.md"]
+        try:
+            et = RM.render()
+        finally:
+            RM.ORDER = saved
+            for f, b in keep.items():
+                (BUILD / f).write_bytes(b)
+        et = re.sub(r"\*\*Table (\d+)\.\*\*", lambda m: f"**Table S{20 + int(m.group(1))}.**", et)
+        et = re.sub(r"\*\*Fig\. (\d+)\.\*\*", lambda m: f"**Fig. S{3 + int(m.group(1))}.**", et)
+        et = re.sub(r"\bFig\. (\d+)(?!\.\*\*)", lambda m: f"Fig. S{3 + int(m.group(1))}", et)
+        out += ["# S8. Additional results and analyses moved from the main text", "", et, ""]
     text = "\n".join(out)
     BUILD.mkdir(parents=True, exist_ok=True)
     src = BUILD / "supplementary_filled.md"
@@ -335,6 +355,8 @@ def main():
     ref = BUILD / "reference.docx"
     subprocess.run(["pandoc", str(src), "-o", str(MS / "Supplementary_Material.docx"), f"--reference-doc={ref}",
                     "--resource-path", str(TOP)], check=True)
+    from scripts.anonymise_docx import clean
+    clean(MS / "Supplementary_Material.docx")
     from scripts.build_pdf import build
     build(src, MS / "Supplementary_Material.pdf", BUILD / "supplementary.html")
     print("written", MS / "Supplementary_Material.docx")
