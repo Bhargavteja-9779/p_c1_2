@@ -168,9 +168,10 @@ class RobustLSDensity:
 
     def g_at(self, z):
         z = np.asarray(z, float)
-        inside = (z >= self.grid[0]) & (z <= self.grid[-1])
-        out = self.tail_pdf(z)
-        out[inside] = np.interp(z[inside], self.grid, self.g)
+        out = np.interp(z, self.grid, self.g)                       # tabulated part
+        outside = (z < self.grid[0]) | (z > self.grid[-1])
+        if outside.any():                                           # analytic t tails only where needed
+            out[outside] = self.tail_pdf(z[outside])
         return out
 
 

@@ -3,7 +3,7 @@
 For seed 0 of every held-out dataset (stored contexts, one thread): set-up times of RW-DLC (relevance KDE, tau,
 calibration), per-test-point time of building the sets of RW-DLC, RW-NCP, SDLC-grid and S-NCP on the same grid
 implementation as experiments/run_rw.py (G = 4000), and the grid accuracy of RW-DLC (G = 4000 vs 16000: change of
-the mean size, maximum relative change of individual sizes). Writes results/timing_rw.csv.
+the mean size, maximum relative change of individual sizes) and the peak traced memory of building the RW-DLC sets. Writes results/timing_rw.csv.
 """
 import os
 
@@ -12,6 +12,7 @@ for v in ("OMP_NUM_THREADS", "MKL_NUM_THREADS", "OPENBLAS_NUM_THREADS"):
 import json  # noqa: E402
 import sys  # noqa: E402
 import time  # noqa: E402
+import tracemalloc  # noqa: E402
 from pathlib import Path  # noqa: E402
 
 import numpy as np  # noqa: E402
@@ -92,6 +93,10 @@ def one(did, seed=0):
         if G == 4000:
             for kind in ("RW-DLC", "RW-NCP", "SDLC", "S-NCP"):
                 row[f"us_per_point_{kind}_G4000"] = 1e6 * med_time(lambda: build(kind)) / len(yt)
+        tracemalloc.start()                         # peak traced memory of the RW-DLC sets (chunks of R.CHUNK)
+        build("RW-DLC")
+        row[f"rw_peak_MB_G{G}"] = tracemalloc.get_traced_memory()[1] / 2 ** 20
+        tracemalloc.stop()
         build("RW-DLC", store=True)
     a, b = sizes[("RW-DLC", 4000)], sizes[("RW-DLC", 16000)]
     nz = b > 0
