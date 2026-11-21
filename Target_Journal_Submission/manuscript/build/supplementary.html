@@ -57,23 +57,29 @@ number of distinct values of the target, realised number of calibration
 strata
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math>,
 realised training mass of the lowest and highest stratum (nominal 0.10),
-relative test RMSE of the point model, and licence as recorded by
-OpenML.</p>
-<table>
+relative test RMSE of the point model, licence as recorded by OpenML
+(“not stated” where OpenML records none), and the share of test targets
+outside the domain
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>𝒴</mi><mi>D</mi></msub><annotation encoding="application/x-tex">\mathcal{Y}_D</annotation></semantics></math>
+(automatic misses; mean and maximum over seeds).</p>
+<table style="width:100%;">
 <colgroup>
-<col style="width: 19%" />
-<col style="width: 4%" />
+<col style="width: 5%" />
+<col style="width: 14%" />
 <col style="width: 3%" />
-<col style="width: 7%" />
-<col style="width: 8%" />
-<col style="width: 3%" />
-<col style="width: 8%" />
-<col style="width: 8%" />
+<col style="width: 2%" />
+<col style="width: 5%" />
 <col style="width: 6%" />
-<col style="width: 30%" />
+<col style="width: 2%" />
+<col style="width: 6%" />
+<col style="width: 6%" />
+<col style="width: 5%" />
+<col style="width: 22%" />
+<col style="width: 20%" />
 </colgroup>
 <thead>
 <tr class="header">
+<th style="text-align: left;">OpenML ID</th>
 <th style="text-align: left;">Dataset</th>
 <th style="text-align: left;">n</th>
 <th style="text-align: left;">p</th>
@@ -84,10 +90,13 @@ OpenML.</p>
 <th style="text-align: left;">Upper mass</th>
 <th style="text-align: left;">RMSE/sd</th>
 <th style="text-align: left;">Licence</th>
+<th style="text-align: left;">Out-of-domain test targets, %
+(mean/max)</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
+<td style="text-align: left;">44962</td>
 <td style="text-align: left;">forest fires</td>
 <td style="text-align: left;">517</td>
 <td style="text-align: left;">31</td>
@@ -98,8 +107,10 @@ OpenML.</p>
 <td style="text-align: left;">0.105</td>
 <td style="text-align: left;">0.40</td>
 <td style="text-align: left;">CC BY 4.0</td>
+<td style="text-align: left;">0.38/2.31</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">44960</td>
 <td style="text-align: left;">energy efficiency</td>
 <td style="text-align: left;">768</td>
 <td style="text-align: left;">8</td>
@@ -110,8 +121,10 @@ OpenML.</p>
 <td style="text-align: left;">0.104</td>
 <td style="text-align: left;">0.06</td>
 <td style="text-align: left;">CC BY 4.0</td>
+<td style="text-align: left;">0.00/0.00</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">44994</td>
 <td style="text-align: left;">cars</td>
 <td style="text-align: left;">804</td>
 <td style="text-align: left;">17</td>
@@ -121,9 +134,11 @@ OpenML.</p>
 <td style="text-align: left;">0.100</td>
 <td style="text-align: left;">0.104</td>
 <td style="text-align: left;">0.27</td>
-<td style="text-align: left;">Public</td>
+<td style="text-align: left;">not stated (OpenML: “Public”)</td>
+<td style="text-align: left;">0.10/0.50</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">44970</td>
 <td style="text-align: left;">QSAR fish toxicity</td>
 <td style="text-align: left;">908</td>
 <td style="text-align: left;">6</td>
@@ -134,8 +149,10 @@ OpenML.</p>
 <td style="text-align: left;">0.103</td>
 <td style="text-align: left;">0.62</td>
 <td style="text-align: left;">CC BY 4.0</td>
+<td style="text-align: left;">0.04/0.44</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">44959</td>
 <td style="text-align: left;">concrete compressive strength</td>
 <td style="text-align: left;">1,030</td>
 <td style="text-align: left;">8</td>
@@ -146,8 +163,10 @@ OpenML.</p>
 <td style="text-align: left;">0.103</td>
 <td style="text-align: left;">0.30</td>
 <td style="text-align: left;">CC BY 4.0</td>
+<td style="text-align: left;">0.00/0.00</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">44965</td>
 <td style="text-align: left;">geographical origin of music</td>
 <td style="text-align: left;">1,059</td>
 <td style="text-align: left;">116</td>
@@ -158,8 +177,10 @@ OpenML.</p>
 <td style="text-align: left;">0.117</td>
 <td style="text-align: left;">0.90</td>
 <td style="text-align: left;">CC BY 4.0</td>
+<td style="text-align: left;">0.00/0.00</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">44987</td>
 <td style="text-align: left;">socmob</td>
 <td style="text-align: left;">1,156</td>
 <td style="text-align: left;">43</td>
@@ -171,8 +192,10 @@ OpenML.</p>
 <td style="text-align: left;">0.49</td>
 <td style="text-align: left;">Non-commercial scholarly and teaching
 purposes.</td>
+<td style="text-align: left;">0.00/0.00</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">41021</td>
 <td style="text-align: left;">Moneyball</td>
 <td style="text-align: left;">1,232</td>
 <td style="text-align: left;">78</td>
@@ -182,9 +205,11 @@ purposes.</td>
 <td style="text-align: left;">0.099</td>
 <td style="text-align: left;">0.103</td>
 <td style="text-align: left;">0.27</td>
-<td style="text-align: left;">Public</td>
+<td style="text-align: left;">not stated (OpenML: “Public”)</td>
+<td style="text-align: left;">0.03/0.32</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">44957</td>
 <td style="text-align: left;">airfoil self noise</td>
 <td style="text-align: left;">1,503</td>
 <td style="text-align: left;">5</td>
@@ -195,8 +220,10 @@ purposes.</td>
 <td style="text-align: left;">0.102</td>
 <td style="text-align: left;">0.28</td>
 <td style="text-align: left;">CC BY 4.0</td>
+<td style="text-align: left;">0.00/0.00</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">44958</td>
 <td style="text-align: left;">auction verification</td>
 <td style="text-align: left;">2,043</td>
 <td style="text-align: left;">18</td>
@@ -207,8 +234,10 @@ purposes.</td>
 <td style="text-align: left;">0.102</td>
 <td style="text-align: left;">0.17</td>
 <td style="text-align: left;">CC BY 4.0</td>
+<td style="text-align: left;">0.00/0.00</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">45402</td>
 <td style="text-align: left;">space ga</td>
 <td style="text-align: left;">3,107</td>
 <td style="text-align: left;">6</td>
@@ -218,9 +247,11 @@ purposes.</td>
 <td style="text-align: left;">0.100</td>
 <td style="text-align: left;">0.101</td>
 <td style="text-align: left;">0.56</td>
-<td style="text-align: left;">Public</td>
+<td style="text-align: left;">not stated (OpenML: “Public”)</td>
+<td style="text-align: left;">0.13/0.39</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">44956</td>
 <td style="text-align: left;">abalone</td>
 <td style="text-align: left;">4,177</td>
 <td style="text-align: left;">11</td>
@@ -231,8 +262,10 @@ purposes.</td>
 <td style="text-align: left;">0.114</td>
 <td style="text-align: left;">0.65</td>
 <td style="text-align: left;">CC BY 4.0</td>
+<td style="text-align: left;">0.03/0.10</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">44978</td>
 <td style="text-align: left;">cpu activity</td>
 <td style="text-align: left;">8,192</td>
 <td style="text-align: left;">21</td>
@@ -242,9 +275,11 @@ purposes.</td>
 <td style="text-align: left;">0.096</td>
 <td style="text-align: left;">0.104</td>
 <td style="text-align: left;">0.13</td>
-<td style="text-align: left;">Public</td>
+<td style="text-align: left;">not stated (OpenML: “Public”)</td>
+<td style="text-align: left;">0.00/0.00</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">44981</td>
 <td style="text-align: left;">pumadyn32nh</td>
 <td style="text-align: left;">8,192</td>
 <td style="text-align: left;">32</td>
@@ -254,9 +289,11 @@ purposes.</td>
 <td style="text-align: left;">0.100</td>
 <td style="text-align: left;">0.100</td>
 <td style="text-align: left;">0.61</td>
-<td style="text-align: left;">Public</td>
+<td style="text-align: left;">not stated (OpenML: “Public”)</td>
+<td style="text-align: left;">0.01/0.05</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">44980</td>
 <td style="text-align: left;">kin8nm</td>
 <td style="text-align: left;">8,192</td>
 <td style="text-align: left;">8</td>
@@ -266,9 +303,11 @@ purposes.</td>
 <td style="text-align: left;">0.100</td>
 <td style="text-align: left;">0.100</td>
 <td style="text-align: left;">0.47</td>
-<td style="text-align: left;">Public</td>
+<td style="text-align: left;">not stated (OpenML: “Public”)</td>
+<td style="text-align: left;">0.00/0.00</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">44973</td>
 <td style="text-align: left;">grid stability</td>
 <td style="text-align: left;">10,000</td>
 <td style="text-align: left;">12</td>
@@ -279,8 +318,10 @@ purposes.</td>
 <td style="text-align: left;">0.100</td>
 <td style="text-align: left;">0.22</td>
 <td style="text-align: left;">CC BY 4.0</td>
+<td style="text-align: left;">0.01/0.04</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">44990</td>
 <td style="text-align: left;">brazilian houses</td>
 <td style="text-align: left;">10,692</td>
 <td style="text-align: left;">53</td>
@@ -291,8 +332,10 @@ purposes.</td>
 <td style="text-align: left;">0.100</td>
 <td style="text-align: left;">1.26</td>
 <td style="text-align: left;">CC 0: Public Domain</td>
+<td style="text-align: left;">0.01/0.07</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">44969</td>
 <td style="text-align: left;">naval propulsion plant</td>
 <td style="text-align: left;">11,934</td>
 <td style="text-align: left;">14</td>
@@ -303,8 +346,10 @@ purposes.</td>
 <td style="text-align: left;">0.117</td>
 <td style="text-align: left;">0.06</td>
 <td style="text-align: left;">CC BY 4.0</td>
+<td style="text-align: left;">0.00/0.00</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">44983</td>
 <td style="text-align: left;">miami housing</td>
 <td style="text-align: left;">13,932</td>
 <td style="text-align: left;">15</td>
@@ -315,8 +360,10 @@ purposes.</td>
 <td style="text-align: left;">0.100</td>
 <td style="text-align: left;">0.28</td>
 <td style="text-align: left;">CC0: Public Domain</td>
+<td style="text-align: left;">0.00/0.00</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">45012</td>
 <td style="text-align: left;">fifa</td>
 <td style="text-align: left;">19,178</td>
 <td style="text-align: left;">191</td>
@@ -327,8 +374,10 @@ purposes.</td>
 <td style="text-align: left;">0.103</td>
 <td style="text-align: left;">0.48</td>
 <td style="text-align: left;">CC0: Public Domain</td>
+<td style="text-align: left;">0.01/0.04</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">44977</td>
 <td style="text-align: left;">california housing</td>
 <td style="text-align: left;">20,640</td>
 <td style="text-align: left;">8</td>
@@ -338,9 +387,11 @@ purposes.</td>
 <td style="text-align: left;">0.100</td>
 <td style="text-align: left;">0.100</td>
 <td style="text-align: left;">0.41</td>
-<td style="text-align: left;">Public</td>
+<td style="text-align: left;">not stated (OpenML: “Public”)</td>
+<td style="text-align: left;">0.00/0.00</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">44964</td>
 <td style="text-align: left;">superconductivity</td>
 <td style="text-align: left;">21,263</td>
 <td style="text-align: left;">81</td>
@@ -351,8 +402,10 @@ purposes.</td>
 <td style="text-align: left;">0.101</td>
 <td style="text-align: left;">0.29</td>
 <td style="text-align: left;">CC BY 4.0</td>
+<td style="text-align: left;">0.01/0.02</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">44989</td>
 <td style="text-align: left;">kings county</td>
 <td style="text-align: left;">21,613</td>
 <td style="text-align: left;">136</td>
@@ -363,8 +416,10 @@ purposes.</td>
 <td style="text-align: left;">0.100</td>
 <td style="text-align: left;">0.33</td>
 <td style="text-align: left;">CC 0: Public Domain</td>
+<td style="text-align: left;">0.00/0.02</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">44993</td>
 <td style="text-align: left;">health insurance</td>
 <td style="text-align: left;">22,272</td>
 <td style="text-align: left;">32</td>
@@ -375,8 +430,10 @@ purposes.</td>
 <td style="text-align: left;">0.442</td>
 <td style="text-align: left;">0.78</td>
 <td style="text-align: left;">GPL (&gt;= 2)</td>
+<td style="text-align: left;">0.01/0.04</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">44992</td>
 <td style="text-align: left;">fps benchmark</td>
 <td style="text-align: left;">24,624</td>
 <td style="text-align: left;">971</td>
@@ -387,8 +444,10 @@ purposes.</td>
 <td style="text-align: left;">0.100</td>
 <td style="text-align: left;">0.02</td>
 <td style="text-align: left;">CC BY</td>
+<td style="text-align: left;">0.00/0.00</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">44984</td>
 <td style="text-align: left;">cps88wages</td>
 <td style="text-align: left;">28,155</td>
 <td style="text-align: left;">16</td>
@@ -398,9 +457,11 @@ purposes.</td>
 <td style="text-align: left;">0.100</td>
 <td style="text-align: left;">0.107</td>
 <td style="text-align: left;">0.82</td>
-<td style="text-align: left;">Public</td>
+<td style="text-align: left;">not stated (OpenML: “Public”)</td>
+<td style="text-align: left;">0.00/0.01</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">44963</td>
 <td style="text-align: left;">physiochemical protein</td>
 <td style="text-align: left;">45,730</td>
 <td style="text-align: left;">9</td>
@@ -411,8 +472,10 @@ purposes.</td>
 <td style="text-align: left;">0.100</td>
 <td style="text-align: left;">0.61</td>
 <td style="text-align: left;">CC BY 4.0</td>
+<td style="text-align: left;">0.00/0.00</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">44976</td>
 <td style="text-align: left;">sarcos</td>
 <td style="text-align: left;">48,933</td>
 <td style="text-align: left;">21</td>
@@ -422,9 +485,11 @@ purposes.</td>
 <td style="text-align: left;">0.100</td>
 <td style="text-align: left;">0.100</td>
 <td style="text-align: left;">0.13</td>
-<td style="text-align: left;">Public</td>
+<td style="text-align: left;">not stated (OpenML: “Public”)</td>
+<td style="text-align: left;">0.00/0.00</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">44979</td>
 <td style="text-align: left;">diamonds</td>
 <td style="text-align: left;">53,940</td>
 <td style="text-align: left;">29</td>
@@ -434,9 +499,11 @@ purposes.</td>
 <td style="text-align: left;">0.099</td>
 <td style="text-align: left;">0.100</td>
 <td style="text-align: left;">0.14</td>
-<td style="text-align: left;">Public</td>
+<td style="text-align: left;">not stated (OpenML: “Public”)</td>
+<td style="text-align: left;">0.00/0.00</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">44974</td>
 <td style="text-align: left;">video transcoding</td>
 <td style="text-align: left;">68,784</td>
 <td style="text-align: left;">26</td>
@@ -447,8 +514,10 @@ purposes.</td>
 <td style="text-align: left;">0.100</td>
 <td style="text-align: left;">0.07</td>
 <td style="text-align: left;">CC BY 4.0</td>
+<td style="text-align: left;">0.00/0.01</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">44975</td>
 <td style="text-align: left;">wave energy</td>
 <td style="text-align: left;">72,000</td>
 <td style="text-align: left;">36</td>
@@ -459,25 +528,45 @@ purposes.</td>
 <td style="text-align: left;">0.100</td>
 <td style="text-align: left;">0.40</td>
 <td style="text-align: left;">CC BY 4.0</td>
+<td style="text-align: left;">0.00/0.00</td>
 </tr>
 </tbody>
 </table>
 <p><strong>Table S2.</strong> Held-out datasets of the confirmatory
 replication (regression datasets of OpenML suites 335/336 without source
 overlap with CTR23; datasets above 50,000 rows subsampled once with seed
-2026). Excluded by content overlap: cpu_act (cpu_activity); houses
-(california_housing); house_sales (kings_county); MiamiHousing2016
-(miami_housing); superconduct (superconductivity); diamonds;
-Brazilian_houses; abalone; wine_quality (wine). Excluded by the
-distinct-value rule: 44055 analcatdata_supreme; 44133 pol.</p>
-<table style="width:100%;">
+2026; “Distinct y” on the subsample, “Distinct y (full)” on the full
+data, the quantity the exclusion rule uses; realised stratum masses as
+ranges over seeds, nominal 0.10; “Log scale (curated)”: the benchmark
+curators supplied the logarithm of the original quantity). yprop_4_1 and
+topo_2_1 contain identical observations and targets. visualizing_soil
+(transect index) and seattlecrime6 (coded time of day) have coded rather
+than quantitative targets. In house_16H, 52 records with log-price 0
+form the whole lowest stratum; in yprop_4_1/topo_2_1 a single record has
+y = 0 while all others lie in [0.845, 1]. Excluded by content overlap:
+cpu_act (cpu_activity); houses (california_housing); house_sales
+(kings_county); MiamiHousing2016 (miami_housing); superconduct
+(superconductivity); diamonds; Brazilian_houses; abalone; wine_quality
+(wine). Excluded by the distinct-value rule: 44055 analcatdata_supreme;
+44133 pol.</p>
+<table>
 <colgroup>
+<col style="width: 3%" />
 <col style="width: 11%" />
-<col style="width: 32%" />
-<col style="width: 10%" />
+<col style="width: 3%" />
+<col style="width: 1%" />
+<col style="width: 4%" />
+<col style="width: 9%" />
+<col style="width: 3%" />
+<col style="width: 6%" />
+<col style="width: 4%" />
 <col style="width: 5%" />
-<col style="width: 12%" />
-<col style="width: 27%" />
+<col style="width: 6%" />
+<col style="width: 1%" />
+<col style="width: 6%" />
+<col style="width: 7%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -487,6 +576,16 @@ distinct-value rule: 44055 analcatdata_supreme; 44133 pol.</p>
 <th style="text-align: left;">p</th>
 <th style="text-align: left;">Distinct y</th>
 <th style="text-align: left;">Licence</th>
+<th style="text-align: left;">n (full)</th>
+<th style="text-align: left;">Distinct y (full)</th>
+<th style="text-align: left;">Largest atom</th>
+<th style="text-align: left;">Skewness (full)</th>
+<th style="text-align: left;">Log scale (curated)</th>
+<th style="text-align: left;">K</th>
+<th style="text-align: left;">Lowest stratum mass</th>
+<th style="text-align: left;">Highest stratum mass</th>
+<th style="text-align: left;">Min. calibration points per stratum</th>
+<th style="text-align: left;">Out-of-domain test targets, % (max)</th>
 </tr>
 </thead>
 <tbody>
@@ -496,7 +595,17 @@ distinct-value rule: 44055 analcatdata_supreme; 44133 pol.</p>
 <td style="text-align: left;">8,641</td>
 <td style="text-align: left;">6</td>
 <td style="text-align: left;">40</td>
-<td style="text-align: left;">Public</td>
+<td style="text-align: left;">not stated (OpenML: “Public”)</td>
+<td style="text-align: left;">8,641</td>
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">0.070</td>
+<td style="text-align: left;">0.33</td>
+<td style="text-align: left;">no</td>
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">0.043-0.049</td>
+<td style="text-align: left;">0.110-0.112</td>
+<td style="text-align: left;">88</td>
+<td style="text-align: left;">0.00</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">44061</td>
@@ -504,7 +613,17 @@ distinct-value rule: 44055 analcatdata_supreme; 44133 pol.</p>
 <td style="text-align: left;">4,209</td>
 <td style="text-align: left;">1094</td>
 <td style="text-align: left;">2,545</td>
-<td style="text-align: left;">Public</td>
+<td style="text-align: left;">not stated (OpenML: “Public”)</td>
+<td style="text-align: left;">4,209</td>
+<td style="text-align: left;">2,545</td>
+<td style="text-align: left;">0.002</td>
+<td style="text-align: left;">1.21</td>
+<td style="text-align: left;">no</td>
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">0.100-0.100</td>
+<td style="text-align: left;">0.101-0.102</td>
+<td style="text-align: left;">97</td>
+<td style="text-align: left;">0.19</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">44068</td>
@@ -513,6 +632,16 @@ distinct-value rule: 44055 analcatdata_supreme; 44133 pol.</p>
 <td style="text-align: left;">29</td>
 <td style="text-align: left;">6,195</td>
 <td style="text-align: left;">Open Government Licence (OGL)</td>
+<td style="text-align: left;">394,299</td>
+<td style="text-align: left;">21,599</td>
+<td style="text-align: left;">0.005</td>
+<td style="text-align: left;">-0.54</td>
+<td style="text-align: left;">no</td>
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">0.096-0.100</td>
+<td style="text-align: left;">0.100-0.101</td>
+<td style="text-align: left;">1196</td>
+<td style="text-align: left;">0.01</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">44069</td>
@@ -521,6 +650,16 @@ distinct-value rule: 44055 analcatdata_supreme; 44133 pol.</p>
 <td style="text-align: left;">21</td>
 <td style="text-align: left;">23,831</td>
 <td style="text-align: left;">CC BY 4.0</td>
+<td style="text-align: left;">241,600</td>
+<td style="text-align: left;">58,161</td>
+<td style="text-align: left;">0.000</td>
+<td style="text-align: left;">0.79</td>
+<td style="text-align: left;">yes</td>
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">0.100-0.100</td>
+<td style="text-align: left;">0.100-0.100</td>
+<td style="text-align: left;">1190</td>
+<td style="text-align: left;">0.00</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">44134</td>
@@ -528,7 +667,17 @@ distinct-value rule: 44055 analcatdata_supreme; 44133 pol.</p>
 <td style="text-align: left;">16,599</td>
 <td style="text-align: left;">16</td>
 <td style="text-align: left;">61</td>
-<td style="text-align: left;">Public</td>
+<td style="text-align: left;">not stated (OpenML: “Public”)</td>
+<td style="text-align: left;">16,599</td>
+<td style="text-align: left;">61</td>
+<td style="text-align: left;">0.151</td>
+<td style="text-align: left;">2.42</td>
+<td style="text-align: left;">no</td>
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">0.036-0.100</td>
+<td style="text-align: left;">0.104-0.110</td>
+<td style="text-align: left;">148</td>
+<td style="text-align: left;">0.02</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">44137</td>
@@ -536,7 +685,17 @@ distinct-value rule: 44055 analcatdata_supreme; 44133 pol.</p>
 <td style="text-align: left;">13,750</td>
 <td style="text-align: left;">33</td>
 <td style="text-align: left;">35</td>
-<td style="text-align: left;">Public</td>
+<td style="text-align: left;">not stated (OpenML: “Public”)</td>
+<td style="text-align: left;">13,750</td>
+<td style="text-align: left;">35</td>
+<td style="text-align: left;">0.135</td>
+<td style="text-align: left;">-1.35</td>
+<td style="text-align: left;">no</td>
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">0.091-0.098</td>
+<td style="text-align: left;">0.211-0.222</td>
+<td style="text-align: left;">287</td>
+<td style="text-align: left;">0.12</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">44139</td>
@@ -544,7 +703,17 @@ distinct-value rule: 44055 analcatdata_supreme; 44133 pol.</p>
 <td style="text-align: left;">22,784</td>
 <td style="text-align: left;">16</td>
 <td style="text-align: left;">2,045</td>
-<td style="text-align: left;">Public</td>
+<td style="text-align: left;">not stated (OpenML: “Public”)</td>
+<td style="text-align: left;">22,784</td>
+<td style="text-align: left;">2,045</td>
+<td style="text-align: left;">0.137</td>
+<td style="text-align: left;">-3.43</td>
+<td style="text-align: left;">yes</td>
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">0.002-0.003</td>
+<td style="text-align: left;">0.100-0.100</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">0.00</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">44142</td>
@@ -552,7 +721,17 @@ distinct-value rule: 44055 analcatdata_supreme; 44133 pol.</p>
 <td style="text-align: left;">17,379</td>
 <td style="text-align: left;">6</td>
 <td style="text-align: left;">869</td>
-<td style="text-align: left;">Public</td>
+<td style="text-align: left;">not stated (OpenML: “Public”)</td>
+<td style="text-align: left;">17,379</td>
+<td style="text-align: left;">869</td>
+<td style="text-align: left;">0.015</td>
+<td style="text-align: left;">1.28</td>
+<td style="text-align: left;">no</td>
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">0.092-0.098</td>
+<td style="text-align: left;">0.100-0.101</td>
+<td style="text-align: left;">407</td>
+<td style="text-align: left;">0.00</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">44143</td>
@@ -560,7 +739,17 @@ distinct-value rule: 44055 analcatdata_supreme; 44133 pol.</p>
 <td style="text-align: left;">50,000</td>
 <td style="text-align: left;">9</td>
 <td style="text-align: left;">957</td>
-<td style="text-align: left;">Public</td>
+<td style="text-align: left;">not stated (OpenML: “Public”)</td>
+<td style="text-align: left;">581,835</td>
+<td style="text-align: left;">1,811</td>
+<td style="text-align: left;">0.152</td>
+<td style="text-align: left;">-0.00</td>
+<td style="text-align: left;">yes</td>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">0.181-0.250</td>
+<td style="text-align: left;">0.100-0.101</td>
+<td style="text-align: left;">1155</td>
+<td style="text-align: left;">0.00</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">44145</td>
@@ -568,7 +757,17 @@ distinct-value rule: 44055 analcatdata_supreme; 44133 pol.</p>
 <td style="text-align: left;">10,081</td>
 <td style="text-align: left;">6</td>
 <td style="text-align: left;">9,368</td>
-<td style="text-align: left;">Public</td>
+<td style="text-align: left;">not stated (OpenML: “Public”)</td>
+<td style="text-align: left;">10,081</td>
+<td style="text-align: left;">9,368</td>
+<td style="text-align: left;">0.003</td>
+<td style="text-align: left;">6.72</td>
+<td style="text-align: left;">no</td>
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">0.100-0.100</td>
+<td style="text-align: left;">0.100-0.100</td>
+<td style="text-align: left;">221</td>
+<td style="text-align: left;">0.08</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">44146</td>
@@ -577,6 +776,16 @@ distinct-value rule: 44055 analcatdata_supreme; 44133 pol.</p>
 <td style="text-align: left;">3</td>
 <td style="text-align: left;">49,061</td>
 <td style="text-align: left;">Public Domain (CC0)</td>
+<td style="text-align: left;">163,065</td>
+<td style="text-align: left;">154,891</td>
+<td style="text-align: left;">0.000</td>
+<td style="text-align: left;">0.88</td>
+<td style="text-align: left;">no</td>
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">0.100-0.100</td>
+<td style="text-align: left;">0.100-0.100</td>
+<td style="text-align: left;">1191</td>
+<td style="text-align: left;">0.01</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">45032</td>
@@ -584,7 +793,17 @@ distinct-value rule: 44055 analcatdata_supreme; 44133 pol.</p>
 <td style="text-align: left;">8,885</td>
 <td style="text-align: left;">42</td>
 <td style="text-align: left;">1,336</td>
-<td style="text-align: left;">Public</td>
+<td style="text-align: left;">not stated (OpenML: “Public”)</td>
+<td style="text-align: left;">8,885</td>
+<td style="text-align: left;">1,336</td>
+<td style="text-align: left;">0.005</td>
+<td style="text-align: left;">-2.23</td>
+<td style="text-align: left;">no</td>
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">0.100-0.100</td>
+<td style="text-align: left;">0.100-0.101</td>
+<td style="text-align: left;">195</td>
+<td style="text-align: left;">0.05</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">45034</td>
@@ -593,6 +812,16 @@ distinct-value rule: 44055 analcatdata_supreme; 44133 pol.</p>
 <td style="text-align: left;">8</td>
 <td style="text-align: left;">1,019</td>
 <td style="text-align: left;">CCZero</td>
+<td style="text-align: left;">5,465,575</td>
+<td style="text-align: left;">4,082</td>
+<td style="text-align: left;">0.009</td>
+<td style="text-align: left;">-0.87</td>
+<td style="text-align: left;">yes</td>
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">0.096-0.100</td>
+<td style="text-align: left;">0.100-0.101</td>
+<td style="text-align: left;">1121</td>
+<td style="text-align: left;">0.00</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">45041</td>
@@ -600,7 +829,17 @@ distinct-value rule: 44055 analcatdata_supreme; 44133 pol.</p>
 <td style="text-align: left;">8,885</td>
 <td style="text-align: left;">261</td>
 <td style="text-align: left;">1,336</td>
-<td style="text-align: left;">Public</td>
+<td style="text-align: left;">not stated (OpenML: “Public”)</td>
+<td style="text-align: left;">8,885</td>
+<td style="text-align: left;">1,336</td>
+<td style="text-align: left;">0.005</td>
+<td style="text-align: left;">-2.23</td>
+<td style="text-align: left;">no</td>
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">0.100-0.100</td>
+<td style="text-align: left;">0.100-0.101</td>
+<td style="text-align: left;">195</td>
+<td style="text-align: left;">0.05</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">45043</td>
@@ -609,6 +848,16 @@ distinct-value rule: 44055 analcatdata_supreme; 44133 pol.</p>
 <td style="text-align: left;">26</td>
 <td style="text-align: left;">29</td>
 <td style="text-align: left;">CC0</td>
+<td style="text-align: left;">52,031</td>
+<td style="text-align: left;">29</td>
+<td style="text-align: left;">0.062</td>
+<td style="text-align: left;">-0.42</td>
+<td style="text-align: left;">no</td>
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">0.064-0.100</td>
+<td style="text-align: left;">0.117-0.124</td>
+<td style="text-align: left;">780</td>
+<td style="text-align: left;">0.00</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">45046</td>
@@ -616,7 +865,17 @@ distinct-value rule: 44055 analcatdata_supreme; 44133 pol.</p>
 <td style="text-align: left;">50,000</td>
 <td style="text-align: left;">587</td>
 <td style="text-align: left;">47,550</td>
-<td style="text-align: left;">Public</td>
+<td style="text-align: left;">not stated (OpenML: “Public”)</td>
+<td style="text-align: left;">188,318</td>
+<td style="text-align: left;">158,223</td>
+<td style="text-align: left;">0.001</td>
+<td style="text-align: left;">0.10</td>
+<td style="text-align: left;">yes</td>
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">0.100-0.100</td>
+<td style="text-align: left;">0.100-0.100</td>
+<td style="text-align: left;">1190</td>
+<td style="text-align: left;">0.02</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">45047</td>
@@ -625,6 +884,16 @@ distinct-value rule: 44055 analcatdata_supreme; 44133 pol.</p>
 <td style="text-align: left;">5</td>
 <td style="text-align: left;">330</td>
 <td style="text-align: left;">CC0</td>
+<td style="text-align: left;">1,000,000</td>
+<td style="text-align: left;">629</td>
+<td style="text-align: left;">0.189</td>
+<td style="text-align: left;">0.52</td>
+<td style="text-align: left;">yes</td>
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">0.090-0.095</td>
+<td style="text-align: left;">0.101-0.102</td>
+<td style="text-align: left;">1126</td>
+<td style="text-align: left;">0.02</td>
 </tr>
 </tbody>
 </table>
@@ -632,279 +901,567 @@ distinct-value rule: 44055 analcatdata_supreme; 44133 pol.</p>
 <p>Exact duplicate rows (features and target), duplicate feature
 vectors, the share of test feature vectors that also occur in the
 training split (seed 0), and the share of missing values, recomputed on
-the final data files (scripts/leakage_audit.py). Random splitting keeps
+the final data files (scripts/leakage_audit.py), for the CTR23 and the
+held-out datasets; the share of test feature vectors seen in training is
+given for seed 0 and as the range over all seeds. Random splitting keeps
 rows exchangeable, so the coverage guarantees hold for new rows from the
 same pool; repeated units (duplicates, repeated videos, repeat sales)
 mean that they do not transfer to new units.</p>
 <p><strong>Table S3.</strong> Leakage audit (sorted by the share of test
 feature vectors seen in training).</p>
-<table>
+<table style="width:100%;">
 <colgroup>
-<col style="width: 20%" />
 <col style="width: 4%" />
-<col style="width: 11%" />
 <col style="width: 18%" />
-<col style="width: 32%" />
-<col style="width: 11%" />
+<col style="width: 3%" />
+<col style="width: 8%" />
+<col style="width: 14%" />
+<col style="width: 24%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
 </colgroup>
 <thead>
 <tr class="header">
+<th style="text-align: left;">Suite</th>
 <th style="text-align: left;">Dataset</th>
 <th style="text-align: left;">n</th>
 <th style="text-align: left;">Duplicate rows</th>
 <th style="text-align: left;">Duplicate feature vectors</th>
 <th style="text-align: left;">Test feature vectors seen in training
 (seed 0)</th>
+<th style="text-align: left;">Min over seeds</th>
+<th style="text-align: left;">Max over seeds</th>
 <th style="text-align: left;">Missing values</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
+<td style="text-align: left;">held-out</td>
+<td style="text-align: left;">seattlecrime6</td>
+<td style="text-align: left;">50000</td>
+<td style="text-align: left;">0.8703</td>
+<td style="text-align: left;">0.9914</td>
+<td style="text-align: left;">0.9988</td>
+<td style="text-align: left;">0.9982</td>
+<td style="text-align: left;">0.9989</td>
+<td style="text-align: left;">0.0000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">held-out</td>
+<td style="text-align: left;">delays_zurich_transport</td>
+<td style="text-align: left;">50000</td>
+<td style="text-align: left;">0.0399</td>
+<td style="text-align: left;">0.9322</td>
+<td style="text-align: left;">0.9952</td>
+<td style="text-align: left;">0.9952</td>
+<td style="text-align: left;">0.9968</td>
+<td style="text-align: left;">0.0000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ctr23</td>
 <td style="text-align: left;">cps88wages</td>
 <td style="text-align: left;">28155</td>
 <td style="text-align: left;">0.0756</td>
 <td style="text-align: left;">0.7740</td>
 <td style="text-align: left;">0.8245</td>
+<td style="text-align: left;">0.8245</td>
+<td style="text-align: left;">0.8377</td>
 <td style="text-align: left;">0.0000</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">ctr23</td>
 <td style="text-align: left;">superconductivity</td>
 <td style="text-align: left;">21263</td>
 <td style="text-align: left;">0.0031</td>
 <td style="text-align: left;">0.2866</td>
 <td style="text-align: left;">0.3138</td>
+<td style="text-align: left;">0.2992</td>
+<td style="text-align: left;">0.3187</td>
 <td style="text-align: left;">0.0000</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">held-out</td>
+<td style="text-align: left;">Mercedes_Benz_Greener_Manufacturing</td>
+<td style="text-align: left;">4209</td>
+<td style="text-align: left;">0.0002</td>
+<td style="text-align: left;">0.2186</td>
+<td style="text-align: left;">0.2469</td>
+<td style="text-align: left;">0.2365</td>
+<td style="text-align: left;">0.2469</td>
+<td style="text-align: left;">0.0000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ctr23</td>
 <td style="text-align: left;">QSAR_fish_toxicity</td>
 <td style="text-align: left;">908</td>
 <td style="text-align: left;">0.0011</td>
 <td style="text-align: left;">0.1465</td>
 <td style="text-align: left;">0.1542</td>
+<td style="text-align: left;">0.1322</td>
+<td style="text-align: left;">0.2203</td>
 <td style="text-align: left;">0.0000</td>
 </tr>
-<tr class="even">
+<tr class="odd">
+<td style="text-align: left;">ctr23</td>
 <td style="text-align: left;">sarcos</td>
 <td style="text-align: left;">48933</td>
 <td style="text-align: left;">0.0909</td>
 <td style="text-align: left;">0.0909</td>
 <td style="text-align: left;">0.0908</td>
+<td style="text-align: left;">0.0873</td>
+<td style="text-align: left;">0.0963</td>
 <td style="text-align: left;">0.0000</td>
 </tr>
-<tr class="odd">
+<tr class="even">
+<td style="text-align: left;">ctr23</td>
 <td style="text-align: left;">health_insurance</td>
 <td style="text-align: left;">22272</td>
 <td style="text-align: left;">0.0436</td>
 <td style="text-align: left;">0.0798</td>
 <td style="text-align: left;">0.0875</td>
+<td style="text-align: left;">0.0828</td>
+<td style="text-align: left;">0.0938</td>
 <td style="text-align: left;">0.0000</td>
 </tr>
-<tr class="even">
+<tr class="odd">
+<td style="text-align: left;">ctr23</td>
 <td style="text-align: left;">brazilian_houses</td>
 <td style="text-align: left;">10692</td>
 <td style="text-align: left;">0.0337</td>
 <td style="text-align: left;">0.0677</td>
 <td style="text-align: left;">0.0849</td>
+<td style="text-align: left;">0.0707</td>
+<td style="text-align: left;">0.0849</td>
 <td style="text-align: left;">0.0000</td>
 </tr>
-<tr class="odd">
+<tr class="even">
+<td style="text-align: left;">ctr23</td>
 <td style="text-align: left;">physiochemical_protein</td>
 <td style="text-align: left;">45730</td>
 <td style="text-align: left;">0.0374</td>
 <td style="text-align: left;">0.0384</td>
 <td style="text-align: left;">0.0396</td>
+<td style="text-align: left;">0.0379</td>
+<td style="text-align: left;">0.0420</td>
 <td style="text-align: left;">0.0000</td>
 </tr>
-<tr class="even">
+<tr class="odd">
+<td style="text-align: left;">ctr23</td>
 <td style="text-align: left;">concrete_compressive_strength</td>
 <td style="text-align: left;">1030</td>
 <td style="text-align: left;">0.0243</td>
 <td style="text-align: left;">0.0330</td>
 <td style="text-align: left;">0.0233</td>
+<td style="text-align: left;">0.0233</td>
+<td style="text-align: left;">0.0623</td>
 <td style="text-align: left;">0.0000</td>
 </tr>
-<tr class="odd">
+<tr class="even">
+<td style="text-align: left;">ctr23</td>
 <td style="text-align: left;">forest_fires</td>
 <td style="text-align: left;">517</td>
 <td style="text-align: left;">0.0077</td>
 <td style="text-align: left;">0.0251</td>
 <td style="text-align: left;">0.0231</td>
+<td style="text-align: left;">0.0154</td>
+<td style="text-align: left;">0.0385</td>
+<td style="text-align: left;">0.0000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">held-out</td>
+<td style="text-align: left;">Bike_Sharing_Demand</td>
+<td style="text-align: left;">17379</td>
+<td style="text-align: left;">0.0006</td>
+<td style="text-align: left;">0.0227</td>
+<td style="text-align: left;">0.0228</td>
+<td style="text-align: left;">0.0221</td>
+<td style="text-align: left;">0.0258</td>
 <td style="text-align: left;">0.0000</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">held-out</td>
+<td style="text-align: left;">yprop_4_1</td>
+<td style="text-align: left;">8885</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0125</td>
+<td style="text-align: left;">0.0122</td>
+<td style="text-align: left;">0.0108</td>
+<td style="text-align: left;">0.0135</td>
+<td style="text-align: left;">0.0000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ctr23</td>
 <td style="text-align: left;">diamonds</td>
 <td style="text-align: left;">53940</td>
 <td style="text-align: left;">0.0027</td>
 <td style="text-align: left;">0.0064</td>
 <td style="text-align: left;">0.0065</td>
+<td style="text-align: left;">0.0056</td>
+<td style="text-align: left;">0.0076</td>
 <td style="text-align: left;">0.0000</td>
 </tr>
-<tr class="odd">
+<tr class="even">
+<td style="text-align: left;">ctr23</td>
 <td style="text-align: left;">cars</td>
 <td style="text-align: left;">804</td>
 <td style="text-align: left;">0.0000</td>
 <td style="text-align: left;">0.0012</td>
 <td style="text-align: left;">0.0050</td>
 <td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0050</td>
+<td style="text-align: left;">0.0000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">held-out</td>
+<td style="text-align: left;">topo_2_1</td>
+<td style="text-align: left;">8885</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0028</td>
+<td style="text-align: left;">0.0027</td>
+<td style="text-align: left;">0.0027</td>
+<td style="text-align: left;">0.0036</td>
+<td style="text-align: left;">0.0000</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">held-out</td>
+<td style="text-align: left;">particulate-matter-ukair-2017</td>
+<td style="text-align: left;">50000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0016</td>
+<td style="text-align: left;">0.0019</td>
+<td style="text-align: left;">0.0010</td>
+<td style="text-align: left;">0.0020</td>
+<td style="text-align: left;">0.0000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">held-out</td>
+<td style="text-align: left;">nyc-taxi-green-dec-2016</td>
+<td style="text-align: left;">50000</td>
+<td style="text-align: left;">0.0010</td>
+<td style="text-align: left;">0.0012</td>
+<td style="text-align: left;">0.0013</td>
+<td style="text-align: left;">0.0010</td>
+<td style="text-align: left;">0.0018</td>
+<td style="text-align: left;">0.0000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ctr23</td>
 <td style="text-align: left;">video_transcoding</td>
 <td style="text-align: left;">68784</td>
 <td style="text-align: left;">0.0000</td>
 <td style="text-align: left;">0.0012</td>
 <td style="text-align: left;">0.0010</td>
+<td style="text-align: left;">0.0008</td>
+<td style="text-align: left;">0.0015</td>
 <td style="text-align: left;">0.0000</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">ctr23</td>
 <td style="text-align: left;">miami_housing</td>
 <td style="text-align: left;">13932</td>
 <td style="text-align: left;">0.0000</td>
 <td style="text-align: left;">0.0007</td>
 <td style="text-align: left;">0.0003</td>
 <td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0014</td>
+<td style="text-align: left;">0.0000</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">energy_efficiency</td>
-<td style="text-align: left;">768</td>
-<td style="text-align: left;">0.0000</td>
-<td style="text-align: left;">0.0000</td>
-<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">held-out</td>
+<td style="text-align: left;">SGEMM_GPU_kernel_performance</td>
+<td style="text-align: left;">50000</td>
+<td style="text-align: left;">0.0001</td>
+<td style="text-align: left;">0.0003</td>
+<td style="text-align: left;">0.0002</td>
+<td style="text-align: left;">0.0001</td>
+<td style="text-align: left;">0.0003</td>
 <td style="text-align: left;">0.0000</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Moneyball</td>
-<td style="text-align: left;">1232</td>
-<td style="text-align: left;">0.0000</td>
-<td style="text-align: left;">0.0000</td>
-<td style="text-align: left;">0.0000</td>
-<td style="text-align: left;">0.0169</td>
-</tr>
-<tr class="even">
+<td style="text-align: left;">ctr23</td>
 <td style="text-align: left;">wave_energy</td>
 <td style="text-align: left;">72000</td>
 <td style="text-align: left;">0.0000</td>
 <td style="text-align: left;">0.0000</td>
 <td style="text-align: left;">0.0000</td>
 <td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ctr23</td>
+<td style="text-align: left;">energy_efficiency</td>
+<td style="text-align: left;">768</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">ctr23</td>
+<td style="text-align: left;">Moneyball</td>
+<td style="text-align: left;">1232</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0169</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ctr23</td>
 <td style="text-align: left;">grid_stability</td>
 <td style="text-align: left;">10000</td>
 <td style="text-align: left;">0.0000</td>
 <td style="text-align: left;">0.0000</td>
 <td style="text-align: left;">0.0000</td>
 <td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
 </tr>
-<tr class="even">
+<tr class="odd">
+<td style="text-align: left;">ctr23</td>
 <td style="text-align: left;">geographical_origin_of_music</td>
 <td style="text-align: left;">1059</td>
 <td style="text-align: left;">0.0000</td>
 <td style="text-align: left;">0.0000</td>
 <td style="text-align: left;">0.0000</td>
 <td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
 </tr>
-<tr class="odd">
+<tr class="even">
+<td style="text-align: left;">ctr23</td>
 <td style="text-align: left;">naval_propulsion_plant</td>
 <td style="text-align: left;">11934</td>
 <td style="text-align: left;">0.0000</td>
 <td style="text-align: left;">0.0000</td>
 <td style="text-align: left;">0.0000</td>
 <td style="text-align: left;">0.0000</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">airfoil_self_noise</td>
-<td style="text-align: left;">1503</td>
-<td style="text-align: left;">0.0000</td>
-<td style="text-align: left;">0.0000</td>
 <td style="text-align: left;">0.0000</td>
 <td style="text-align: left;">0.0000</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">abalone</td>
-<td style="text-align: left;">4177</td>
-<td style="text-align: left;">0.0000</td>
-<td style="text-align: left;">0.0000</td>
-<td style="text-align: left;">0.0000</td>
-<td style="text-align: left;">0.0000</td>
-</tr>
-<tr class="even">
+<td style="text-align: left;">ctr23</td>
 <td style="text-align: left;">auction_verification</td>
 <td style="text-align: left;">2043</td>
 <td style="text-align: left;">0.0000</td>
 <td style="text-align: left;">0.0000</td>
 <td style="text-align: left;">0.0000</td>
 <td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ctr23</td>
+<td style="text-align: left;">airfoil_self_noise</td>
+<td style="text-align: left;">1503</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">cpu_activity</td>
-<td style="text-align: left;">8192</td>
+<td style="text-align: left;">ctr23</td>
+<td style="text-align: left;">abalone</td>
+<td style="text-align: left;">4177</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
 <td style="text-align: left;">0.0000</td>
 <td style="text-align: left;">0.0000</td>
 <td style="text-align: left;">0.0000</td>
 <td style="text-align: left;">0.0000</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">ctr23</td>
 <td style="text-align: left;">kin8nm</td>
 <td style="text-align: left;">8192</td>
 <td style="text-align: left;">0.0000</td>
 <td style="text-align: left;">0.0000</td>
 <td style="text-align: left;">0.0000</td>
 <td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">pumadyn32nh</td>
-<td style="text-align: left;">8192</td>
+<td style="text-align: left;">held-out</td>
+<td style="text-align: left;">visualizing_soil</td>
+<td style="text-align: left;">8641</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
 <td style="text-align: left;">0.0000</td>
 <td style="text-align: left;">0.0000</td>
 <td style="text-align: left;">0.0000</td>
 <td style="text-align: left;">0.0000</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">california_housing</td>
-<td style="text-align: left;">20640</td>
+<td style="text-align: left;">ctr23</td>
+<td style="text-align: left;">space_ga</td>
+<td style="text-align: left;">3107</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
 <td style="text-align: left;">0.0000</td>
 <td style="text-align: left;">0.0000</td>
 <td style="text-align: left;">0.0000</td>
 <td style="text-align: left;">0.0000</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">socmob</td>
-<td style="text-align: left;">1156</td>
-<td style="text-align: left;">0.0000</td>
-<td style="text-align: left;">0.0000</td>
-<td style="text-align: left;">0.0000</td>
-<td style="text-align: left;">0.0000</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">fps_benchmark</td>
-<td style="text-align: left;">24624</td>
-<td style="text-align: left;">0.0000</td>
-<td style="text-align: left;">0.0000</td>
-<td style="text-align: left;">0.0000</td>
-<td style="text-align: left;">0.0029</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">kings_county</td>
-<td style="text-align: left;">21613</td>
-<td style="text-align: left;">0.0000</td>
-<td style="text-align: left;">0.0000</td>
-<td style="text-align: left;">0.0000</td>
-<td style="text-align: left;">0.0000</td>
-</tr>
-<tr class="even">
+<td style="text-align: left;">ctr23</td>
 <td style="text-align: left;">fifa</td>
 <td style="text-align: left;">19178</td>
 <td style="text-align: left;">0.0000</td>
 <td style="text-align: left;">0.0000</td>
 <td style="text-align: left;">0.0000</td>
 <td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ctr23</td>
+<td style="text-align: left;">fps_benchmark</td>
+<td style="text-align: left;">24624</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0029</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">space_ga</td>
-<td style="text-align: left;">3107</td>
+<td style="text-align: left;">ctr23</td>
+<td style="text-align: left;">kings_county</td>
+<td style="text-align: left;">21613</td>
 <td style="text-align: left;">0.0000</td>
 <td style="text-align: left;">0.0000</td>
 <td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0002</td>
+<td style="text-align: left;">0.0000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ctr23</td>
+<td style="text-align: left;">cpu_activity</td>
+<td style="text-align: left;">8192</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ctr23</td>
+<td style="text-align: left;">pumadyn32nh</td>
+<td style="text-align: left;">8192</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ctr23</td>
+<td style="text-align: left;">socmob</td>
+<td style="text-align: left;">1156</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ctr23</td>
+<td style="text-align: left;">california_housing</td>
+<td style="text-align: left;">20640</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">held-out</td>
+<td style="text-align: left;">Ailerons</td>
+<td style="text-align: left;">13750</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">held-out</td>
+<td style="text-align: left;">elevators</td>
+<td style="text-align: left;">16599</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">held-out</td>
+<td style="text-align: left;">house_16H</td>
+<td style="text-align: left;">22784</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">held-out</td>
+<td style="text-align: left;">sulfur</td>
+<td style="text-align: left;">10081</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">held-out</td>
+<td style="text-align: left;">medical_charges</td>
+<td style="text-align: left;">50000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">held-out</td>
+<td style="text-align: left;">Allstate_Claims_Severity</td>
+<td style="text-align: left;">50000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">held-out</td>
+<td style="text-align: left;">Airlines_DepDelay_1M</td>
+<td style="text-align: left;">50000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0001</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0000</td>
+<td style="text-align: left;">0.0002</td>
 <td style="text-align: left;">0.0000</td>
 </tr>
 </tbody>
@@ -3457,175 +4014,6 @@ datasets).</p>
 </tr>
 </tbody>
 </table>
-<p><strong>Table S13.</strong> Calibration and prediction time per test
-point (median over datasets of the per-dataset median of three
-repetitions after a discarded warm-up; one thread).</p>
-<table>
-<colgroup>
-<col style="width: 24%" />
-<col style="width: 40%" />
-<col style="width: 35%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">Method</th>
-<th style="text-align: left;">Median µs per test point</th>
-<th style="text-align: left;">Maximum over datasets</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">CQR</td>
-<td style="text-align: left;">0.0</td>
-<td style="text-align: left;">0.1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">DCP-hist</td>
-<td style="text-align: left;">3.8</td>
-<td style="text-align: left;">5.9</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">DCP</td>
-<td style="text-align: left;">0.3</td>
-<td style="text-align: left;">2.3</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">DCP-2p</td>
-<td style="text-align: left;">0.3</td>
-<td style="text-align: left;">2.0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">DCP-N</td>
-<td style="text-align: left;">0.3</td>
-<td style="text-align: left;">2.8</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">DLS-hist</td>
-<td style="text-align: left;">0.4</td>
-<td style="text-align: left;">0.8</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">DLS</td>
-<td style="text-align: left;">14.7</td>
-<td style="text-align: left;">82.7</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">DLS-2p</td>
-<td style="text-align: left;">17.4</td>
-<td style="text-align: left;">52.8</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">DLS-N</td>
-<td style="text-align: left;">4.7</td>
-<td style="text-align: left;">33.6</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">HPD-split-hist</td>
-<td style="text-align: left;">12.2</td>
-<td style="text-align: left;">19.3</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">HPD-split</td>
-<td style="text-align: left;">13.7</td>
-<td style="text-align: left;">82.9</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">HPD-split-LS2</td>
-<td style="text-align: left;">17.0</td>
-<td style="text-align: left;">50.4</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">HPD-split-N</td>
-<td style="text-align: left;">4.2</td>
-<td style="text-align: left;">37.3</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Mondrian-ŷ</td>
-<td style="text-align: left;">0.2</td>
-<td style="text-align: left;">0.8</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">NCP</td>
-<td style="text-align: left;">0.0</td>
-<td style="text-align: left;">0.1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">S-CQR</td>
-<td style="text-align: left;">0.1</td>
-<td style="text-align: left;">0.3</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">S-HPD-hist</td>
-<td style="text-align: left;">13.9</td>
-<td style="text-align: left;">19.7</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">S-HPD</td>
-<td style="text-align: left;">12.4</td>
-<td style="text-align: left;">81.7</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">S-HPD-LS2</td>
-<td style="text-align: left;">17.3</td>
-<td style="text-align: left;">51.2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">S-HPD-N</td>
-<td style="text-align: left;">4.5</td>
-<td style="text-align: left;">33.3</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">S-NCP</td>
-<td style="text-align: left;">0.1</td>
-<td style="text-align: left;">0.5</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">BCCP</td>
-<td style="text-align: left;">0.1</td>
-<td style="text-align: left;">0.3</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">BCCP-hull</td>
-<td style="text-align: left;">0.1</td>
-<td style="text-align: left;">0.2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">SCP</td>
-<td style="text-align: left;">0.0</td>
-<td style="text-align: left;">0.1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">SDLC-hist</td>
-<td style="text-align: left;">0.3</td>
-<td style="text-align: left;">0.5</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">SDLC-hist-floor</td>
-<td style="text-align: left;">0.3</td>
-<td style="text-align: left;">0.5</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">SDLC-hist-hull</td>
-<td style="text-align: left;">0.3</td>
-<td style="text-align: left;">0.6</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">SDLC</td>
-<td style="text-align: left;">13.5</td>
-<td style="text-align: left;">89.1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">SDLC-2p</td>
-<td style="text-align: left;">17.1</td>
-<td style="text-align: left;">50.0</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">SDLC-N</td>
-<td style="text-align: left;">4.6</td>
-<td style="text-align: left;">38.5</td>
-</tr>
-</tbody>
-</table>
 <p><strong>Table S14.</strong> Fitting and prediction time of the model
 components in seconds (seed 0, one CPU thread). SDLC uses the mean
 model, the scale model with out-of-fold residuals, the cross-fitted
@@ -4451,6 +4839,222 @@ main benchmark).</p>
 </tr>
 </tbody>
 </table>
+<p>Table S15 (continued). Grouped splits: range over the five seeds of
+marginal and worst-stratum coverage (each seed is one calibration set;
+the guarantees hold on average over calibration sets).</p>
+<table>
+<colgroup>
+<col style="width: 12%" />
+<col style="width: 7%" />
+<col style="width: 22%" />
+<col style="width: 15%" />
+<col style="width: 18%" />
+<col style="width: 18%" />
+<col style="width: 5%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Dataset</th>
+<th style="text-align: left;">Method</th>
+<th style="text-align: left;">Marginal cov. (min over seeds)</th>
+<th style="text-align: left;">Marginal cov. (max)</th>
+<th style="text-align: left;">Worst-stratum cov. (min)</th>
+<th style="text-align: left;">Worst-stratum cov. (max)</th>
+<th style="text-align: left;">Seeds</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">sarcos</td>
+<td style="text-align: left;">BCCP</td>
+<td style="text-align: left;">0.897</td>
+<td style="text-align: left;">0.905</td>
+<td style="text-align: left;">0.880</td>
+<td style="text-align: left;">0.892</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">sarcos</td>
+<td style="text-align: left;">CQR</td>
+<td style="text-align: left;">0.898</td>
+<td style="text-align: left;">0.905</td>
+<td style="text-align: left;">0.817</td>
+<td style="text-align: left;">0.828</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">sarcos</td>
+<td style="text-align: left;">HPD-split</td>
+<td style="text-align: left;">0.895</td>
+<td style="text-align: left;">0.901</td>
+<td style="text-align: left;">0.878</td>
+<td style="text-align: left;">0.886</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">sarcos</td>
+<td style="text-align: left;">S-CQR</td>
+<td style="text-align: left;">0.899</td>
+<td style="text-align: left;">0.909</td>
+<td style="text-align: left;">0.886</td>
+<td style="text-align: left;">0.895</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">sarcos</td>
+<td style="text-align: left;">S-NCP</td>
+<td style="text-align: left;">0.896</td>
+<td style="text-align: left;">0.901</td>
+<td style="text-align: left;">0.880</td>
+<td style="text-align: left;">0.891</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">sarcos</td>
+<td style="text-align: left;">SCP</td>
+<td style="text-align: left;">0.891</td>
+<td style="text-align: left;">0.901</td>
+<td style="text-align: left;">0.770</td>
+<td style="text-align: left;">0.784</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">sarcos</td>
+<td style="text-align: left;">SDLC</td>
+<td style="text-align: left;">0.893</td>
+<td style="text-align: left;">0.902</td>
+<td style="text-align: left;">0.871</td>
+<td style="text-align: left;">0.893</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">superconductivity</td>
+<td style="text-align: left;">BCCP</td>
+<td style="text-align: left;">0.886</td>
+<td style="text-align: left;">0.913</td>
+<td style="text-align: left;">0.875</td>
+<td style="text-align: left;">0.898</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">superconductivity</td>
+<td style="text-align: left;">CQR</td>
+<td style="text-align: left;">0.891</td>
+<td style="text-align: left;">0.903</td>
+<td style="text-align: left;">0.754</td>
+<td style="text-align: left;">0.792</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">superconductivity</td>
+<td style="text-align: left;">HPD-split</td>
+<td style="text-align: left;">0.894</td>
+<td style="text-align: left;">0.901</td>
+<td style="text-align: left;">0.866</td>
+<td style="text-align: left;">0.880</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">superconductivity</td>
+<td style="text-align: left;">S-CQR</td>
+<td style="text-align: left;">0.886</td>
+<td style="text-align: left;">0.907</td>
+<td style="text-align: left;">0.865</td>
+<td style="text-align: left;">0.889</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">superconductivity</td>
+<td style="text-align: left;">S-NCP</td>
+<td style="text-align: left;">0.890</td>
+<td style="text-align: left;">0.904</td>
+<td style="text-align: left;">0.852</td>
+<td style="text-align: left;">0.893</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">superconductivity</td>
+<td style="text-align: left;">SCP</td>
+<td style="text-align: left;">0.888</td>
+<td style="text-align: left;">0.911</td>
+<td style="text-align: left;">0.794</td>
+<td style="text-align: left;">0.842</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">superconductivity</td>
+<td style="text-align: left;">SDLC</td>
+<td style="text-align: left;">0.890</td>
+<td style="text-align: left;">0.905</td>
+<td style="text-align: left;">0.867</td>
+<td style="text-align: left;">0.892</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">video_transcoding</td>
+<td style="text-align: left;">BCCP</td>
+<td style="text-align: left;">0.807</td>
+<td style="text-align: left;">0.931</td>
+<td style="text-align: left;">0.743</td>
+<td style="text-align: left;">0.893</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">video_transcoding</td>
+<td style="text-align: left;">CQR</td>
+<td style="text-align: left;">0.872</td>
+<td style="text-align: left;">0.912</td>
+<td style="text-align: left;">0.660</td>
+<td style="text-align: left;">0.742</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">video_transcoding</td>
+<td style="text-align: left;">HPD-split</td>
+<td style="text-align: left;">0.841</td>
+<td style="text-align: left;">0.957</td>
+<td style="text-align: left;">0.632</td>
+<td style="text-align: left;">0.852</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">video_transcoding</td>
+<td style="text-align: left;">S-CQR</td>
+<td style="text-align: left;">0.857</td>
+<td style="text-align: left;">0.901</td>
+<td style="text-align: left;">0.647</td>
+<td style="text-align: left;">0.866</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">video_transcoding</td>
+<td style="text-align: left;">S-NCP</td>
+<td style="text-align: left;">0.844</td>
+<td style="text-align: left;">0.939</td>
+<td style="text-align: left;">0.776</td>
+<td style="text-align: left;">0.925</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">video_transcoding</td>
+<td style="text-align: left;">SCP</td>
+<td style="text-align: left;">0.864</td>
+<td style="text-align: left;">0.932</td>
+<td style="text-align: left;">0.341</td>
+<td style="text-align: left;">0.632</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">video_transcoding</td>
+<td style="text-align: left;">SDLC</td>
+<td style="text-align: left;">0.788</td>
+<td style="text-align: left;">0.935</td>
+<td style="text-align: left;">0.750</td>
+<td style="text-align: left;">0.893</td>
+<td style="text-align: left;">5</td>
+</tr>
+</tbody>
+</table>
 <p><strong>Table S16.</strong> Pre-specified secondary analyses of the
 held-out replication (hull forms) and post hoc equivalence tests (±5% on
 the log-size scale, TOST with two one-sided Wilcoxon tests), on CTR23
@@ -4887,6 +5491,588 @@ descriptive)</td>
 <td style="text-align: left;">1</td>
 <td style="text-align: left;">0.004</td>
 <td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Table S17b.</strong> Post hoc checks of the held-out
+replication and of CTR23 (review round 5; scripts/analyze_review05.py;
+no model was refitted). Size comparisons of SDLC with the stratified
+comparators (per-dataset geometric-mean normalised size, two-sided
+Wilcoxon signed-rank test, Holm over the four comparators within a
+subset) on: all held-out datasets as pre-specified; the duplicate pair
+yprop_4_1/topo_2_1 merged into one dataset (log-scale mean); continuous
+targets (at least 100 distinct values and largest atom at most 5% of
+rows); datasets with nominal tail strata (realised training mass of the
+lowest and highest stratum within [0.08, 0.12] in every seed, K = 5);
+and without house_16H.</p>
+<table>
+<colgroup>
+<col style="width: 9%" />
+<col style="width: 29%" />
+<col style="width: 13%" />
+<col style="width: 4%" />
+<col style="width: 11%" />
+<col style="width: 7%" />
+<col style="width: 9%" />
+<col style="width: 6%" />
+<col style="width: 9%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">suite</th>
+<th style="text-align: left;">subset</th>
+<th style="text-align: left;">comparison</th>
+<th style="text-align: left;">n</th>
+<th style="text-align: left;">geo_ratio</th>
+<th style="text-align: left;">wins</th>
+<th style="text-align: left;">losses</th>
+<th style="text-align: left;">p</th>
+<th style="text-align: left;">p_holm</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">held-out</td>
+<td style="text-align: left;">all 17 (pre-specified set)</td>
+<td style="text-align: left;">SDLC vs BCCP</td>
+<td style="text-align: left;">17</td>
+<td style="text-align: left;">0.860</td>
+<td style="text-align: left;">14</td>
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">0.000</td>
+<td style="text-align: left;">0.001</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">held-out</td>
+<td style="text-align: left;">all 17 (pre-specified set)</td>
+<td style="text-align: left;">SDLC vs S-NCP</td>
+<td style="text-align: left;">17</td>
+<td style="text-align: left;">0.979</td>
+<td style="text-align: left;">15</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">0.004</td>
+<td style="text-align: left;">0.008</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">held-out</td>
+<td style="text-align: left;">all 17 (pre-specified set)</td>
+<td style="text-align: left;">SDLC vs S-CQR</td>
+<td style="text-align: left;">17</td>
+<td style="text-align: left;">0.835</td>
+<td style="text-align: left;">15</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">0.000</td>
+<td style="text-align: left;">0.001</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">held-out</td>
+<td style="text-align: left;">all 17 (pre-specified set)</td>
+<td style="text-align: left;">SDLC vs S-HPD</td>
+<td style="text-align: left;">17</td>
+<td style="text-align: left;">0.988</td>
+<td style="text-align: left;">15</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">0.005</td>
+<td style="text-align: left;">0.008</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">held-out</td>
+<td style="text-align: left;">duplicate pair merged (n = 16)</td>
+<td style="text-align: left;">SDLC vs BCCP</td>
+<td style="text-align: left;">16</td>
+<td style="text-align: left;">0.851</td>
+<td style="text-align: left;">14</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">0.000</td>
+<td style="text-align: left;">0.001</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">held-out</td>
+<td style="text-align: left;">duplicate pair merged (n = 16)</td>
+<td style="text-align: left;">SDLC vs S-NCP</td>
+<td style="text-align: left;">16</td>
+<td style="text-align: left;">0.980</td>
+<td style="text-align: left;">14</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">0.006</td>
+<td style="text-align: left;">0.013</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">held-out</td>
+<td style="text-align: left;">duplicate pair merged (n = 16)</td>
+<td style="text-align: left;">SDLC vs S-CQR</td>
+<td style="text-align: left;">16</td>
+<td style="text-align: left;">0.825</td>
+<td style="text-align: left;">15</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">0.000</td>
+<td style="text-align: left;">0.000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">held-out</td>
+<td style="text-align: left;">duplicate pair merged (n = 16)</td>
+<td style="text-align: left;">SDLC vs S-HPD</td>
+<td style="text-align: left;">16</td>
+<td style="text-align: left;">0.989</td>
+<td style="text-align: left;">14</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">0.008</td>
+<td style="text-align: left;">0.013</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">heldout</td>
+<td style="text-align: left;">continuous targets</td>
+<td style="text-align: left;">SDLC vs BCCP</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">0.900</td>
+<td style="text-align: left;">7</td>
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">0.037</td>
+<td style="text-align: left;">0.039</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">heldout</td>
+<td style="text-align: left;">continuous targets</td>
+<td style="text-align: left;">SDLC vs S-NCP</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">0.953</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0.002</td>
+<td style="text-align: left;">0.008</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">heldout</td>
+<td style="text-align: left;">continuous targets</td>
+<td style="text-align: left;">SDLC vs S-CQR</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">0.945</td>
+<td style="text-align: left;">8</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">0.020</td>
+<td style="text-align: left;">0.039</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">heldout</td>
+<td style="text-align: left;">continuous targets</td>
+<td style="text-align: left;">SDLC vs S-HPD</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">0.972</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0.002</td>
+<td style="text-align: left;">0.008</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">heldout</td>
+<td style="text-align: left;">nominal tail strata</td>
+<td style="text-align: left;">SDLC vs BCCP</td>
+<td style="text-align: left;">11</td>
+<td style="text-align: left;">0.905</td>
+<td style="text-align: left;">8</td>
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">0.019</td>
+<td style="text-align: left;">0.020</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">heldout</td>
+<td style="text-align: left;">nominal tail strata</td>
+<td style="text-align: left;">SDLC vs S-NCP</td>
+<td style="text-align: left;">11</td>
+<td style="text-align: left;">0.954</td>
+<td style="text-align: left;">11</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0.001</td>
+<td style="text-align: left;">0.004</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">heldout</td>
+<td style="text-align: left;">nominal tail strata</td>
+<td style="text-align: left;">SDLC vs S-CQR</td>
+<td style="text-align: left;">11</td>
+<td style="text-align: left;">0.946</td>
+<td style="text-align: left;">9</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">0.010</td>
+<td style="text-align: left;">0.020</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">heldout</td>
+<td style="text-align: left;">nominal tail strata</td>
+<td style="text-align: left;">SDLC vs S-HPD</td>
+<td style="text-align: left;">11</td>
+<td style="text-align: left;">0.974</td>
+<td style="text-align: left;">11</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0.001</td>
+<td style="text-align: left;">0.004</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ctr23</td>
+<td style="text-align: left;">continuous targets</td>
+<td style="text-align: left;">SDLC vs BCCP</td>
+<td style="text-align: left;">23</td>
+<td style="text-align: left;">0.933</td>
+<td style="text-align: left;">18</td>
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">0.001</td>
+<td style="text-align: left;">0.001</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ctr23</td>
+<td style="text-align: left;">continuous targets</td>
+<td style="text-align: left;">SDLC vs S-NCP</td>
+<td style="text-align: left;">23</td>
+<td style="text-align: left;">0.951</td>
+<td style="text-align: left;">21</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">0.000</td>
+<td style="text-align: left;">0.000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ctr23</td>
+<td style="text-align: left;">continuous targets</td>
+<td style="text-align: left;">SDLC vs S-CQR</td>
+<td style="text-align: left;">23</td>
+<td style="text-align: left;">0.754</td>
+<td style="text-align: left;">21</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">0.000</td>
+<td style="text-align: left;">0.000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ctr23</td>
+<td style="text-align: left;">continuous targets</td>
+<td style="text-align: left;">SDLC vs S-HPD</td>
+<td style="text-align: left;">23</td>
+<td style="text-align: left;">0.942</td>
+<td style="text-align: left;">22</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">0.000</td>
+<td style="text-align: left;">0.000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ctr23</td>
+<td style="text-align: left;">nominal tail strata</td>
+<td style="text-align: left;">SDLC vs BCCP</td>
+<td style="text-align: left;">24</td>
+<td style="text-align: left;">0.935</td>
+<td style="text-align: left;">19</td>
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">0.001</td>
+<td style="text-align: left;">0.001</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ctr23</td>
+<td style="text-align: left;">nominal tail strata</td>
+<td style="text-align: left;">SDLC vs S-NCP</td>
+<td style="text-align: left;">24</td>
+<td style="text-align: left;">0.951</td>
+<td style="text-align: left;">22</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">0.000</td>
+<td style="text-align: left;">0.000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ctr23</td>
+<td style="text-align: left;">nominal tail strata</td>
+<td style="text-align: left;">SDLC vs S-CQR</td>
+<td style="text-align: left;">24</td>
+<td style="text-align: left;">0.748</td>
+<td style="text-align: left;">22</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">0.000</td>
+<td style="text-align: left;">0.000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ctr23</td>
+<td style="text-align: left;">nominal tail strata</td>
+<td style="text-align: left;">SDLC vs S-HPD</td>
+<td style="text-align: left;">24</td>
+<td style="text-align: left;">0.942</td>
+<td style="text-align: left;">23</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">0.000</td>
+<td style="text-align: left;">0.000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">held-out</td>
+<td style="text-align: left;">merged pair, without house_16H</td>
+<td style="text-align: left;">SDLC vs BCCP</td>
+<td style="text-align: left;">15</td>
+<td style="text-align: left;">0.882</td>
+<td style="text-align: left;">13</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">0.000</td>
+<td style="text-align: left;">0.001</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">held-out</td>
+<td style="text-align: left;">merged pair, without house_16H</td>
+<td style="text-align: left;">SDLC vs S-NCP</td>
+<td style="text-align: left;">15</td>
+<td style="text-align: left;">0.957</td>
+<td style="text-align: left;">14</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">0.000</td>
+<td style="text-align: left;">0.000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">held-out</td>
+<td style="text-align: left;">merged pair, without house_16H</td>
+<td style="text-align: left;">SDLC vs S-CQR</td>
+<td style="text-align: left;">15</td>
+<td style="text-align: left;">0.849</td>
+<td style="text-align: left;">14</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">0.000</td>
+<td style="text-align: left;">0.001</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">held-out</td>
+<td style="text-align: left;">merged pair, without house_16H</td>
+<td style="text-align: left;">SDLC vs S-HPD</td>
+<td style="text-align: left;">15</td>
+<td style="text-align: left;">0.972</td>
+<td style="text-align: left;">14</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">0.000</td>
+<td style="text-align: left;">0.001</td>
+</tr>
+</tbody>
+</table>
+<p>Table S17b (continued). Coverage of the top 1% of outcomes with one
+definition in both pipelines
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>≥</mo><msub><mi>q</mi><mn>0.99</mn></msub></mrow><annotation encoding="application/x-tex">y\ge q_{0.99}</annotation></semantics></math>
+of the training targets; a seed counts only if the group holds at least
+10 test points; mean, minimum and maximum over datasets).</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">suite</th>
+<th style="text-align: left;">method</th>
+<th style="text-align: left;">n_datasets</th>
+<th style="text-align: left;">mean</th>
+<th style="text-align: left;">min</th>
+<th style="text-align: left;">max</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">ctr23</td>
+<td style="text-align: left;">BCCP</td>
+<td style="text-align: left;">24</td>
+<td style="text-align: left;">0.697</td>
+<td style="text-align: left;">0.151</td>
+<td style="text-align: left;">1.000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ctr23</td>
+<td style="text-align: left;">CQR</td>
+<td style="text-align: left;">24</td>
+<td style="text-align: left;">0.494</td>
+<td style="text-align: left;">0.000</td>
+<td style="text-align: left;">0.972</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ctr23</td>
+<td style="text-align: left;">HPD-split</td>
+<td style="text-align: left;">24</td>
+<td style="text-align: left;">0.691</td>
+<td style="text-align: left;">0.001</td>
+<td style="text-align: left;">1.000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ctr23</td>
+<td style="text-align: left;">S-CQR</td>
+<td style="text-align: left;">24</td>
+<td style="text-align: left;">0.696</td>
+<td style="text-align: left;">0.150</td>
+<td style="text-align: left;">0.917</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ctr23</td>
+<td style="text-align: left;">S-HPD</td>
+<td style="text-align: left;">24</td>
+<td style="text-align: left;">0.781</td>
+<td style="text-align: left;">0.246</td>
+<td style="text-align: left;">0.956</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ctr23</td>
+<td style="text-align: left;">S-NCP</td>
+<td style="text-align: left;">24</td>
+<td style="text-align: left;">0.782</td>
+<td style="text-align: left;">0.246</td>
+<td style="text-align: left;">0.952</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ctr23</td>
+<td style="text-align: left;">SCP</td>
+<td style="text-align: left;">24</td>
+<td style="text-align: left;">0.467</td>
+<td style="text-align: left;">0.000</td>
+<td style="text-align: left;">0.994</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ctr23</td>
+<td style="text-align: left;">SDLC</td>
+<td style="text-align: left;">24</td>
+<td style="text-align: left;">0.750</td>
+<td style="text-align: left;">0.190</td>
+<td style="text-align: left;">1.000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">held-out</td>
+<td style="text-align: left;">BCCP</td>
+<td style="text-align: left;">17</td>
+<td style="text-align: left;">0.699</td>
+<td style="text-align: left;">0.357</td>
+<td style="text-align: left;">0.877</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">held-out</td>
+<td style="text-align: left;">CQR</td>
+<td style="text-align: left;">17</td>
+<td style="text-align: left;">0.420</td>
+<td style="text-align: left;">0.000</td>
+<td style="text-align: left;">0.947</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">held-out</td>
+<td style="text-align: left;">HPD-split</td>
+<td style="text-align: left;">17</td>
+<td style="text-align: left;">0.576</td>
+<td style="text-align: left;">0.000</td>
+<td style="text-align: left;">0.937</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">held-out</td>
+<td style="text-align: left;">S-CQR</td>
+<td style="text-align: left;">17</td>
+<td style="text-align: left;">0.696</td>
+<td style="text-align: left;">0.294</td>
+<td style="text-align: left;">0.934</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">held-out</td>
+<td style="text-align: left;">S-HPD</td>
+<td style="text-align: left;">17</td>
+<td style="text-align: left;">0.796</td>
+<td style="text-align: left;">0.391</td>
+<td style="text-align: left;">0.958</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">held-out</td>
+<td style="text-align: left;">S-NCP</td>
+<td style="text-align: left;">17</td>
+<td style="text-align: left;">0.793</td>
+<td style="text-align: left;">0.391</td>
+<td style="text-align: left;">0.958</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">held-out</td>
+<td style="text-align: left;">SCP</td>
+<td style="text-align: left;">17</td>
+<td style="text-align: left;">0.471</td>
+<td style="text-align: left;">0.000</td>
+<td style="text-align: left;">0.990</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">held-out</td>
+<td style="text-align: left;">SDLC</td>
+<td style="text-align: left;">17</td>
+<td style="text-align: left;">0.760</td>
+<td style="text-align: left;">0.401</td>
+<td style="text-align: left;">0.928</td>
+</tr>
+</tbody>
+</table>
+<p>Table S17b (continued). RW-3 (top-1% coverage of RW-DLC versus SDLC,
+held-out data, one-sided Wilcoxon test): the pre-specified definition
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>&gt;</mo><msub><mi>q</mi><mn>0.99</mn></msub></mrow><annotation encoding="application/x-tex">y&gt;q_{0.99}</annotation></semantics></math>)
+and post hoc variants.</p>
+<table>
+<colgroup>
+<col style="width: 36%" />
+<col style="width: 4%" />
+<col style="width: 12%" />
+<col style="width: 7%" />
+<col style="width: 6%" />
+<col style="width: 6%" />
+<col style="width: 9%" />
+<col style="width: 9%" />
+<col style="width: 7%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">variant</th>
+<th style="text-align: left;">n</th>
+<th style="text-align: left;">diff_mean</th>
+<th style="text-align: left;">wins</th>
+<th style="text-align: left;">p</th>
+<th style="text-align: left;">rw</th>
+<th style="text-align: left;">rw_min</th>
+<th style="text-align: left;">rw_max</th>
+<th style="text-align: left;">sdlc</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">pre-specified (strict y &gt; q99)</td>
+<td style="text-align: left;">15</td>
+<td style="text-align: left;">0.184</td>
+<td style="text-align: left;">13</td>
+<td style="text-align: left;">0.011</td>
+<td style="text-align: left;">0.872</td>
+<td style="text-align: left;">0.508</td>
+<td style="text-align: left;">0.988</td>
+<td style="text-align: left;">0.688</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">strict, pair merged</td>
+<td style="text-align: left;">14</td>
+<td style="text-align: left;">0.214</td>
+<td style="text-align: left;">13</td>
+<td style="text-align: left;">0.002</td>
+<td style="text-align: left;">0.897</td>
+<td style="text-align: left;">0.514</td>
+<td style="text-align: left;">0.988</td>
+<td style="text-align: left;">0.683</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">strict, without Ailerons</td>
+<td style="text-align: left;">14</td>
+<td style="text-align: left;">0.143</td>
+<td style="text-align: left;">12</td>
+<td style="text-align: left;">0.021</td>
+<td style="text-align: left;">0.866</td>
+<td style="text-align: left;">0.508</td>
+<td style="text-align: left;">0.988</td>
+<td style="text-align: left;">0.723</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">unified (y &gt;= q99, &gt;= 10 test
+points)</td>
+<td style="text-align: left;">17</td>
+<td style="text-align: left;">0.125</td>
+<td style="text-align: left;">15</td>
+<td style="text-align: left;">0.009</td>
+<td style="text-align: left;">0.884</td>
+<td style="text-align: left;">0.521</td>
+<td style="text-align: left;">0.988</td>
+<td style="text-align: left;">0.760</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">unified, pair merged</td>
+<td style="text-align: left;">16</td>
+<td style="text-align: left;">0.147</td>
+<td style="text-align: left;">15</td>
+<td style="text-align: left;">0.001</td>
+<td style="text-align: left;">0.905</td>
+<td style="text-align: left;">0.549</td>
+<td style="text-align: left;">0.988</td>
+<td style="text-align: left;">0.759</td>
 </tr>
 </tbody>
 </table>

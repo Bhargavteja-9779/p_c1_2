@@ -4,103 +4,120 @@ title: "Supplementary Material: Covering rare outcomes in imbalanced regression:
 
 # S1. Datasets
 
-**Table S1.** The OpenML-CTR23 datasets used in the main benchmark: size, number of features after one-hot encoding, skewness and number of distinct values of the target, realised number of calibration strata $K$, realised training mass of the lowest and highest stratum (nominal 0.10), relative test RMSE of the point model, and licence as recorded by OpenML.
+**Table S1.** The OpenML-CTR23 datasets used in the main benchmark: size, number of features after one-hot encoding, skewness and number of distinct values of the target, realised number of calibration strata $K$, realised training mass of the lowest and highest stratum (nominal 0.10), relative test RMSE of the point model, licence as recorded by OpenML ("not stated" where OpenML records none), and the share of test targets outside the domain $\mathcal{Y}_D$ (automatic misses; mean and maximum over seeds).
 
-| Dataset                       | n      | p   | Skewness   | Distinct y   | K   | Lower mass   | Upper mass   | RMSE/sd   | Licence                                         |
-|:------------------------------|:-------|:----|:-----------|:-------------|:----|:-------------|:-------------|:----------|:------------------------------------------------|
-| forest fires                  | 517    | 31  | 12.81      | 251          | 3   | 0.744        | 0.105        | 0.40      | CC BY 4.0                                       |
-| energy efficiency             | 768    | 8   | 0.36       | 587          | 5   | 0.099        | 0.104        | 0.06      | CC BY 4.0                                       |
-| cars                          | 804    | 17  | 1.57       | 798          | 5   | 0.100        | 0.104        | 0.27      | Public                                          |
-| QSAR fish toxicity            | 908    | 6   | 0.25       | 827          | 5   | 0.099        | 0.103        | 0.62      | CC BY 4.0                                       |
-| concrete compressive strength | 1,030  | 8   | 0.42       | 938          | 5   | 0.099        | 0.103        | 0.30      | CC BY 4.0                                       |
-| geographical origin of music  | 1,059  | 116 | -0.99      | 31           | 5   | 0.084        | 0.117        | 0.90      | CC BY 4.0                                       |
-| socmob                        | 1,156  | 43  | 4.43       | 361          | 4   | 0.240        | 0.102        | 0.49      | Non-commercial scholarly and teaching purposes. |
-| Moneyball                     | 1,232  | 78  | 0.17       | 374          | 5   | 0.099        | 0.103        | 0.27      | Public                                          |
-| airfoil self noise            | 1,503  | 5   | -0.42      | 1,456        | 5   | 0.100        | 0.102        | 0.28      | CC BY 4.0                                       |
-| auction verification          | 2,043  | 18  | 1.50       | 2,039        | 5   | 0.100        | 0.102        | 0.17      | CC BY 4.0                                       |
-| space ga                      | 3,107  | 6   | -1.02      | 3,105        | 5   | 0.100        | 0.101        | 0.56      | Public                                          |
-| abalone                       | 4,177  | 11  | 1.11       | 28           | 5   | 0.045        | 0.114        | 0.65      | CC BY 4.0                                       |
-| cpu activity                  | 8,192  | 21  | -3.42      | 56           | 5   | 0.096        | 0.104        | 0.13      | Public                                          |
-| pumadyn32nh                   | 8,192  | 32  | -0.05      | 8,191        | 5   | 0.100        | 0.100        | 0.61      | Public                                          |
-| kin8nm                        | 8,192  | 8   | 0.09       | 8,191        | 5   | 0.100        | 0.100        | 0.47      | Public                                          |
-| grid stability                | 10,000 | 12  | 0.02       | 10,000       | 5   | 0.100        | 0.100        | 0.22      | CC BY 4.0                                       |
-| brazilian houses              | 10,692 | 53  | 58.95      | 5,751        | 5   | 0.100        | 0.100        | 1.26      | CC 0: Public Domain                             |
-| naval propulsion plant        | 11,934 | 14  | -0.00      | 51           | 5   | 0.096        | 0.117        | 0.06      | CC BY 4.0                                       |
-| miami housing                 | 13,932 | 15  | 3.22       | 2,111        | 5   | 0.099        | 0.100        | 0.28      | CC0: Public Domain                              |
-| fifa                          | 19,178 | 191 | 6.47       | 133          | 4   | 0.207        | 0.103        | 0.48      | CC0: Public Domain                              |
-| california housing            | 20,640 | 8   | 0.98       | 3,842        | 5   | 0.100        | 0.100        | 0.41      | Public                                          |
-| superconductivity             | 21,263 | 81  | 0.86       | 3,007        | 5   | 0.100        | 0.101        | 0.29      | CC BY 4.0                                       |
-| kings county                  | 21,613 | 136 | 4.02       | 4,028        | 5   | 0.098        | 0.100        | 0.33      | CC 0: Public Domain                             |
-| health insurance              | 22,272 | 32  | -0.34      | 75           | 2   | 0.555        | 0.442        | 0.78      | GPL (>= 2)                                      |
-| fps benchmark                 | 24,624 | 971 | 1.05       | 2,675        | 5   | 0.100        | 0.100        | 0.02      | CC BY                                           |
-| cps88wages                    | 28,155 | 16  | 6.50       | 5,970        | 5   | 0.100        | 0.107        | 0.82      | Public                                          |
-| physiochemical protein        | 45,730 | 9   | 0.57       | 15,903       | 5   | 0.100        | 0.100        | 0.61      | CC BY 4.0                                       |
-| sarcos                        | 48,933 | 21  | 0.15       | 11,414       | 5   | 0.100        | 0.100        | 0.13      | Public                                          |
-| diamonds                      | 53,940 | 29  | 1.62       | 11,602       | 5   | 0.099        | 0.100        | 0.14      | Public                                          |
-| video transcoding             | 68,784 | 26  | 4.25       | 10,960       | 5   | 0.100        | 0.100        | 0.07      | CC BY 4.0                                       |
-| wave energy                   | 72,000 | 36  | 0.14       | 71,993       | 5   | 0.100        | 0.100        | 0.40      | CC BY 4.0                                       |
+| OpenML ID   | Dataset                       | n      | p   | Skewness   | Distinct y   | K   | Lower mass   | Upper mass   | RMSE/sd   | Licence                                         | Out-of-domain test targets, % (mean/max)   |
+|:------------|:------------------------------|:-------|:----|:-----------|:-------------|:----|:-------------|:-------------|:----------|:------------------------------------------------|:-------------------------------------------|
+| 44962       | forest fires                  | 517    | 31  | 12.81      | 251          | 3   | 0.744        | 0.105        | 0.40      | CC BY 4.0                                       | 0.38/2.31                                  |
+| 44960       | energy efficiency             | 768    | 8   | 0.36       | 587          | 5   | 0.099        | 0.104        | 0.06      | CC BY 4.0                                       | 0.00/0.00                                  |
+| 44994       | cars                          | 804    | 17  | 1.57       | 798          | 5   | 0.100        | 0.104        | 0.27      | not stated (OpenML: "Public")                   | 0.10/0.50                                  |
+| 44970       | QSAR fish toxicity            | 908    | 6   | 0.25       | 827          | 5   | 0.099        | 0.103        | 0.62      | CC BY 4.0                                       | 0.04/0.44                                  |
+| 44959       | concrete compressive strength | 1,030  | 8   | 0.42       | 938          | 5   | 0.099        | 0.103        | 0.30      | CC BY 4.0                                       | 0.00/0.00                                  |
+| 44965       | geographical origin of music  | 1,059  | 116 | -0.99      | 31           | 5   | 0.084        | 0.117        | 0.90      | CC BY 4.0                                       | 0.00/0.00                                  |
+| 44987       | socmob                        | 1,156  | 43  | 4.43       | 361          | 4   | 0.240        | 0.102        | 0.49      | Non-commercial scholarly and teaching purposes. | 0.00/0.00                                  |
+| 41021       | Moneyball                     | 1,232  | 78  | 0.17       | 374          | 5   | 0.099        | 0.103        | 0.27      | not stated (OpenML: "Public")                   | 0.03/0.32                                  |
+| 44957       | airfoil self noise            | 1,503  | 5   | -0.42      | 1,456        | 5   | 0.100        | 0.102        | 0.28      | CC BY 4.0                                       | 0.00/0.00                                  |
+| 44958       | auction verification          | 2,043  | 18  | 1.50       | 2,039        | 5   | 0.100        | 0.102        | 0.17      | CC BY 4.0                                       | 0.00/0.00                                  |
+| 45402       | space ga                      | 3,107  | 6   | -1.02      | 3,105        | 5   | 0.100        | 0.101        | 0.56      | not stated (OpenML: "Public")                   | 0.13/0.39                                  |
+| 44956       | abalone                       | 4,177  | 11  | 1.11       | 28           | 5   | 0.045        | 0.114        | 0.65      | CC BY 4.0                                       | 0.03/0.10                                  |
+| 44978       | cpu activity                  | 8,192  | 21  | -3.42      | 56           | 5   | 0.096        | 0.104        | 0.13      | not stated (OpenML: "Public")                   | 0.00/0.00                                  |
+| 44981       | pumadyn32nh                   | 8,192  | 32  | -0.05      | 8,191        | 5   | 0.100        | 0.100        | 0.61      | not stated (OpenML: "Public")                   | 0.01/0.05                                  |
+| 44980       | kin8nm                        | 8,192  | 8   | 0.09       | 8,191        | 5   | 0.100        | 0.100        | 0.47      | not stated (OpenML: "Public")                   | 0.00/0.00                                  |
+| 44973       | grid stability                | 10,000 | 12  | 0.02       | 10,000       | 5   | 0.100        | 0.100        | 0.22      | CC BY 4.0                                       | 0.01/0.04                                  |
+| 44990       | brazilian houses              | 10,692 | 53  | 58.95      | 5,751        | 5   | 0.100        | 0.100        | 1.26      | CC 0: Public Domain                             | 0.01/0.07                                  |
+| 44969       | naval propulsion plant        | 11,934 | 14  | -0.00      | 51           | 5   | 0.096        | 0.117        | 0.06      | CC BY 4.0                                       | 0.00/0.00                                  |
+| 44983       | miami housing                 | 13,932 | 15  | 3.22       | 2,111        | 5   | 0.099        | 0.100        | 0.28      | CC0: Public Domain                              | 0.00/0.00                                  |
+| 45012       | fifa                          | 19,178 | 191 | 6.47       | 133          | 4   | 0.207        | 0.103        | 0.48      | CC0: Public Domain                              | 0.01/0.04                                  |
+| 44977       | california housing            | 20,640 | 8   | 0.98       | 3,842        | 5   | 0.100        | 0.100        | 0.41      | not stated (OpenML: "Public")                   | 0.00/0.00                                  |
+| 44964       | superconductivity             | 21,263 | 81  | 0.86       | 3,007        | 5   | 0.100        | 0.101        | 0.29      | CC BY 4.0                                       | 0.01/0.02                                  |
+| 44989       | kings county                  | 21,613 | 136 | 4.02       | 4,028        | 5   | 0.098        | 0.100        | 0.33      | CC 0: Public Domain                             | 0.00/0.02                                  |
+| 44993       | health insurance              | 22,272 | 32  | -0.34      | 75           | 2   | 0.555        | 0.442        | 0.78      | GPL (>= 2)                                      | 0.01/0.04                                  |
+| 44992       | fps benchmark                 | 24,624 | 971 | 1.05       | 2,675        | 5   | 0.100        | 0.100        | 0.02      | CC BY                                           | 0.00/0.00                                  |
+| 44984       | cps88wages                    | 28,155 | 16  | 6.50       | 5,970        | 5   | 0.100        | 0.107        | 0.82      | not stated (OpenML: "Public")                   | 0.00/0.01                                  |
+| 44963       | physiochemical protein        | 45,730 | 9   | 0.57       | 15,903       | 5   | 0.100        | 0.100        | 0.61      | CC BY 4.0                                       | 0.00/0.00                                  |
+| 44976       | sarcos                        | 48,933 | 21  | 0.15       | 11,414       | 5   | 0.100        | 0.100        | 0.13      | not stated (OpenML: "Public")                   | 0.00/0.00                                  |
+| 44979       | diamonds                      | 53,940 | 29  | 1.62       | 11,602       | 5   | 0.099        | 0.100        | 0.14      | not stated (OpenML: "Public")                   | 0.00/0.00                                  |
+| 44974       | video transcoding             | 68,784 | 26  | 4.25       | 10,960       | 5   | 0.100        | 0.100        | 0.07      | CC BY 4.0                                       | 0.00/0.01                                  |
+| 44975       | wave energy                   | 72,000 | 36  | 0.14       | 71,993       | 5   | 0.100        | 0.100        | 0.40      | CC BY 4.0                                       | 0.00/0.00                                  |
 
-**Table S2.** Held-out datasets of the confirmatory replication (regression datasets of OpenML suites 335/336 without source overlap with CTR23; datasets above 50,000 rows subsampled once with seed 2026). Excluded by content overlap: cpu_act (cpu_activity); houses (california_housing); house_sales (kings_county); MiamiHousing2016 (miami_housing); superconduct (superconductivity); diamonds; Brazilian_houses; abalone; wine_quality (wine). Excluded by the distinct-value rule: 44055 analcatdata_supreme; 44133 pol.
+**Table S2.** Held-out datasets of the confirmatory replication (regression datasets of OpenML suites 335/336 without source overlap with CTR23; datasets above 50,000 rows subsampled once with seed 2026; "Distinct y" on the subsample, "Distinct y (full)" on the full data, the quantity the exclusion rule uses; realised stratum masses as ranges over seeds, nominal 0.10; "Log scale (curated)": the benchmark curators supplied the logarithm of the original quantity). yprop_4_1 and topo_2_1 contain identical observations and targets. visualizing_soil (transect index) and seattlecrime6 (coded time of day) have coded rather than quantitative targets. In house_16H, 52 records with log-price 0 form the whole lowest stratum; in yprop_4_1/topo_2_1 a single record has y = 0 while all others lie in [0.845, 1]. Excluded by content overlap: cpu_act (cpu_activity); houses (california_housing); house_sales (kings_county); MiamiHousing2016 (miami_housing); superconduct (superconductivity); diamonds; Brazilian_houses; abalone; wine_quality (wine). Excluded by the distinct-value rule: 44055 analcatdata_supreme; 44133 pol.
 
-| OpenML ID   | Dataset                             | n (used)   | p    | Distinct y   | Licence                       |
-|:------------|:------------------------------------|:-----------|:-----|:-------------|:------------------------------|
-| 44056       | visualizing_soil                    | 8,641      | 6    | 40           | Public                        |
-| 44061       | Mercedes_Benz_Greener_Manufacturing | 4,209      | 1094 | 2,545        | Public                        |
-| 44068       | particulate-matter-ukair-2017       | 50,000     | 29   | 6,195        | Open Government Licence (OGL) |
-| 44069       | SGEMM_GPU_kernel_performance        | 50,000     | 21   | 23,831       | CC BY 4.0                     |
-| 44134       | elevators                           | 16,599     | 16   | 61           | Public                        |
-| 44137       | Ailerons                            | 13,750     | 33   | 35           | Public                        |
-| 44139       | house_16H                           | 22,784     | 16   | 2,045        | Public                        |
-| 44142       | Bike_Sharing_Demand                 | 17,379     | 6    | 869          | Public                        |
-| 44143       | nyc-taxi-green-dec-2016             | 50,000     | 9    | 957          | Public                        |
-| 44145       | sulfur                              | 10,081     | 6    | 9,368        | Public                        |
-| 44146       | medical_charges                     | 50,000     | 3    | 49,061       | Public Domain (CC0)           |
-| 45032       | yprop_4_1                           | 8,885      | 42   | 1,336        | Public                        |
-| 45034       | delays_zurich_transport             | 50,000     | 8    | 1,019        | CCZero                        |
-| 45041       | topo_2_1                            | 8,885      | 261  | 1,336        | Public                        |
-| 45043       | seattlecrime6                       | 50,000     | 26   | 29           | CC0                           |
-| 45046       | Allstate_Claims_Severity            | 50,000     | 587  | 47,550       | Public                        |
-| 45047       | Airlines_DepDelay_1M                | 50,000     | 5    | 330          | CC0                           |
+| OpenML ID   | Dataset                             | n (used)   | p    | Distinct y   | Licence                       | n (full)   | Distinct y (full)   | Largest atom   | Skewness (full)   | Log scale (curated)   | K   | Lowest stratum mass   | Highest stratum mass   | Min. calibration points per stratum   | Out-of-domain test targets, % (max)   |
+|:------------|:------------------------------------|:-----------|:-----|:-------------|:------------------------------|:-----------|:--------------------|:---------------|:------------------|:----------------------|:----|:----------------------|:-----------------------|:--------------------------------------|:--------------------------------------|
+| 44056       | visualizing_soil                    | 8,641      | 6    | 40           | not stated (OpenML: "Public") | 8,641      | 40                  | 0.070          | 0.33              | no                    | 5   | 0.043-0.049           | 0.110-0.112            | 88                                    | 0.00                                  |
+| 44061       | Mercedes_Benz_Greener_Manufacturing | 4,209      | 1094 | 2,545        | not stated (OpenML: "Public") | 4,209      | 2,545               | 0.002          | 1.21              | no                    | 5   | 0.100-0.100           | 0.101-0.102            | 97                                    | 0.19                                  |
+| 44068       | particulate-matter-ukair-2017       | 50,000     | 29   | 6,195        | Open Government Licence (OGL) | 394,299    | 21,599              | 0.005          | -0.54             | no                    | 5   | 0.096-0.100           | 0.100-0.101            | 1196                                  | 0.01                                  |
+| 44069       | SGEMM_GPU_kernel_performance        | 50,000     | 21   | 23,831       | CC BY 4.0                     | 241,600    | 58,161              | 0.000          | 0.79              | yes                   | 5   | 0.100-0.100           | 0.100-0.100            | 1190                                  | 0.00                                  |
+| 44134       | elevators                           | 16,599     | 16   | 61           | not stated (OpenML: "Public") | 16,599     | 61                  | 0.151          | 2.42              | no                    | 5   | 0.036-0.100           | 0.104-0.110            | 148                                   | 0.02                                  |
+| 44137       | Ailerons                            | 13,750     | 33   | 35           | not stated (OpenML: "Public") | 13,750     | 35                  | 0.135          | -1.35             | no                    | 5   | 0.091-0.098           | 0.211-0.222            | 287                                   | 0.12                                  |
+| 44139       | house_16H                           | 22,784     | 16   | 2,045        | not stated (OpenML: "Public") | 22,784     | 2,045               | 0.137          | -3.43             | yes                   | 5   | 0.002-0.003           | 0.100-0.100            | 10                                    | 0.00                                  |
+| 44142       | Bike_Sharing_Demand                 | 17,379     | 6    | 869          | not stated (OpenML: "Public") | 17,379     | 869                 | 0.015          | 1.28              | no                    | 5   | 0.092-0.098           | 0.100-0.101            | 407                                   | 0.00                                  |
+| 44143       | nyc-taxi-green-dec-2016             | 50,000     | 9    | 957          | not stated (OpenML: "Public") | 581,835    | 1,811               | 0.152          | -0.00             | yes                   | 4   | 0.181-0.250           | 0.100-0.101            | 1155                                  | 0.00                                  |
+| 44145       | sulfur                              | 10,081     | 6    | 9,368        | not stated (OpenML: "Public") | 10,081     | 9,368               | 0.003          | 6.72              | no                    | 5   | 0.100-0.100           | 0.100-0.100            | 221                                   | 0.08                                  |
+| 44146       | medical_charges                     | 50,000     | 3    | 49,061       | Public Domain (CC0)           | 163,065    | 154,891             | 0.000          | 0.88              | no                    | 5   | 0.100-0.100           | 0.100-0.100            | 1191                                  | 0.01                                  |
+| 45032       | yprop_4_1                           | 8,885      | 42   | 1,336        | not stated (OpenML: "Public") | 8,885      | 1,336               | 0.005          | -2.23             | no                    | 5   | 0.100-0.100           | 0.100-0.101            | 195                                   | 0.05                                  |
+| 45034       | delays_zurich_transport             | 50,000     | 8    | 1,019        | CCZero                        | 5,465,575  | 4,082               | 0.009          | -0.87             | yes                   | 5   | 0.096-0.100           | 0.100-0.101            | 1121                                  | 0.00                                  |
+| 45041       | topo_2_1                            | 8,885      | 261  | 1,336        | not stated (OpenML: "Public") | 8,885      | 1,336               | 0.005          | -2.23             | no                    | 5   | 0.100-0.100           | 0.100-0.101            | 195                                   | 0.05                                  |
+| 45043       | seattlecrime6                       | 50,000     | 26   | 29           | CC0                           | 52,031     | 29                  | 0.062          | -0.42             | no                    | 5   | 0.064-0.100           | 0.117-0.124            | 780                                   | 0.00                                  |
+| 45046       | Allstate_Claims_Severity            | 50,000     | 587  | 47,550       | not stated (OpenML: "Public") | 188,318    | 158,223             | 0.001          | 0.10              | yes                   | 5   | 0.100-0.100           | 0.100-0.100            | 1190                                  | 0.02                                  |
+| 45047       | Airlines_DepDelay_1M                | 50,000     | 5    | 330          | CC0                           | 1,000,000  | 629                 | 0.189          | 0.52              | yes                   | 5   | 0.090-0.095           | 0.101-0.102            | 1126                                  | 0.02                                  |
 
 # S2. Leakage audit
 
-Exact duplicate rows (features and target), duplicate feature vectors, the share of test feature vectors that also occur in the training split (seed 0), and the share of missing values, recomputed on the final data files (scripts/leakage_audit.py). Random splitting keeps rows exchangeable, so the coverage guarantees hold for new rows from the same pool; repeated units (duplicates, repeated videos, repeat sales) mean that they do not transfer to new units.
+Exact duplicate rows (features and target), duplicate feature vectors, the share of test feature vectors that also occur in the training split (seed 0), and the share of missing values, recomputed on the final data files (scripts/leakage_audit.py), for the CTR23 and the held-out datasets; the share of test feature vectors seen in training is given for seed 0 and as the range over all seeds. Random splitting keeps rows exchangeable, so the coverage guarantees hold for new rows from the same pool; repeated units (duplicates, repeated videos, repeat sales) mean that they do not transfer to new units.
 
 **Table S3.** Leakage audit (sorted by the share of test feature vectors seen in training).
 
-| Dataset                       | n     | Duplicate rows   | Duplicate feature vectors   | Test feature vectors seen in training (seed 0)   | Missing values   |
-|:------------------------------|:------|:-----------------|:----------------------------|:-------------------------------------------------|:-----------------|
-| cps88wages                    | 28155 | 0.0756           | 0.7740                      | 0.8245                                           | 0.0000           |
-| superconductivity             | 21263 | 0.0031           | 0.2866                      | 0.3138                                           | 0.0000           |
-| QSAR_fish_toxicity            | 908   | 0.0011           | 0.1465                      | 0.1542                                           | 0.0000           |
-| sarcos                        | 48933 | 0.0909           | 0.0909                      | 0.0908                                           | 0.0000           |
-| health_insurance              | 22272 | 0.0436           | 0.0798                      | 0.0875                                           | 0.0000           |
-| brazilian_houses              | 10692 | 0.0337           | 0.0677                      | 0.0849                                           | 0.0000           |
-| physiochemical_protein        | 45730 | 0.0374           | 0.0384                      | 0.0396                                           | 0.0000           |
-| concrete_compressive_strength | 1030  | 0.0243           | 0.0330                      | 0.0233                                           | 0.0000           |
-| forest_fires                  | 517   | 0.0077           | 0.0251                      | 0.0231                                           | 0.0000           |
-| diamonds                      | 53940 | 0.0027           | 0.0064                      | 0.0065                                           | 0.0000           |
-| cars                          | 804   | 0.0000           | 0.0012                      | 0.0050                                           | 0.0000           |
-| video_transcoding             | 68784 | 0.0000           | 0.0012                      | 0.0010                                           | 0.0000           |
-| miami_housing                 | 13932 | 0.0000           | 0.0007                      | 0.0003                                           | 0.0000           |
-| energy_efficiency             | 768   | 0.0000           | 0.0000                      | 0.0000                                           | 0.0000           |
-| Moneyball                     | 1232  | 0.0000           | 0.0000                      | 0.0000                                           | 0.0169           |
-| wave_energy                   | 72000 | 0.0000           | 0.0000                      | 0.0000                                           | 0.0000           |
-| grid_stability                | 10000 | 0.0000           | 0.0000                      | 0.0000                                           | 0.0000           |
-| geographical_origin_of_music  | 1059  | 0.0000           | 0.0000                      | 0.0000                                           | 0.0000           |
-| naval_propulsion_plant        | 11934 | 0.0000           | 0.0000                      | 0.0000                                           | 0.0000           |
-| airfoil_self_noise            | 1503  | 0.0000           | 0.0000                      | 0.0000                                           | 0.0000           |
-| abalone                       | 4177  | 0.0000           | 0.0000                      | 0.0000                                           | 0.0000           |
-| auction_verification          | 2043  | 0.0000           | 0.0000                      | 0.0000                                           | 0.0000           |
-| cpu_activity                  | 8192  | 0.0000           | 0.0000                      | 0.0000                                           | 0.0000           |
-| kin8nm                        | 8192  | 0.0000           | 0.0000                      | 0.0000                                           | 0.0000           |
-| pumadyn32nh                   | 8192  | 0.0000           | 0.0000                      | 0.0000                                           | 0.0000           |
-| california_housing            | 20640 | 0.0000           | 0.0000                      | 0.0000                                           | 0.0000           |
-| socmob                        | 1156  | 0.0000           | 0.0000                      | 0.0000                                           | 0.0000           |
-| fps_benchmark                 | 24624 | 0.0000           | 0.0000                      | 0.0000                                           | 0.0029           |
-| kings_county                  | 21613 | 0.0000           | 0.0000                      | 0.0000                                           | 0.0000           |
-| fifa                          | 19178 | 0.0000           | 0.0000                      | 0.0000                                           | 0.0000           |
-| space_ga                      | 3107  | 0.0000           | 0.0000                      | 0.0000                                           | 0.0000           |
+| Suite    | Dataset                             | n     | Duplicate rows   | Duplicate feature vectors   | Test feature vectors seen in training (seed 0)   | Min over seeds   | Max over seeds   | Missing values   |
+|:---------|:------------------------------------|:------|:-----------------|:----------------------------|:-------------------------------------------------|:-----------------|:-----------------|:-----------------|
+| held-out | seattlecrime6                       | 50000 | 0.8703           | 0.9914                      | 0.9988                                           | 0.9982           | 0.9989           | 0.0000           |
+| held-out | delays_zurich_transport             | 50000 | 0.0399           | 0.9322                      | 0.9952                                           | 0.9952           | 0.9968           | 0.0000           |
+| ctr23    | cps88wages                          | 28155 | 0.0756           | 0.7740                      | 0.8245                                           | 0.8245           | 0.8377           | 0.0000           |
+| ctr23    | superconductivity                   | 21263 | 0.0031           | 0.2866                      | 0.3138                                           | 0.2992           | 0.3187           | 0.0000           |
+| held-out | Mercedes_Benz_Greener_Manufacturing | 4209  | 0.0002           | 0.2186                      | 0.2469                                           | 0.2365           | 0.2469           | 0.0000           |
+| ctr23    | QSAR_fish_toxicity                  | 908   | 0.0011           | 0.1465                      | 0.1542                                           | 0.1322           | 0.2203           | 0.0000           |
+| ctr23    | sarcos                              | 48933 | 0.0909           | 0.0909                      | 0.0908                                           | 0.0873           | 0.0963           | 0.0000           |
+| ctr23    | health_insurance                    | 22272 | 0.0436           | 0.0798                      | 0.0875                                           | 0.0828           | 0.0938           | 0.0000           |
+| ctr23    | brazilian_houses                    | 10692 | 0.0337           | 0.0677                      | 0.0849                                           | 0.0707           | 0.0849           | 0.0000           |
+| ctr23    | physiochemical_protein              | 45730 | 0.0374           | 0.0384                      | 0.0396                                           | 0.0379           | 0.0420           | 0.0000           |
+| ctr23    | concrete_compressive_strength       | 1030  | 0.0243           | 0.0330                      | 0.0233                                           | 0.0233           | 0.0623           | 0.0000           |
+| ctr23    | forest_fires                        | 517   | 0.0077           | 0.0251                      | 0.0231                                           | 0.0154           | 0.0385           | 0.0000           |
+| held-out | Bike_Sharing_Demand                 | 17379 | 0.0006           | 0.0227                      | 0.0228                                           | 0.0221           | 0.0258           | 0.0000           |
+| held-out | yprop_4_1                           | 8885  | 0.0000           | 0.0125                      | 0.0122                                           | 0.0108           | 0.0135           | 0.0000           |
+| ctr23    | diamonds                            | 53940 | 0.0027           | 0.0064                      | 0.0065                                           | 0.0056           | 0.0076           | 0.0000           |
+| ctr23    | cars                                | 804   | 0.0000           | 0.0012                      | 0.0050                                           | 0.0000           | 0.0050           | 0.0000           |
+| held-out | topo_2_1                            | 8885  | 0.0000           | 0.0028                      | 0.0027                                           | 0.0027           | 0.0036           | 0.0000           |
+| held-out | particulate-matter-ukair-2017       | 50000 | 0.0000           | 0.0016                      | 0.0019                                           | 0.0010           | 0.0020           | 0.0000           |
+| held-out | nyc-taxi-green-dec-2016             | 50000 | 0.0010           | 0.0012                      | 0.0013                                           | 0.0010           | 0.0018           | 0.0000           |
+| ctr23    | video_transcoding                   | 68784 | 0.0000           | 0.0012                      | 0.0010                                           | 0.0008           | 0.0015           | 0.0000           |
+| ctr23    | miami_housing                       | 13932 | 0.0000           | 0.0007                      | 0.0003                                           | 0.0000           | 0.0014           | 0.0000           |
+| held-out | SGEMM_GPU_kernel_performance        | 50000 | 0.0001           | 0.0003                      | 0.0002                                           | 0.0001           | 0.0003           | 0.0000           |
+| ctr23    | wave_energy                         | 72000 | 0.0000           | 0.0000                      | 0.0000                                           | 0.0000           | 0.0000           | 0.0000           |
+| ctr23    | energy_efficiency                   | 768   | 0.0000           | 0.0000                      | 0.0000                                           | 0.0000           | 0.0000           | 0.0000           |
+| ctr23    | Moneyball                           | 1232  | 0.0000           | 0.0000                      | 0.0000                                           | 0.0000           | 0.0000           | 0.0169           |
+| ctr23    | grid_stability                      | 10000 | 0.0000           | 0.0000                      | 0.0000                                           | 0.0000           | 0.0000           | 0.0000           |
+| ctr23    | geographical_origin_of_music        | 1059  | 0.0000           | 0.0000                      | 0.0000                                           | 0.0000           | 0.0000           | 0.0000           |
+| ctr23    | naval_propulsion_plant              | 11934 | 0.0000           | 0.0000                      | 0.0000                                           | 0.0000           | 0.0000           | 0.0000           |
+| ctr23    | auction_verification                | 2043  | 0.0000           | 0.0000                      | 0.0000                                           | 0.0000           | 0.0000           | 0.0000           |
+| ctr23    | airfoil_self_noise                  | 1503  | 0.0000           | 0.0000                      | 0.0000                                           | 0.0000           | 0.0000           | 0.0000           |
+| ctr23    | abalone                             | 4177  | 0.0000           | 0.0000                      | 0.0000                                           | 0.0000           | 0.0000           | 0.0000           |
+| ctr23    | kin8nm                              | 8192  | 0.0000           | 0.0000                      | 0.0000                                           | 0.0000           | 0.0000           | 0.0000           |
+| held-out | visualizing_soil                    | 8641  | 0.0000           | 0.0000                      | 0.0000                                           | 0.0000           | 0.0000           | 0.0000           |
+| ctr23    | space_ga                            | 3107  | 0.0000           | 0.0000                      | 0.0000                                           | 0.0000           | 0.0000           | 0.0000           |
+| ctr23    | fifa                                | 19178 | 0.0000           | 0.0000                      | 0.0000                                           | 0.0000           | 0.0000           | 0.0000           |
+| ctr23    | fps_benchmark                       | 24624 | 0.0000           | 0.0000                      | 0.0000                                           | 0.0000           | 0.0000           | 0.0029           |
+| ctr23    | kings_county                        | 21613 | 0.0000           | 0.0000                      | 0.0000                                           | 0.0000           | 0.0002           | 0.0000           |
+| ctr23    | cpu_activity                        | 8192  | 0.0000           | 0.0000                      | 0.0000                                           | 0.0000           | 0.0000           | 0.0000           |
+| ctr23    | pumadyn32nh                         | 8192  | 0.0000           | 0.0000                      | 0.0000                                           | 0.0000           | 0.0000           | 0.0000           |
+| ctr23    | socmob                              | 1156  | 0.0000           | 0.0000                      | 0.0000                                           | 0.0000           | 0.0000           | 0.0000           |
+| ctr23    | california_housing                  | 20640 | 0.0000           | 0.0000                      | 0.0000                                           | 0.0000           | 0.0000           | 0.0000           |
+| held-out | Ailerons                            | 13750 | 0.0000           | 0.0000                      | 0.0000                                           | 0.0000           | 0.0000           | 0.0000           |
+| held-out | elevators                           | 16599 | 0.0000           | 0.0000                      | 0.0000                                           | 0.0000           | 0.0000           | 0.0000           |
+| held-out | house_16H                           | 22784 | 0.0000           | 0.0000                      | 0.0000                                           | 0.0000           | 0.0000           | 0.0000           |
+| held-out | sulfur                              | 10081 | 0.0000           | 0.0000                      | 0.0000                                           | 0.0000           | 0.0000           | 0.0000           |
+| held-out | medical_charges                     | 50000 | 0.0000           | 0.0000                      | 0.0000                                           | 0.0000           | 0.0000           | 0.0000           |
+| held-out | Allstate_Claims_Severity            | 50000 | 0.0000           | 0.0000                      | 0.0000                                           | 0.0000           | 0.0000           | 0.0000           |
+| held-out | Airlines_DepDelay_1M                | 50000 | 0.0000           | 0.0001                      | 0.0000                                           | 0.0000           | 0.0002           | 0.0000           |
 
 # S3. Implementation checks
 
@@ -377,41 +394,6 @@ Exact duplicate rows (features and target), duplicate feature vectors, the share
 | TC-H       | 0.905    | 0.272  | 0.537       | 0.156     | 0.210     | 0.277      | 0.410      | 21                   |
 | TC-LS      | 0.906    | 0.284  | 0.538       | 0.169     | 0.224     | 0.292      | 0.427      | 16                   |
 
-**Table S13.** Calibration and prediction time per test point (median over datasets of the per-dataset median of three repetitions after a discarded warm-up; one thread).
-
-| Method          | Median µs per test point   | Maximum over datasets   |
-|:----------------|:---------------------------|:------------------------|
-| CQR             | 0.0                        | 0.1                     |
-| DCP-hist        | 3.8                        | 5.9                     |
-| DCP             | 0.3                        | 2.3                     |
-| DCP-2p          | 0.3                        | 2.0                     |
-| DCP-N           | 0.3                        | 2.8                     |
-| DLS-hist        | 0.4                        | 0.8                     |
-| DLS             | 14.7                       | 82.7                    |
-| DLS-2p          | 17.4                       | 52.8                    |
-| DLS-N           | 4.7                        | 33.6                    |
-| HPD-split-hist  | 12.2                       | 19.3                    |
-| HPD-split       | 13.7                       | 82.9                    |
-| HPD-split-LS2   | 17.0                       | 50.4                    |
-| HPD-split-N     | 4.2                        | 37.3                    |
-| Mondrian-ŷ      | 0.2                        | 0.8                     |
-| NCP             | 0.0                        | 0.1                     |
-| S-CQR           | 0.1                        | 0.3                     |
-| S-HPD-hist      | 13.9                       | 19.7                    |
-| S-HPD           | 12.4                       | 81.7                    |
-| S-HPD-LS2       | 17.3                       | 51.2                    |
-| S-HPD-N         | 4.5                        | 33.3                    |
-| S-NCP           | 0.1                        | 0.5                     |
-| BCCP            | 0.1                        | 0.3                     |
-| BCCP-hull       | 0.1                        | 0.2                     |
-| SCP             | 0.0                        | 0.1                     |
-| SDLC-hist       | 0.3                        | 0.5                     |
-| SDLC-hist-floor | 0.3                        | 0.5                     |
-| SDLC-hist-hull  | 0.3                        | 0.6                     |
-| SDLC            | 13.5                       | 89.1                    |
-| SDLC-2p         | 17.1                       | 50.0                    |
-| SDLC-N          | 4.6                        | 38.5                    |
-
 **Table S14.** Fitting and prediction time of the model components in seconds (seed 0, one CPU thread). SDLC uses the mean model, the scale model with out-of-fold residuals, the cross-fitted scale models and the kernel density.
 
 | did   | dataset                       | n_train   | n_pred   | fit_mean   | fit_scale_with_oof   | fit_scale_crossfit   | fit_kde   | build_table   | fit_quantile_pair   | fit_histogram_classifier   | predict_mean   | predict_scale   | predict_histogram   |
@@ -474,6 +456,32 @@ Exact duplicate rows (features and target), duplicate feature vectors, the share
 | sarcos            | dedup       | S-CQR     | 0.904              | 0.900             | 0.900           | 0.898          | 0.586          | 0.559         | 5         |
 | sarcos            | dedup       | SDLC      | 0.898              | 0.901             | 0.891           | 0.897          | 0.373          | 0.356         | 5         |
 
+Table S15 (continued). Grouped splits: range over the five seeds of marginal and worst-stratum coverage (each seed is one calibration set; the guarantees hold on average over calibration sets).
+
+| Dataset           | Method    | Marginal cov. (min over seeds)   | Marginal cov. (max)   | Worst-stratum cov. (min)   | Worst-stratum cov. (max)   | Seeds   |
+|:------------------|:----------|:---------------------------------|:----------------------|:---------------------------|:---------------------------|:--------|
+| sarcos            | BCCP      | 0.897                            | 0.905                 | 0.880                      | 0.892                      | 5       |
+| sarcos            | CQR       | 0.898                            | 0.905                 | 0.817                      | 0.828                      | 5       |
+| sarcos            | HPD-split | 0.895                            | 0.901                 | 0.878                      | 0.886                      | 5       |
+| sarcos            | S-CQR     | 0.899                            | 0.909                 | 0.886                      | 0.895                      | 5       |
+| sarcos            | S-NCP     | 0.896                            | 0.901                 | 0.880                      | 0.891                      | 5       |
+| sarcos            | SCP       | 0.891                            | 0.901                 | 0.770                      | 0.784                      | 5       |
+| sarcos            | SDLC      | 0.893                            | 0.902                 | 0.871                      | 0.893                      | 5       |
+| superconductivity | BCCP      | 0.886                            | 0.913                 | 0.875                      | 0.898                      | 5       |
+| superconductivity | CQR       | 0.891                            | 0.903                 | 0.754                      | 0.792                      | 5       |
+| superconductivity | HPD-split | 0.894                            | 0.901                 | 0.866                      | 0.880                      | 5       |
+| superconductivity | S-CQR     | 0.886                            | 0.907                 | 0.865                      | 0.889                      | 5       |
+| superconductivity | S-NCP     | 0.890                            | 0.904                 | 0.852                      | 0.893                      | 5       |
+| superconductivity | SCP       | 0.888                            | 0.911                 | 0.794                      | 0.842                      | 5       |
+| superconductivity | SDLC      | 0.890                            | 0.905                 | 0.867                      | 0.892                      | 5       |
+| video_transcoding | BCCP      | 0.807                            | 0.931                 | 0.743                      | 0.893                      | 5       |
+| video_transcoding | CQR       | 0.872                            | 0.912                 | 0.660                      | 0.742                      | 5       |
+| video_transcoding | HPD-split | 0.841                            | 0.957                 | 0.632                      | 0.852                      | 5       |
+| video_transcoding | S-CQR     | 0.857                            | 0.901                 | 0.647                      | 0.866                      | 5       |
+| video_transcoding | S-NCP     | 0.844                            | 0.939                 | 0.776                      | 0.925                      | 5       |
+| video_transcoding | SCP       | 0.864                            | 0.932                 | 0.341                      | 0.632                      | 5       |
+| video_transcoding | SDLC      | 0.788                            | 0.935                 | 0.750                      | 0.893                      | 5       |
+
 **Table S16.** Pre-specified secondary analyses of the held-out replication (hull forms) and post hoc equivalence tests (±5% on the log-size scale, TOST with two one-sided Wilcoxon tests), on CTR23 and the held-out datasets.
 
 | suite        | analysis             | comparison              | n   | geo_ratio   | geo_lo   | geo_hi   | hl_ratio   | wins   | losses   | p     | p_holm   |
@@ -519,6 +527,70 @@ Exact duplicate rows (features and target), duplicate feature vectors, the share
 | confirmatory | subgroup symmetric (post hoc, descriptive) | SDLC vs S-NCP | 10  | 0.954       | 0.915    | 0.983    | 0.969      | 10     | 0        | 0.002 |          |
 | confirmatory | subgroup symmetric (post hoc, descriptive) | SDLC vs S-CQR | 10  | 0.812       | 0.653    | 0.930    | 0.885      | 10     | 0        | 0.002 |          |
 | confirmatory | subgroup symmetric (post hoc, descriptive) | SDLC vs S-HPD | 10  | 0.977       | 0.959    | 0.991    | 0.983      | 9      | 1        | 0.004 |          |
+
+**Table S17b.** Post hoc checks of the held-out replication and of CTR23 (review round 5; scripts/analyze_review05.py; no model was refitted). Size comparisons of SDLC with the stratified comparators (per-dataset geometric-mean normalised size, two-sided Wilcoxon signed-rank test, Holm over the four comparators within a subset) on: all held-out datasets as pre-specified; the duplicate pair yprop_4_1/topo_2_1 merged into one dataset (log-scale mean); continuous targets (at least 100 distinct values and largest atom at most 5% of rows); datasets with nominal tail strata (realised training mass of the lowest and highest stratum within [0.08, 0.12] in every seed, K = 5); and without house_16H.
+
+| suite    | subset                         | comparison    | n   | geo_ratio   | wins   | losses   | p     | p_holm   |
+|:---------|:-------------------------------|:--------------|:----|:------------|:-------|:---------|:------|:---------|
+| held-out | all 17 (pre-specified set)     | SDLC vs BCCP  | 17  | 0.860       | 14     | 3        | 0.000 | 0.001    |
+| held-out | all 17 (pre-specified set)     | SDLC vs S-NCP | 17  | 0.979       | 15     | 2        | 0.004 | 0.008    |
+| held-out | all 17 (pre-specified set)     | SDLC vs S-CQR | 17  | 0.835       | 15     | 2        | 0.000 | 0.001    |
+| held-out | all 17 (pre-specified set)     | SDLC vs S-HPD | 17  | 0.988       | 15     | 2        | 0.005 | 0.008    |
+| held-out | duplicate pair merged (n = 16) | SDLC vs BCCP  | 16  | 0.851       | 14     | 2        | 0.000 | 0.001    |
+| held-out | duplicate pair merged (n = 16) | SDLC vs S-NCP | 16  | 0.980       | 14     | 2        | 0.006 | 0.013    |
+| held-out | duplicate pair merged (n = 16) | SDLC vs S-CQR | 16  | 0.825       | 15     | 1        | 0.000 | 0.000    |
+| held-out | duplicate pair merged (n = 16) | SDLC vs S-HPD | 16  | 0.989       | 14     | 2        | 0.008 | 0.013    |
+| heldout  | continuous targets             | SDLC vs BCCP  | 10  | 0.900       | 7      | 3        | 0.037 | 0.039    |
+| heldout  | continuous targets             | SDLC vs S-NCP | 10  | 0.953       | 10     | 0        | 0.002 | 0.008    |
+| heldout  | continuous targets             | SDLC vs S-CQR | 10  | 0.945       | 8      | 2        | 0.020 | 0.039    |
+| heldout  | continuous targets             | SDLC vs S-HPD | 10  | 0.972       | 10     | 0        | 0.002 | 0.008    |
+| heldout  | nominal tail strata            | SDLC vs BCCP  | 11  | 0.905       | 8      | 3        | 0.019 | 0.020    |
+| heldout  | nominal tail strata            | SDLC vs S-NCP | 11  | 0.954       | 11     | 0        | 0.001 | 0.004    |
+| heldout  | nominal tail strata            | SDLC vs S-CQR | 11  | 0.946       | 9      | 2        | 0.010 | 0.020    |
+| heldout  | nominal tail strata            | SDLC vs S-HPD | 11  | 0.974       | 11     | 0        | 0.001 | 0.004    |
+| ctr23    | continuous targets             | SDLC vs BCCP  | 23  | 0.933       | 18     | 5        | 0.001 | 0.001    |
+| ctr23    | continuous targets             | SDLC vs S-NCP | 23  | 0.951       | 21     | 2        | 0.000 | 0.000    |
+| ctr23    | continuous targets             | SDLC vs S-CQR | 23  | 0.754       | 21     | 2        | 0.000 | 0.000    |
+| ctr23    | continuous targets             | SDLC vs S-HPD | 23  | 0.942       | 22     | 1        | 0.000 | 0.000    |
+| ctr23    | nominal tail strata            | SDLC vs BCCP  | 24  | 0.935       | 19     | 5        | 0.001 | 0.001    |
+| ctr23    | nominal tail strata            | SDLC vs S-NCP | 24  | 0.951       | 22     | 2        | 0.000 | 0.000    |
+| ctr23    | nominal tail strata            | SDLC vs S-CQR | 24  | 0.748       | 22     | 2        | 0.000 | 0.000    |
+| ctr23    | nominal tail strata            | SDLC vs S-HPD | 24  | 0.942       | 23     | 1        | 0.000 | 0.000    |
+| held-out | merged pair, without house_16H | SDLC vs BCCP  | 15  | 0.882       | 13     | 2        | 0.000 | 0.001    |
+| held-out | merged pair, without house_16H | SDLC vs S-NCP | 15  | 0.957       | 14     | 1        | 0.000 | 0.000    |
+| held-out | merged pair, without house_16H | SDLC vs S-CQR | 15  | 0.849       | 14     | 1        | 0.000 | 0.001    |
+| held-out | merged pair, without house_16H | SDLC vs S-HPD | 15  | 0.972       | 14     | 1        | 0.000 | 0.001    |
+
+Table S17b (continued). Coverage of the top 1% of outcomes with one definition in both pipelines ($y\ge q_{0.99}$ of the training targets; a seed counts only if the group holds at least 10 test points; mean, minimum and maximum over datasets).
+
+| suite    | method    | n_datasets   | mean   | min   | max   |
+|:---------|:----------|:-------------|:-------|:------|:------|
+| ctr23    | BCCP      | 24           | 0.697  | 0.151 | 1.000 |
+| ctr23    | CQR       | 24           | 0.494  | 0.000 | 0.972 |
+| ctr23    | HPD-split | 24           | 0.691  | 0.001 | 1.000 |
+| ctr23    | S-CQR     | 24           | 0.696  | 0.150 | 0.917 |
+| ctr23    | S-HPD     | 24           | 0.781  | 0.246 | 0.956 |
+| ctr23    | S-NCP     | 24           | 0.782  | 0.246 | 0.952 |
+| ctr23    | SCP       | 24           | 0.467  | 0.000 | 0.994 |
+| ctr23    | SDLC      | 24           | 0.750  | 0.190 | 1.000 |
+| held-out | BCCP      | 17           | 0.699  | 0.357 | 0.877 |
+| held-out | CQR       | 17           | 0.420  | 0.000 | 0.947 |
+| held-out | HPD-split | 17           | 0.576  | 0.000 | 0.937 |
+| held-out | S-CQR     | 17           | 0.696  | 0.294 | 0.934 |
+| held-out | S-HPD     | 17           | 0.796  | 0.391 | 0.958 |
+| held-out | S-NCP     | 17           | 0.793  | 0.391 | 0.958 |
+| held-out | SCP       | 17           | 0.471  | 0.000 | 0.990 |
+| held-out | SDLC      | 17           | 0.760  | 0.401 | 0.928 |
+
+Table S17b (continued). RW-3 (top-1% coverage of RW-DLC versus SDLC, held-out data, one-sided Wilcoxon test): the pre-specified definition ($y>q_{0.99}$) and post hoc variants.
+
+| variant                               | n   | diff_mean   | wins   | p     | rw    | rw_min   | rw_max   | sdlc   |
+|:--------------------------------------|:----|:------------|:-------|:------|:------|:---------|:---------|:-------|
+| pre-specified (strict y > q99)        | 15  | 0.184       | 13     | 0.011 | 0.872 | 0.508    | 0.988    | 0.688  |
+| strict, pair merged                   | 14  | 0.214       | 13     | 0.002 | 0.897 | 0.514    | 0.988    | 0.683  |
+| strict, without Ailerons              | 14  | 0.143       | 12     | 0.021 | 0.866 | 0.508    | 0.988    | 0.723  |
+| unified (y >= q99, >= 10 test points) | 17  | 0.125       | 15     | 0.009 | 0.884 | 0.521    | 0.988    | 0.760  |
+| unified, pair merged                  | 16  | 0.147       | 15     | 0.001 | 0.905 | 0.549    | 0.988    | 0.759  |
 
 **Table S18.** Pre-specified hypothesis tests RW-1 to RW-4 of the relevance-weighted study (column suite: collection of datasets).
 

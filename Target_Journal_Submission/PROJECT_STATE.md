@@ -88,3 +88,9 @@ User asked THIS branch/session to lead; other sessions should be stopped. Comput
 (from Target_Journal_Submission/; idempotent; markers REFIT_DONE, QUEUE3_DONE, QUEUE3B_DONE, QUEUE3C_DONE in
 results/experiment_logs/queue_cycle3.log; refit skips finished tasks). Python: /root/venv/bin/python (cloud env "p_c1_2").
 While it runs: analysis/writing items from the practical-sagan checkpoint above (response_05, response_06, reviews 8-10).
+
+### Progress (zen-pasteur, 2026-11-21 evening)
+- [x] Review 5 addressed: REVIEW/response_05.md (post hoc scripts/analyze_review05.py; leakage audit extended; supplement S1/S2/S3/S15/S17b).
+      Open from review 5: temporal splits Moneyball/Bike (C1-31(d)) not run; CTR23 RW arm pending (queue 3).
+- [ ] Queue 3 running (resume_queue3.sh): refit -> run_rw ctr23 -> timing_like -> timing_rw. Supplement S13 needs timing_like (D15c).
+- [ ] Then: analyze_timing.py, analyze_rw.py (CTR23), response_06.md, RW CTR23 sentence in §6.4; reviews 8-10 (ask user re: agent cost); final audit.
