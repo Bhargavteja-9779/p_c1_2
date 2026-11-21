@@ -57,3 +57,9 @@
    tests/test_ls_exact3.py::test_run_geometry_equals_cellwise_reference. Speed-up 10–60x per call; the
    evaluation was restarted with the new code at 84/310 (first 84 files computed with the reference code,
    numerically identical). Timing results (Experiment 6) are measured with the final implementation.
+14. RESUME (2026-11-21): container restarts interrupted the queue twice; grouped splits resumed (skips finished
+   outputs, 15/15), timing_fit made resumable per dataset (first 14 datasets measured before the restart, rest after;
+   same container type, single thread, no concurrent jobs during timing). Grouped splits: no test unit occurs in
+   training; sarcos (deduplicated) and superconductivity (grouped by feature vector) reproduce the random-split
+   conclusions; video_transcoding grouped by input video: all sets larger (SDLC x6.9), single-split coverage
+   0.79-0.96 (dependent rows within a video) -> reported as a limitation of row-level guarantees.

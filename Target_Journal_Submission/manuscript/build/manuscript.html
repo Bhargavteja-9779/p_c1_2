@@ -3168,13 +3168,13 @@ changed. Stratified methods kept their worst-stratum coverage (0.891 and
 0.890 for SDLC), SCP and CQR still under-covered a stratum (0.787 and
 0.777 at worst), and SDLC remained smaller than S-NCP (ratios 0.97 and
 0.91). Video transcoding behaved differently. When the test videos were
-unseen, every set grew several-fold (SDLC by a factor of 6.9), and the
-coverage of single splits ranged from 0.788 to 0.957, because the rows
-of a video are dependent and a split contains few independent units. The
-random-split results for this dataset therefore describe interpolation
-within known videos. SDLC was again smaller than S-NCP (ratio 0.88) but
-larger than BCCP (1.20). For new videos, calibration should be done at
-the level of the unit.</p>
+unseen, all sets grew, most of them several-fold (SDLC by a factor of
+6.9), and the coverage of single splits ranged from 0.788 to 0.957,
+because the rows of a video are dependent and a split contains
+relatively few independent units. The random-split results for this
+dataset therefore describe interpolation within known videos. SDLC was
+again smaller than S-NCP (ratio 0.88) but larger than BCCP (1.20). For
+new videos, calibration should be done at the level of the unit.</p>
 <p><em>Computational cost.</em> Calibration and prediction with SDLC
 took a median of 10.5 µs per test point (at most 64.7 µs; Supplementary
 Table S13), against 0.07 µs for S-NCP and 10.9 µs for S-HPD, which uses
