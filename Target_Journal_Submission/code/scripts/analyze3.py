@@ -527,6 +527,10 @@ def timing_study():
         table(tf, "T15b_timing_fit")
         num = tf.select_dtypes("number")
         METRICS["timing_fit_median"] = num.median().to_dict()
+        extra = (tf.fit_scale_crossfit + tf.fit_kde + tf.build_table) / (tf.fit_mean + tf.fit_scale_with_oof)
+        METRICS["timing_fit_sdlc_extra"] = {"ratio_median": float(extra.median()), "ratio_max": float(extra.max()),
+                                            "seconds_max": float((tf.fit_scale_crossfit + tf.fit_kde + tf.build_table).max()),
+                                            "kde_table_max": float((tf.fit_kde + tf.build_table).max())}
 
 
 def grouped_study(a10):
