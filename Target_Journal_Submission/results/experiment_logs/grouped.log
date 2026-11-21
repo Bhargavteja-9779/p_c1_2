@@ -11,3 +11,13 @@ ModuleNotFoundError: No module named 'sklearn'
 /home/user/p_c1_2/Target_Journal_Submission/results/raw_grouped/44964_1.jsonl skip
 /home/user/p_c1_2/Target_Journal_Submission/results/raw_grouped/44964_2.jsonl skip
 /home/user/p_c1_2/Target_Journal_Submission/results/raw_grouped/44964_4.jsonl ok 84.2s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw_grouped/44976_1.jsonl ok 157.2s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw_grouped/44976_0.jsonl ok 165.2s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw_grouped/44976_2.jsonl ok 167.2s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw_grouped/44976_3.jsonl ok 159.8s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw_grouped/44976_4.jsonl ok 171.5s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw_grouped/44974_1.jsonl ok 317.4s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw_grouped/44974_0.jsonl ok 323.7s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw_grouped/44974_2.jsonl ok 310.2s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw_grouped/44974_3.jsonl ok 302.4s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw_grouped/44974_4.jsonl ok 326.7s
