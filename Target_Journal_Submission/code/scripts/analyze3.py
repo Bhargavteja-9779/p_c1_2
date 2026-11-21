@@ -561,7 +561,11 @@ def grouped_study(a10):
                    "sdlc_vs_bccp_grouped": float(t_.loc["SDLC", "size_grouped"] / t_.loc["BCCP", "size_grouped"]),
                    "marg_worst_grouped_max": float(t_.loc[["SCP", "CQR", "HPD-split"], "worst_grouped"].max()),
                    "strat_worst_grouped_min": float(t_.loc[["BCCP", "S-NCP", "S-CQR", "SDLC"], "worst_grouped"].min()),
-                   "sdlc_cov_grouped": float(t_.loc["SDLC", "coverage_grouped"])}
+                   "sdlc_cov_grouped": float(t_.loc["SDLC", "coverage_grouped"]),
+                   "size_inflation_sdlc": float(t_.loc["SDLC", "size_grouped"] / t_.loc["SDLC", "size_random"])}
+        gs = g[(g.dataset == ds) & g.method.isin(keep)]
+        out[ds]["cov_split_min"] = float(gs.coverage.min())        # single-split coverage, all kept methods
+        out[ds]["cov_split_max"] = float(gs.coverage.max())
     METRICS["grouped"] = out
     d = T.copy()
     for c_ in d.columns:

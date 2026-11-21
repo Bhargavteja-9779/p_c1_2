@@ -36,3 +36,5 @@ grid_stability done
 video_transcoding done
 WARNING:openml.datasets.functions:Could not download file from https://data.openml.org/datasets/0004/44975/dataset_44975.pq: Bucket does not exist or is private.
 WARNING:openml.datasets.functions:Failed to download parquet, fallback on ARFF.
+Could not download file from https://data.openml.org/datasets/0004/44975/dataset_44975.pq: Bucket does not exist or is private.
+Failed to download parquet, fallback on ARFF.
