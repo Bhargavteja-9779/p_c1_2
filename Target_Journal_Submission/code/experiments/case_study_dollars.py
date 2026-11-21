@@ -33,7 +33,9 @@ def main():
         for m, lab in METHODS.items():
             S = sets[m]
             cv = covered(S, yt, part)
+            sz = sizes(S, part)
             d = {"top_coverage": float(cv[top].mean()), "top_missed": int((~cv[top]).sum()),
+                 "median_rel_width_top": float(np.median(sz[top] / yt[top])),
                  "coverage": float(cv.mean()), "mean_size_top": float(sizes(S, part)[top].mean())}
             if S[0] == "int":                       # interval: shortfall of the upper bound for missed top houses
                 hi = np.max(np.where(S[2] > S[1], S[2], -np.inf), axis=1)
@@ -41,6 +43,17 @@ def main():
                 d["median_shortfall"] = float(np.median(yt[miss] - hi[miss])) if miss.any() else 0.0
                 d["total_shortfall"] = float(np.sum(yt[miss] - hi[miss]))
             r[lab] = d
+        # top-stratum coverage over all 10 splits (from the evaluation files of the main benchmark)
+        rows = [json.loads(l) for f in sorted((ROOT.parent / "results" / "raw_eval_v3").glob(f"{did}_*.jsonl"))
+                for l in f.read_text().splitlines()]
+        for m, lab in METHODS.items():
+            v = [x[f"cal_cov_{x['K'] - 1}"] for x in rows
+                 if x["method"] == m and x.get("alpha") == 0.1 and x.get("scheme", "S5") == "S5"
+                 and x.get("cal_frac", 1.0) == 1.0]
+            r[lab]["top_coverage_10seeds_mean"] = float(np.mean(v))
+            r[lab]["top_coverage_10seeds_min"] = float(np.min(v))
+            r[lab]["top_coverage_10seeds_max"] = float(np.max(v))
+            r[lab]["n_seeds"] = len(v)
         out[name] = r
         print(name, json.dumps(r, indent=0)[:1500])
     (ROOT.parent / "results" / "case_study_dollars.json").write_text(json.dumps(out, indent=1))

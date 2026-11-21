@@ -284,6 +284,8 @@ def render():
     pat = re.compile(r"\{\{(?!TABLE:|FIG:)([^{}]+)\}\}")
     while pat.search(text):
         text = pat.sub(lambda mo: value(mo.group(1)), text)
+    # p-value phrasing when a bound such as "p <= {{x}}" is filled with "< 0.001"
+    text = text.replace("$p\\le$ < 0.001", "$p$ < 0.001").replace("< 0.001 or smaller", "< 0.001")
 
     # 2) tables and figures (captions may contain LaTeX braces)
     from scripts.tables_spec import SPEC

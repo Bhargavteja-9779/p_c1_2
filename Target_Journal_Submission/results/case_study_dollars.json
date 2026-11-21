@@ -8,46 +8,76 @@
   "SCP": {
    "top_coverage": 0.4866785079928952,
    "top_missed": 289,
+   "median_rel_width_top": 0.22894215453586497,
    "coverage": 0.887120651369356,
    "mean_size_top": 271296.453125,
    "median_shortfall": 125580.6796875,
-   "total_shortfall": 42312251.6875
+   "total_shortfall": 42312251.6875,
+   "top_coverage_10seeds_mean": 0.5089344219339357,
+   "top_coverage_10seeds_min": 0.4625984251968504,
+   "top_coverage_10seeds_max": 0.5490196078431373,
+   "n_seeds": 10
   },
   "CQR": {
    "top_coverage": 0.7424511545293073,
    "top_missed": 145,
+   "median_rel_width_top": 0.57156465625,
    "coverage": 0.8900814211695041,
    "mean_size_top": 842783.1311056839,
    "median_shortfall": 108252.265625,
-   "total_shortfall": 25766824.8125
+   "total_shortfall": 25766824.8125,
+   "top_coverage_10seeds_mean": 0.7730361492281783,
+   "top_coverage_10seeds_min": 0.7401574803149606,
+   "top_coverage_10seeds_max": 0.8107606679035251,
+   "n_seeds": 10
   },
   "HPD-split": {
    "top_coverage": 0.8170515097690941,
    "top_missed": 103,
+   "median_rel_width_top": 0.507420007036834,
    "coverage": 0.8915618060695781,
-   "mean_size_top": 784004.1720342333
+   "mean_size_top": 784004.1720342333,
+   "top_coverage_10seeds_mean": 0.8061393246138339,
+   "top_coverage_10seeds_min": 0.7614035087719299,
+   "top_coverage_10seeds_max": 0.8520499108734403,
+   "n_seeds": 10
   },
   "BCCP": {
    "top_coverage": 0.8632326820603907,
    "top_missed": 77,
+   "median_rel_width_top": 0.5283041587225928,
    "coverage": 0.8932272390821614,
    "mean_size_top": 652098.6664631439,
    "median_shortfall": 167712.59375,
-   "total_shortfall": 15286457.5
+   "total_shortfall": 15286457.5,
+   "top_coverage_10seeds_mean": 0.89723517529733,
+   "top_coverage_10seeds_min": 0.8632326820603907,
+   "top_coverage_10seeds_max": 0.9315789473684211,
+   "n_seeds": 10
   },
   "S-NCP": {
    "top_coverage": 0.8863232682060391,
    "top_missed": 64,
+   "median_rel_width_top": 0.6200880835729156,
    "coverage": 0.8963730569948186,
    "mean_size_top": 951247.8795509872,
    "median_shortfall": 96911.87577727844,
-   "total_shortfall": 8878813.897398386
+   "total_shortfall": 8878813.897398386,
+   "top_coverage_10seeds_mean": 0.9082318504348939,
+   "top_coverage_10seeds_min": 0.8622047244094488,
+   "top_coverage_10seeds_max": 0.9333333333333333,
+   "n_seeds": 10
   },
   "SDLC": {
    "top_coverage": 0.8845470692717584,
    "top_missed": 65,
+   "median_rel_width_top": 0.5438828187679315,
    "coverage": 0.890821613619541,
-   "mean_size_top": 765827.5048993283
+   "mean_size_top": 765827.5048993283,
+   "top_coverage_10seeds_mean": 0.9045669720137699,
+   "top_coverage_10seeds_min": 0.8720472440944882,
+   "top_coverage_10seeds_max": 0.9385964912280702,
+   "n_seeds": 10
   }
  },
  "miami_housing": {
@@ -59,46 +89,76 @@
   "SCP": {
    "top_coverage": 0.40896358543417366,
    "top_missed": 211,
+   "median_rel_width_top": 0.19282704056695993,
    "coverage": 0.8983634797588286,
    "mean_size_top": 197262.0625,
    "median_shortfall": 101153.40625,
-   "total_shortfall": 19661637.0625
+   "total_shortfall": 19661637.0625,
+   "top_coverage_10seeds_mean": 0.4547917790873125,
+   "top_coverage_10seeds_min": 0.40896358543417366,
+   "top_coverage_10seeds_max": 0.5205882352941177,
+   "n_seeds": 10
   },
   "CQR": {
    "top_coverage": 0.8011204481792717,
    "top_missed": 71,
+   "median_rel_width_top": 0.65085625,
    "coverage": 0.9000861326442722,
    "mean_size_top": 825597.0586922269,
    "median_shortfall": 79040.1875,
-   "total_shortfall": 10312323.1875
+   "total_shortfall": 10312323.1875,
+   "top_coverage_10seeds_mean": 0.7925207453109808,
+   "top_coverage_10seeds_min": 0.7537688442211056,
+   "top_coverage_10seeds_max": 0.8272980501392758,
+   "n_seeds": 10
   },
   "HPD-split": {
    "top_coverage": 0.865546218487395,
    "top_missed": 48,
+   "median_rel_width_top": 0.5581868912971888,
    "coverage": 0.9055412001148435,
-   "mean_size_top": 744649.3321869036
+   "mean_size_top": 744649.3321869036,
+   "top_coverage_10seeds_mean": 0.8575551599995279,
+   "top_coverage_10seeds_min": 0.8194842406876791,
+   "top_coverage_10seeds_max": 0.8901408450704226,
+   "n_seeds": 10
   },
   "BCCP": {
    "top_coverage": 0.896358543417367,
    "top_missed": 37,
+   "median_rel_width_top": 0.6322951973684211,
    "coverage": 0.9015216767154751,
    "mean_size_top": 675455.2441351541,
    "median_shortfall": 111704.5,
-   "total_shortfall": 3521822.65625
+   "total_shortfall": 3521822.65625,
+   "top_coverage_10seeds_mean": 0.9049666958717992,
+   "top_coverage_10seeds_min": 0.836676217765043,
+   "top_coverage_10seeds_max": 0.9529411764705882,
+   "n_seeds": 10
   },
   "S-NCP": {
    "top_coverage": 0.8823529411764706,
    "top_missed": 42,
+   "median_rel_width_top": 0.5722093146205548,
    "coverage": 0.9084122882572495,
    "mean_size_top": 772193.8957217397,
    "median_shortfall": 85926.08072438551,
-   "total_shortfall": 4618717.218001654
+   "total_shortfall": 4618717.218001654,
+   "top_coverage_10seeds_mean": 0.8966505154756812,
+   "top_coverage_10seeds_min": 0.8653295128939829,
+   "top_coverage_10seeds_max": 0.9441176470588235,
+   "n_seeds": 10
   },
   "SDLC": {
    "top_coverage": 0.8879551820728291,
    "top_missed": 40,
+   "median_rel_width_top": 0.5453714974802131,
    "coverage": 0.9046798736721218,
-   "mean_size_top": 654506.5807703886
+   "mean_size_top": 654506.5807703886,
+   "top_coverage_10seeds_mean": 0.9020790579230352,
+   "top_coverage_10seeds_min": 0.883008356545961,
+   "top_coverage_10seeds_max": 0.9382352941176471,
+   "n_seeds": 10
   }
  }
 }

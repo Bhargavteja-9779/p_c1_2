@@ -93,15 +93,15 @@ stratum-specific thresholds are the smallest stratum-valid sets, that
 their plug-in conformal version is asymptotically optimal, and that the
 gain over a normalised residual comes from reallocating coverage across
 inputs. The resulting stratified density-level conformal prediction
-(SDLC) was compared with 13 procedures on 31 OpenML-CTR23 datasets. At a
-nominal 90%, marginal and covariate-adaptive methods covered only
+(SDLC) was evaluated among 13 procedures on 31 OpenML-CTR23 datasets. At
+a nominal 90%, marginal and covariate-adaptive methods covered only
 63.0%–78.3% of their worst-covered stratum, whereas stratified methods
 were consistent with exact validity. SDLC gave the smallest
-stratum-valid sets, smaller than bin-conditional conformal prediction on
-24 of 31 datasets, and a pre-registered replication on 17 held-out
-datasets confirmed the ordering (size ratios between 0.841 and 0.984).
-Gains over a stratified normalised residual were small and came with
-lower coverage of the noisiest inputs. A decision study shows when
+stratum-valid sets on average, smaller than bin-conditional conformal
+prediction on 24 of 31 datasets, and a pre-registered replication on 17
+held-out datasets confirmed the ordering. Gains over the closest
+competitors were small (ratios up to 0.984, intervals including one) and
+cost coverage of the noisiest inputs. A decision study shows when
 dedicated tail classifiers are preferable for alerts.</p>
 </div>
 </header>
@@ -379,9 +379,9 @@ quantile regression (BFQR) splits
 into equal-mass bins and calibrates within each combination of group and
 bin, with a conformal step that maintains coverage, and they illustrate
 that standard methods mis-cover the head and tail bins of the outcome.
-Their aim is fairness, but the binning device is the same. Their binned
-fair quantile regression (BFQR) forms equal-mass bins of the calibration
-outcomes, takes within each group and bin the
+Their aim is fairness, but the binning device is the same. BFQR forms
+equal-mass bins of the calibration outcomes, takes within each group and
+bin the
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>β</mi><mi>m</mi></msub><annotation encoding="application/x-tex">\beta_m</annotation></semantics></math>-quantile
 of conformalised quantile-regression scores, and chooses the bin levels
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>β</mi><mi>m</mi></msub><annotation encoding="application/x-tex">\beta_m</annotation></semantics></math>
@@ -1579,8 +1579,8 @@ and
 and SDLC adds the noise density.</p>
 <p><em>Ablations of the score.</em> SDLC-N replaces the kernel estimate
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>g</mi><mo accent="true">̂</mo></mover><annotation encoding="application/x-tex">\hat g</annotation></semantics></math>
-by a Gaussian density, so that the chain BCCP → S-NCP → SDLC-N → SDLC
-adds, in turn, the scale
+by a Gaussian density (DLS-N is its single-threshold counterpart), so
+that the chain BCCP → S-NCP → SDLC-N → SDLC adds, in turn, the scale
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>σ</mi><mo accent="true">̂</mo></mover><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\hat\sigma(x)</annotation></semantics></math>,
 the density weighting
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mi>/</mi><mover><mi>σ</mi><mo accent="true">̂</mo></mover><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">1/\hat\sigma(x)</annotation></semantics></math>,
@@ -1711,9 +1711,10 @@ as exploratory. The coverage results (RQ1, RQ2, RQ4) are unaffected in
 direction by any of these changes. To test the size comparisons, we
 fixed a confirmatory analysis plan (hypotheses, tests, decision rules
 and analysis script; Supplementary Section S6) and committed it to the
-public repository <em>before</em> evaluating any method on the 17
-held-out datasets. Section 6.5 reports the outcome whatever its
-direction.</p>
+version-controlled project repository (commit <code>ccba99b</code>,
+whose timestamp precedes every confirmatory evaluation) <em>before</em>
+evaluating any method on the 17 held-out datasets. Section 6.5 reports
+the outcome whatever its direction.</p>
 <h1 id="results">6. Results</h1>
 <p>All results refer to
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><mn>0.1</mn></mrow><annotation encoding="application/x-tex">\alpha=0.1</annotation></semantics></math>
@@ -1951,12 +1952,12 @@ tail, with worst-stratum coverage 89.0%–89.3%, and was below the null
 range on at most 2 datasets, as expected under exact validity. SDLC’s
 worst-stratum coverage exceeded that of each marginal method on at least
 29 of 31 datasets (one-sided Holm-adjusted
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>≤</mo></mrow><annotation encoding="application/x-tex">p\le</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
 &lt; 0.001; Hodges–Lehmann differences 0.081–0.250). The result is
 unchanged without the development datasets
-(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>≤</mo></mrow><annotation encoding="application/x-tex">p\le</annotation></semantics></math>
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
 &lt; 0.001) and for upper-tail coverage alone
-(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>≤</mo></mrow><annotation encoding="application/x-tex">p\le</annotation></semantics></math>
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
 &lt; 0.001). Protection extends partly beyond the calibrated strata:
 SDLC covered 86.8% of the top 5% and 73.6% of the top 1%, against at
 most 77.0% and 65.5% for the marginal methods. The top 1% is not
@@ -2134,7 +2135,7 @@ worst stratum 0.891, size 0.874.</p>
 The density score gives the smallest stratum-valid sets (RQ3)</h2>
 <p>Among the stratified methods, which all had equivalent worst-stratum
 coverage (TOST with margin 0.01:
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>≤</mo></mrow><annotation encoding="application/x-tex">p\le</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
 &lt; 0.001 for every comparison with SDLC), SDLC produced the smallest
 sets (Table 5, Fig. 2). Its sets were smaller than those of BCCP on 24
 of 31 datasets (geometric-mean ratio 0.902, 95% CI 0.841–0.956;
@@ -2555,7 +2556,9 @@ intervals of their geometric-mean ratios (0.940–1.028 and 0.963–1.014)
 include one, while the signed-rank and sign tests show that the
 reduction occurs on most datasets.</li>
 <li><em>C-H4 (equivalence).</em> The worst-stratum coverage of SDLC was
-equivalent to that of S-NCP and BCCP within 0.02 (TOST
+equivalent to that of S-NCP and BCCP within 0.02 (the pre-registered
+margin, wider than the 0.01 used on CTR23 because each held-out dataset
+has only five splits) (TOST
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
 &lt; 0.001 and &lt; 0.001).</li>
 </ul>
@@ -2733,11 +2736,13 @@ every method lost coverage. The stratified methods lost less
 S-NCP and S-HPD (0.833), which is the same reallocation away from the
 most extreme outcomes seen above. The effective sample size of the
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>γ</mi><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">\gamma=2</annotation></semantics></math>
-weights was small (median 49, minimum 5.9). Restricting the analysis to
-the 15 datasets with an effective sample size of at least 50 left the
-ordering unchanged. The bounds of Corollary 1(ii)–(iii) are not
-informative for these unbounded tilts. The synthetic study (Section 6.4)
-adds a genuine label shift with known
+weights was small (median 49, minimum 5.9). On the 15 datasets with an
+effective sample size of at least 50, S-NCP, S-HPD and SDLC still kept
+the most coverage of the upper stratum, but DCP (0.765) overtook BCCP
+(0.754) and S-CQR (0.761). The advantage of stratification under strong
+tilts is therefore not uniform. The bounds of Corollary 1(ii)–(iii) are
+not informative for these unbounded tilts. The synthetic study (Section
+6.4) adds a genuine label shift with known
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mspace width="0.167em"></mspace><mo stretchy="false" form="prefix">|</mo><mspace width="0.167em"></mspace><mi>Y</mi></mrow><annotation encoding="application/x-tex">X\,|\, Y</annotation></semantics></math>.</p>
 <p><strong>Table 8.</strong> Coverage under target shift
 (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><mn>0.1</mn></mrow><annotation encoding="application/x-tex">\alpha=0.1</annotation></semantics></math>;
@@ -2903,10 +2908,10 @@ stratum (right) under the positive control and upward
 tilts.</figcaption>
 </figure>
 <h2 id="valuation-case-study">6.7 Valuation case study</h2>
-<p>Two of the benchmark datasets are house-price valuation problems, a
-typical expert-system application in which an understated price for an
-expensive property is costly. For seed 0 we expressed the results in
-money (Supplementary code
+<p>House-price valuation is a typical expert-system application in which
+an understated price for an expensive property is costly. For King
+County and Miami, two of the housing datasets of the benchmark, we
+expressed the results of seed 0 in money (Supplementary code
 <code>experiments/case_study_dollars.py</code>; one split, so the
 numbers illustrate rather than estimate). In King County the top stratum
 contained 563 test sales of at least $895,000 (median $1,185,000).
@@ -2919,8 +2924,18 @@ these sales were narrower than those of S-NCP and CQR (mean width
 $765,828 against $951,248 and $842,783). Miami showed the same pattern:
 split-conformal intervals covered 40.9% of the 357 sales of at least
 $705,000, CQR 80.1% and SDLC 88.8%, again with the narrowest stratified
-sets. All methods had close to 90% overall coverage, so an
-average-coverage report would not have revealed the difference.</p>
+sets. Over all ten splits of King County, the coverage of the top
+stratum was 50.9% for split-conformal intervals (range 46.3%–54.9%),
+77.3% for CQR and 90.5% for SDLC (range 87.2%–93.9%). All methods had
+close to 90% overall coverage, so an average-coverage report would not
+have revealed the difference. The guarantee has a price that a valuation
+expert will notice: for expensive houses, SDLC’s sets had a median width
+of 54.4% of the price, against 22.9% for split-conformal intervals and
+57.2% for CQR. The narrow split-conformal intervals are narrow because
+they miss half of these houses. With these features, honest 90% coverage
+of the most expensive tenth requires sets of this width, and a valuation
+system should report them, or flag the case for a manual appraisal,
+rather than show a narrow interval that is wrong half of the time.</p>
 <h2 id="tail-alerts-and-decisions-rq5">6.8 Tail alerts and decisions
 (RQ5)</h2>
 <p>A set that intersects the upper stratum raises an alert. Every
@@ -2961,11 +2976,11 @@ They had no recall guarantee, however, and their recall fell below 0.9
 on 4–6 datasets. Fig. 6 shows the cost curves for three valuation
 problems (house prices in King County and Miami, wages in the CPS). The
 guarantee-free point rule and conformal selection become the most
-expensive rules as the cost ratio grows, and set-based alerts with
-stratum-wise coverage are the cheapest at the highest ratios. A set also
-carries more information than an alert: it says how large the outcome
-may be, which a downstream decision such as a provision, an inspection
-priority or a price range can use.</p>
+expensive rules as the cost ratio grows, and in these three datasets
+set-based alerts with stratum-wise coverage are the cheapest at the
+highest ratios. A set also carries more information than an alert: it
+says how large the outcome may be, which a downstream decision such as a
+provision, an inspection priority or a price range can use.</p>
 <p><strong>Table 9.</strong> Upper-tail alerts
 (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><mn>0.1</mn></mrow><annotation encoding="application/x-tex">\alpha=0.1</annotation></semantics></math>;
 means over datasets): recall, alert rate and precision, the number of
@@ -3200,9 +3215,9 @@ valid with the weighted learner (0.885 for SDLC), and SDLC again gave
 the smallest stratified sets (ratios 0.906, 0.948, 0.694 and 0.964
 against BCCP, S-NCP, S-CQR and S-HPD; Holm
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
-&lt; 0.001 or smaller). Imbalance-aware point learning and stratified
-calibration are thus complementary, and the former does not deliver the
-coverage guarantee.</p>
+&lt; 0.001). Imbalance-aware point learning and stratified calibration
+are thus complementary, and the former does not deliver the coverage
+guarantee.</p>
 <p><em>Repeated units.</em> Random splitting guarantees coverage for a
 new row from the same pool, not for a new unit (Section 5). We therefore
 repeated the analysis for three datasets with repeated units, using
@@ -3340,9 +3355,11 @@ BCCP-hull, but it loses part of the advantage.</li>
 <li><em>For yes/no decisions about extremes, match the rule to the
 costs.</em> A class-conditional conformal tail classifier attains the
 same recall guarantee with fewer alerts and is the better choice when
-false alerts are expensive. Set-based alerts have higher recall, are
-cheaper when misses are very costly, and carry more information about
-the size of the outcome.</li>
+false alerts are expensive. Set-based alerts have higher recall and
+carry more information about the size of the outcome, but when misses
+are very costly their expected cost did not differ significantly from
+that of the tail classifier, and alerts from S-NCP sets were cheaper
+than those from SDLC sets.</li>
 </ol>
 <h2 id="limitations">7.3 Limitations</h2>
 <p><em>Size cost and data requirements.</em> Stratum-wise validity is
