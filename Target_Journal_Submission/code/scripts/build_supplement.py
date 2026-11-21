@@ -67,7 +67,7 @@ def main():
     out += ["# S2. Leakage audit", "",
             "Exact duplicate rows (features and target), duplicate feature vectors, the share of test feature vectors "
             "that also occur in the training split (seed 0), and the share of missing values, recomputed on the final "
-            "data files (scripts/leakage_audit.py). Random splitting keeps rows exchangeable, so the coverage guarantees "
+            "data files. Random splitting keeps rows exchangeable, so the coverage guarantees "
             "hold for new rows from the same pool; repeated units (duplicates, repeated videos, repeat sales) mean "
             "that they do not transfer to new units.", "", "**Table S3.** Leakage audit (sorted by the share of test "
             "feature vectors seen in training).", "", md(la, 4), ""]
@@ -84,10 +84,9 @@ def main():
             "piecewise-linear interpolant of $\\hat g$ on a standardised grid (1,536 core and 2×256 tail points by "
             "default). The production algorithm decomposes the interpolant into monotone runs, on each of which a "
             "super-level set is an interval. It reproduces a cell-by-cell reference implementation to a relative size "
-            "difference below $10^{-14}$, with identical piece counts, hulls, alerts and coverage (unit test "
-            "`tests/test_ls_exact3.py`). Table S4 compares three grid resolutions with the finest one.", "",
+            "difference below $10^{-14}$, with identical piece counts, hulls, alerts and coverage. Table S4 compares three grid resolutions with the finest one.", "",
             "**Table S4.** Grid convergence of SDLC sets (seed 0, $\\alpha=0.1$).", "", md(G, 5), "",
-            "*Finite-sample validity.* A Monte Carlo test with known exchangeable data (`tests/test_ls_exact3.py`) "
+            "*Finite-sample validity.* A Monte Carlo test with known exchangeable data "
             "confirms that the empirical stratum-wise coverage matches the theoretical value "
             "$\\lceil (n_k+1)(1-\\alpha)\\rceil/(n_k+1)$.", ""]
     # S4 additional results ----------------------------------------------------------------------------------
@@ -188,7 +187,7 @@ def main():
             "The first run (v1) evaluated all density-based sets on a fixed grid of 200 equal-mass cells of the "
             "marginal training-target distribution. The second (v2) used an exact implementation but standardised "
             "residuals with an in-sample scale model and used a density floor. Their complete analyses are archived "
-            "in `supplementary/v1_preregistered_analysis/` and `supplementary/v2_exact_insample_analysis/`. The "
+            "with the code. The "
             "coverage results were the same in all versions. Table S17 shows how the size comparisons changed; this "
             "dependence on the implementation is why the comparisons on CTR23 are labelled exploratory and were "
             "replicated on held-out data (v1 reported medians of log ratios; v2 also geometric means; the final "

@@ -4,13 +4,13 @@ The authors declare that they have no known competing financial interests or per
 
 # CRediT authorship contribution statement {-}
 
-**P N Bhargav Teja:** Conceptualization, Methodology, Software, Validation, Formal analysis, Investigation, Data curation, Visualization, Writing – original draft, Writing – review & editing. **[Second Author]:** Supervision, Writing – review & editing.
+**P N Bhargav Teja:** Conceptualization, Methodology, Software, Validation, Formal analysis, Investigation, Data curation, Visualization, Writing – original draft, Writing – review & editing. **Rajay Vedharaj I S:** Supervision, Writing – review & editing.
 
 # Data and code availability {-}
 
-*Data.* All datasets analysed in this study are publicly available on OpenML: study 353, the OpenML-CTR23 benchmark suite [@fischer2023openml], and, for the confirmatory replication, suites 335 and 336 [@grinsztajn2022tree]. They were downloaded programmatically through the OpenML API by the scripts in the code package; the OpenML identifier and licence of each dataset are listed in Supplementary Tables S1 and S2.
+*Data.* All datasets analysed in this study are publicly available on OpenML: study 353, the OpenML-CTR23 benchmark suite [@fischer2023openml], and, for the confirmatory replication, suites 335 and 336 [@grinsztajn2022tree]. They were downloaded through the OpenML API; the OpenML identifier and licence of each dataset are listed in Supplementary Tables S1 and S2.
 
-*Code.* All code, the configuration files, the raw per-run results, the pre-registered confirmatory analysis plan and the analysis scripts are publicly available at https://github.com/Bhargavteja-9779/p_c1_2. The version history documents that the confirmatory analysis plan (commit `ccba99b`) was committed before any confirmatory evaluation. A single command (`python run_all.py --mode full`) regenerates every table, figure and number of the manuscript from the raw data.
+*Code.* The code will be made available on request.
 
 # Funding {-}
 

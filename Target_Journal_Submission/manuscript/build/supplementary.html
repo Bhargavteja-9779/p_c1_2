@@ -632,10 +632,10 @@ distinct-value rule: 44055 analcatdata_supreme; 44133 pol.</p>
 <p>Exact duplicate rows (features and target), duplicate feature
 vectors, the share of test feature vectors that also occur in the
 training split (seed 0), and the share of missing values, recomputed on
-the final data files (scripts/leakage_audit.py). Random splitting keeps
-rows exchangeable, so the coverage guarantees hold for new rows from the
-same pool; repeated units (duplicates, repeated videos, repeat sales)
-mean that they do not transfer to new units.</p>
+the final data files. Random splitting keeps rows exchangeable, so the
+coverage guarantees hold for new rows from the same pool; repeated units
+(duplicates, repeated videos, repeat sales) mean that they do not
+transfer to new units.</p>
 <p><strong>Table S3.</strong> Leakage audit (sorted by the share of test
 feature vectors seen in training).</p>
 <table>
@@ -923,9 +923,8 @@ on each of which a super-level set is an interval. It reproduces a
 cell-by-cell reference implementation to a relative size difference
 below
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>10</mn><mrow><mo>−</mo><mn>14</mn></mrow></msup><annotation encoding="application/x-tex">10^{-14}</annotation></semantics></math>,
-with identical piece counts, hulls, alerts and coverage (unit test
-<code>tests/test_ls_exact3.py</code>). Table S4 compares three grid
-resolutions with the finest one.</p>
+with identical piece counts, hulls, alerts and coverage. Table S4
+compares three grid resolutions with the finest one.</p>
 <p><strong>Table S4.</strong> Grid convergence of SDLC sets (seed 0,
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><mn>0.1</mn></mrow><annotation encoding="application/x-tex">\alpha=0.1</annotation></semantics></math>).</p>
 <table>
@@ -1155,8 +1154,8 @@ resolutions with the finest one.</p>
 </tbody>
 </table>
 <p><em>Finite-sample validity.</em> A Monte Carlo test with known
-exchangeable data (<code>tests/test_ls_exact3.py</code>) confirms that
-the empirical stratum-wise coverage matches the theoretical value
+exchangeable data confirms that the empirical stratum-wise coverage
+matches the theoretical value
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">⌈</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>n</mi><mi>k</mi></msub><mo>+</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>−</mo><mi>α</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="false" form="postfix">⌉</mo><mi>/</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>n</mi><mi>k</mi></msub><mo>+</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\lceil (n_k+1)(1-\alpha)\rceil/(n_k+1)</annotation></semantics></math>.</p>
 <h1 id="s4.-additional-results">S4. Additional results</h1>
 <p><strong>Table S5.</strong> Sensitivity of the set-size comparisons
@@ -4385,14 +4384,12 @@ calibration-set size on worst-stratum coverage (left) and size
 of 200 equal-mass cells of the marginal training-target distribution.
 The second (v2) used an exact implementation but standardised residuals
 with an in-sample scale model and used a density floor. Their complete
-analyses are archived in
-<code>supplementary/v1_preregistered_analysis/</code> and
-<code>supplementary/v2_exact_insample_analysis/</code>. The coverage
-results were the same in all versions. Table S17 shows how the size
-comparisons changed; this dependence on the implementation is why the
-comparisons on CTR23 are labelled exploratory and were replicated on
-held-out data (v1 reported medians of log ratios; v2 also geometric
-means; the final version reports the Hodges–Lehmann estimate).</p>
+analyses are archived with the code. The coverage results were the same
+in all versions. Table S17 shows how the size comparisons changed; this
+dependence on the implementation is why the comparisons on CTR23 are
+labelled exploratory and were replicated on held-out data (v1 reported
+medians of log ratios; v2 also geometric means; the final version
+reports the Hodges–Lehmann estimate).</p>
 <p><strong>Table S17.</strong> Size comparisons of SDLC with the
 stratified comparators in the three implementations
 (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><mn>0.1</mn></mrow><annotation encoding="application/x-tex">\alpha=0.1</annotation></semantics></math>,

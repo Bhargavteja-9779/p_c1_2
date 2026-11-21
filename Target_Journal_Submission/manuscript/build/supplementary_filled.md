@@ -64,7 +64,7 @@ title: "Supplementary Material: Covering the rare outcomes: stratified conformal
 
 # S2. Leakage audit
 
-Exact duplicate rows (features and target), duplicate feature vectors, the share of test feature vectors that also occur in the training split (seed 0), and the share of missing values, recomputed on the final data files (scripts/leakage_audit.py). Random splitting keeps rows exchangeable, so the coverage guarantees hold for new rows from the same pool; repeated units (duplicates, repeated videos, repeat sales) mean that they do not transfer to new units.
+Exact duplicate rows (features and target), duplicate feature vectors, the share of test feature vectors that also occur in the training split (seed 0), and the share of missing values, recomputed on the final data files. Random splitting keeps rows exchangeable, so the coverage guarantees hold for new rows from the same pool; repeated units (duplicates, repeated videos, repeat sales) mean that they do not transfer to new units.
 
 **Table S3.** Leakage audit (sorted by the share of test feature vectors seen in training).
 
@@ -106,7 +106,7 @@ Exact duplicate rows (features and target), duplicate feature vectors, the share
 
 *Exactness of scores.* Calibration and test scores are evaluated exactly at the observed target, so the coverage reported for every location–scale method is that of the exact rule (4) of the main text.
 
-*Set geometry.* Sizes, piece counts, hulls and alerts are those of the stratum-exact set for the piecewise-linear interpolant of $\hat g$ on a standardised grid (1,536 core and 2×256 tail points by default). The production algorithm decomposes the interpolant into monotone runs, on each of which a super-level set is an interval. It reproduces a cell-by-cell reference implementation to a relative size difference below $10^{-14}$, with identical piece counts, hulls, alerts and coverage (unit test `tests/test_ls_exact3.py`). Table S4 compares three grid resolutions with the finest one.
+*Set geometry.* Sizes, piece counts, hulls and alerts are those of the stratum-exact set for the piecewise-linear interpolant of $\hat g$ on a standardised grid (1,536 core and 2×256 tail points by default). The production algorithm decomposes the interpolant into monotone runs, on each of which a super-level set is an interval. It reproduces a cell-by-cell reference implementation to a relative size difference below $10^{-14}$, with identical piece counts, hulls, alerts and coverage. Table S4 compares three grid resolutions with the finest one.
 
 **Table S4.** Grid convergence of SDLC sets (seed 0, $\alpha=0.1$).
 
@@ -131,7 +131,7 @@ Exact duplicate rows (features and target), duplicate feature vectors, the share
 | 44975       | 1536          | 256           | 146449.76909 | 0.00000                   | 0.00005                    | 0.00002                   | 0.00006                            | 0                      |
 | 44975       | 6144          | 1024          | 146449.66930 | 0.00000                   | 0.00000                    | 0.00000                   | 0.00000                            | 0                      |
 
-*Finite-sample validity.* A Monte Carlo test with known exchangeable data (`tests/test_ls_exact3.py`) confirms that the empirical stratum-wise coverage matches the theoretical value $\lceil (n_k+1)(1-\alpha)\rceil/(n_k+1)$.
+*Finite-sample validity.* A Monte Carlo test with known exchangeable data confirms that the empirical stratum-wise coverage matches the theoretical value $\lceil (n_k+1)(1-\alpha)\rceil/(n_k+1)$.
 
 # S4. Additional results
 
@@ -492,7 +492,7 @@ Exact duplicate rows (features and target), duplicate feature vectors, the share
 
 # S5. Earlier implementations
 
-The first run (v1) evaluated all density-based sets on a fixed grid of 200 equal-mass cells of the marginal training-target distribution. The second (v2) used an exact implementation but standardised residuals with an in-sample scale model and used a density floor. Their complete analyses are archived in `supplementary/v1_preregistered_analysis/` and `supplementary/v2_exact_insample_analysis/`. The coverage results were the same in all versions. Table S17 shows how the size comparisons changed; this dependence on the implementation is why the comparisons on CTR23 are labelled exploratory and were replicated on held-out data (v1 reported medians of log ratios; v2 also geometric means; the final version reports the Hodges–Lehmann estimate).
+The first run (v1) evaluated all density-based sets on a fixed grid of 200 equal-mass cells of the marginal training-target distribution. The second (v2) used an exact implementation but standardised residuals with an in-sample scale model and used a density floor. Their complete analyses are archived with the code. The coverage results were the same in all versions. Table S17 shows how the size comparisons changed; this dependence on the implementation is why the comparisons on CTR23 are labelled exploratory and were replicated on held-out data (v1 reported medians of log ratios; v2 also geometric means; the final version reports the Hodges–Lehmann estimate).
 
 **Table S17.** Size comparisons of SDLC with the stratified comparators in the three implementations ($\alpha=0.1$, 31 datasets; negative log ratios favour SDLC).
 
