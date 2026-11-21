@@ -24,3 +24,5 @@ WARNING:openml.datasets.functions:Could not download file from https://data.open
 WARNING:openml.datasets.functions:Failed to download parquet, fallback on ARFF.
 /home/user/p_c1_2/Target_Journal_Submission/results/raw_grouped/44976_3.jsonl ok 161.1s
 /home/user/p_c1_2/Target_Journal_Submission/results/raw_grouped/44976_4.jsonl ok 165.4s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw_grouped/44974_1.jsonl ok 309.1s
+/home/user/p_c1_2/Target_Journal_Submission/results/raw_grouped/44974_0.jsonl ok 320.0s
